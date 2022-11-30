@@ -19,14 +19,9 @@ This will create a serial.parts.out file with the particle positions after each 
 
 You can use the "-h" command line parameter to print the help menu summarizing the parameter options:
 
-student@nid02346:~/hw2-1/build> ./serial -h
-
-Options:
-
--h: see this help
-
--n <int>: set number of particles
-
--o <filename>: set the output file name
-
--s <int>: set particle initialization seed
+    student@nid02346:~/hw2-1/build> ./serial -h
+    Options:
+    -h: see this help
+    -n <int>: set number of particles
+    -o <filename>: set the output file name
+    -s <int>: set particle initialization seed
