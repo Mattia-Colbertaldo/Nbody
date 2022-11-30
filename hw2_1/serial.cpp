@@ -47,6 +47,7 @@ void init_simulation(particle_t* parts, int num_parts, double size) {
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
     // algorithm begins. Do not do any particle simulation here
+    
 }
 
 void simulate_one_step(particle_t* parts, int num_parts, double size) {
