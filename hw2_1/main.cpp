@@ -72,7 +72,7 @@ int find_int_arg(int argc, char** argv, const char* option, int default_value) {
     int iplace = find_arg_idx(argc, argv, option);
 
     if (iplace >= 0 && iplace < argc - 1) {
-        return std::stoi(argv[iplace + 1]);
+        return std::atoi(argv[iplace + 1]);
     }
 
     return default_value;
