@@ -70,13 +70,14 @@ void simulate_one_step(particle_t* parts, int num_parts, double size) {
 	// Compute Forces
     #pragma omp parallel for schedule(dynamic) shared(num_parts, loc_forces)
 	for (int q = 0; q<num_parts; ++q)
-	{
-		force force_qk;
-		force_qk.x = 0;
-		force_qk.y = 0;
-		
+	{		
+		#pragma omp parallel for shared(loc_forces)
 		for(int k=q+1; k<num_parts; k++)
 		{
+			force force_qk;
+			force_qk.x = 0;
+			force_qk.y = 0;
+
 			force_qk = apply_force(parts[q], parts[k]);
 
 			int rank = omp_get_thread_num();
@@ -88,7 +89,7 @@ void simulate_one_step(particle_t* parts, int num_parts, double size) {
 			loc_forces [ rank ] [ k ].y -= force_qk.y ;
 		}
 	}
-	#pragma omp parallel for
+	#pragma omp parallel for schedule(dynamic)
 	for (int q = 0; q<num_parts; ++q)
 	{
 		forces[q].x = 0;
