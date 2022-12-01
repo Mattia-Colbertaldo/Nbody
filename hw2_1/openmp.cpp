@@ -2,14 +2,15 @@
 #include <cmath>
 #include <iostream>
 #include <omp.h>
+#include <vector>
 
 typedef struct force {
     double x;  // Force on X
     double y;  // Force on Y
 } force;
 
-force * forces;
-force ** loc_forces;
+std::vector<force> forces;
+std::vector<std::vector<force>> loc_forces;
 
 // Put any static global variables here that you will use throughout the simulation.
 
@@ -46,34 +47,28 @@ void init_simulation(particle_t* parts, int num_parts, double size) {
 	// You can use this space to initialize data objects that you may need
 	// This function will be called once before the algorithm begins
 	// Do not do any particle simulation here
+
+	force zero;
+	zero.x = 0;
+	zero.y = 0;
 	
 	//forces[num_parts];
 	//Vector of force.x and force.y for each particle
-	forces = (force*) malloc(num_parts*num_parts*sizeof(force));
+	forces = std::vector<force>(num_parts, zero);
+
 
 	//loc_forces[omp_get_num_threads()][num_parts];
-	loc_forces = (force**) malloc(omp_get_num_threads()*num_parts*sizeof(force));
-
-	//initializing forces and loc_forces to 0
-	//#pragma omp parallel for shared(forces, loc_forces) schedule(dynamic)
-	for(int i=0; i<num_parts; i++){
-		forces[i].x = 0;
-		forces[i].y = 0;
-		for(int j=0; j<omp_get_num_threads(); j++){
-			loc_forces[j][i].x = 0;
-			loc_forces[j][i].y = 0;
-		}
-	}
+	loc_forces = std::vector<std::vector<force>>(omp_get_num_threads(), forces);
 
 }
 
 void simulate_one_step(particle_t* parts, int num_parts, double size) {
 
-	std::cout<<"Simulating one step"<<std::endl;
+	//std::cout<<"Simulating one step"<<std::endl;
 
     // Write this function
 	// Compute Forces
-    #pragma omp parallel for
+    #pragma omp parallel for schedule(dynamic) shared(num_parts, loc_forces)
 	for (int q = 0; q<num_parts; ++q)
 	{
 		force force_qk;
