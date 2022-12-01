@@ -126,6 +126,12 @@ int main(int argc, char** argv) {
     init_simulation(parts, num_parts, size);
     std::cout << "Init simulation ended." << std::endl;
 
+    auto init_time = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff_1 = init_time - start_time;
+    double seconds_1 = diff_1.count();
+    std::cout << "initialization Time = " << seconds_1 << " seconds\n";
+
+
 #ifdef _OPENMP
 #pragma omp parallel default(shared)
 #endif
