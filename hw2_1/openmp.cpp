@@ -52,14 +52,14 @@ void init_simulation(particle_t* parts, int num_parts, double size) {
 	forces = (force*) malloc(num_parts*num_parts*sizeof(force));
 
 	//loc_forces[omp_get_num_threads()][num_parts];
-	loc_forces = (force**) malloc(num_parts*num_parts*sizeof(force));
+	loc_forces = (force**) malloc(omp_get_num_threads()*num_parts*sizeof(force));
 
 	//initializing forces and loc_forces to 0
-	#pragma omp parallel for schedule(dynamic)
+	//#pragma omp parallel for shared(forces, loc_forces) schedule(dynamic)
 	for(int i=0; i<num_parts; i++){
 		forces[i].x = 0;
 		forces[i].y = 0;
-		for(int j=0; j<omp_get_thread_num(); j++){
+		for(int j=0; j<omp_get_num_threads(); j++){
 			loc_forces[j][i].x = 0;
 			loc_forces[j][i].y = 0;
 		}

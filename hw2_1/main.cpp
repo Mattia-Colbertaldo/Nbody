@@ -122,7 +122,9 @@ int main(int argc, char** argv) {
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
+    std::cout << "Trying to init simulation..." << std::endl;
     init_simulation(parts, num_parts, size);
+    std::cout << "Init simulation ended." << std::endl;
 
 #ifdef _OPENMP
 #pragma omp parallel default(shared)
