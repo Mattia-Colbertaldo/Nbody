@@ -105,7 +105,9 @@ int main(int argc, char** argv) {
 
     // Open Output File
     char* savename = find_string_option(argc, argv, "-o", nullptr);
+    if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
     std::ofstream fsave(savename);
+    if (savename != nullptr) std::cout << "File created." << std::endl;
 
     // Initialize Particles
     int num_parts = find_int_arg(argc, argv, "-n", 1000);
@@ -113,7 +115,8 @@ int main(int argc, char** argv) {
     double size = sqrt(density * num_parts);
 
     particle_t* parts = new particle_t[num_parts];
-
+    
+    std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts, num_parts, size, part_seed);
 
     // Algorithm
