@@ -6,6 +6,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <math.h>
 
 // =================
 // Helper Functions
@@ -100,6 +101,7 @@ int main(int argc, char** argv) {
         std::cout << "-n <int>: set number of particles" << std::endl;
         std::cout << "-o <filename>: set the output file name" << std::endl;
         std::cout << "-s <int>: set particle initialization seed" << std::endl;
+        std::cout << "-t <int>: set number of threads (working only in parallel mode) [default = 8]" << std::endl;
         return 0;
     }
 
@@ -113,6 +115,7 @@ int main(int argc, char** argv) {
     int num_parts = find_int_arg(argc, argv, "-n", 1000);
     int part_seed = find_int_arg(argc, argv, "-s", 0);
     double size = sqrt(density * num_parts);
+    int num_th = find_int_arg(argc, argv, "-t", 8);
 
     particle_t* parts = new particle_t[num_parts];
     
@@ -133,7 +136,7 @@ int main(int argc, char** argv) {
 
 
 #ifdef _OPENMP
-#pragma omp parallel default(shared) num_threads(8)
+#pragma omp parallel default(shared) num_threads(num_th)
 #endif
     {
         //for nel tempo: non parallelizzare
@@ -144,9 +147,18 @@ int main(int argc, char** argv) {
             #ifdef _OPENMP
             #pragma omp master
             #endif
-            if (fsave.good() && (step % savefreq) == 0) {
-                save(fsave, parts, num_parts, size);
+            {
+                if (fsave.good() && (step % savefreq) == 0) {
+                    save(fsave, parts, num_parts, size);
+                }
+                if(step > 0){
+                    if (step%10 == 0){
+                    fflush(stdout);
+                    printf("[ %d% ]\r", (int)(step*100/nsteps));
+                    }
+                }
             }
+            
         }
         
         

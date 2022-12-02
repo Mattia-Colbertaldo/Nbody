@@ -211,7 +211,8 @@ CMakeFiles/serial.dir/main.cpp.o: ../main.cpp \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/opt_random.h \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.tcc \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/numeric \
-  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_numeric.h
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_numeric.h \
+  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h
 
 CMakeFiles/serial.dir/serial.cpp.o: ../serial.cpp \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
@@ -277,6 +278,8 @@ CMakeFiles/serial.dir/serial.cpp.o: ../serial.cpp \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/alloca.h \
   /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/stdlib-float.h
 
+
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h:
 
 /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/opt_random.h:
 

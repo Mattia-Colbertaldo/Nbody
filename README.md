@@ -25,3 +25,4 @@ You can use the "-h" command line parameter to print the help menu summarizing t
     -n <int>: set number of particles
     -o <filename>: set the output file name
     -s <int>: set particle initialization seed
+    -t <int>: set number of threads (working only in parallel mode) [default = 8]
