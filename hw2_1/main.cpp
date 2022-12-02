@@ -133,20 +133,23 @@ int main(int argc, char** argv) {
 
 
 #ifdef _OPENMP
-#pragma omp parallel default(shared)
+#pragma omp parallel default(shared) num_threads(8)
 #endif
     {
+        //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
             simulate_one_step(parts, num_parts, size);
 
             // Save state if necessary
-#ifdef _OPENMP
-#pragma omp master
-#endif
+            #ifdef _OPENMP
+            #pragma omp master
+            #endif
             if (fsave.good() && (step % savefreq) == 0) {
                 save(fsave, parts, num_parts, size);
             }
         }
+        
+        
     }
 
     auto end_time = std::chrono::steady_clock::now();

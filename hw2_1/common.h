@@ -9,8 +9,6 @@
 #define cutoff   0.01
 #define min_r    (cutoff / 100)
 #define dt       0.0005
-#define G        6.67
-
 #define G        0.00000000000667
 
 // Particle Data Structure
