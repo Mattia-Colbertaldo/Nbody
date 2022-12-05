@@ -66,6 +66,17 @@ void init_simulation(particle_t* parts, int num_parts, double size) {
         displs[i + 1] = displs[i] + sizes[i];
     }
 
+    // todo: optimize this by broadcasting directly the particle
+    std::vector<double> x(num_parts), y(num_parts), vx(num_parts), vy(num_parts), ax(num_parts), ay(num_parts);
+    for(int i=0; i<num_parts; i++){
+        x.emplace_back(parts[i].x);
+        y.emplace_back(parts[i].y);
+        vx.emplace_back(parts[i].vx);
+        vy.emplace_back(parts[i].vy);
+        ax.emplace_back(parts[i].ax);
+        ay.emplace_back(parts[i].ay);
+    }
+
     // scatter the chunks
     
     MPI_Bcast( parts , num_parts , MPI_DOUBLE , 0 , MPI_COMMON_WORLD); //FLAG
