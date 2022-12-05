@@ -8,6 +8,8 @@
 #include <vector>
 #include <math.h>
 
+// flag ifdef mpi
+
 // =================
 // Helper Functions
 // =================
@@ -134,6 +136,8 @@ int main(int argc, char** argv) {
     double seconds_1 = diff_1.count();
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
+#ifdef _MPI
+
 
 #ifdef _OPENMP
 #pragma omp parallel default(shared) num_threads(num_th)
@@ -146,6 +150,13 @@ int main(int argc, char** argv) {
             // Save state if necessary
             #ifdef _OPENMP
             #pragma omp master
+            #endif
+            
+            #ifdef _MPI
+            MPI_Init(&argc, &argv);
+            int rank, size;
+            MPI_Comm_size(MPI_COMM_WORLD, &size);
+            MPI_Comm_rank(MPI_COMM_WORLD, &rank);
             #endif
             {
                 if (fsave.good() && (step % savefreq) == 0) {
@@ -174,4 +185,8 @@ int main(int argc, char** argv) {
      " particles and " << nsteps << " steps.\n";
     fsave.close();
     delete[] parts;
+    #ifdef _MPI
+    MPI_Finalize();
+    #endif
+    
 }
