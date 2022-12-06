@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
     int num_th = find_int_arg(argc, argv, "-t", 8);
 
     std::vector<particle_t> parts(num_parts);
-    
+    std::vector<float> masses(num_parts);
     std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts, size, part_seed);
 
