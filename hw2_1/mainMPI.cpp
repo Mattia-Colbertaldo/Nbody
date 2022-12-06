@@ -33,7 +33,6 @@ void save(std::ofstream& fsave, std::vector<particle_mpi>& parts, int num_parts,
 
 // Particle Initialization
 void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size,int part_seed) {
-void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size,int part_seed) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -45,8 +44,6 @@ void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size
     for (int i = 0; i < shuffle.size(); ++i) {
         shuffle[i] = i;
     }
-
-    std::vector<float> masses;
 
     std::vector<float> masses;
 
@@ -142,18 +139,12 @@ int main(int argc, char** argv) {
     int num_th = find_int_arg(argc, argv, "-t", 8);
 
     std::vector<particle_mpi> parts(num_parts);
-    std::vector<particle_mpi> parts(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
-    MPI_Init(&argc, &argv);
     int rank, mpi_size;
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Init(&argc, &argv);
-    int rank, mpi_size;
-    MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    init_particles(parts, num_parts, size_th, part_seed);
 
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
