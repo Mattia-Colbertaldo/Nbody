@@ -28,7 +28,7 @@ if (NOT "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 endif ()
 
 add_executable(serial main.cpp serial.cpp common.h)
-
+add_executable(mpi mainMPI.cpp serial.cpp common.h)
 add_executable(openmp main.cpp openmp.cpp common.h)
 target_link_libraries(openmp PRIVATE OpenMP::OpenMP_CXX)
 
