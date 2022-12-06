@@ -74,13 +74,6 @@ void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size
         float m = rand_mass(gen);
         parts[i].m = m;
         masses.emplace_back(m);
-        
-
-        // Assing random mass
-        std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
-        float m = rand_mass(gen);
-        parts[i].m = m;
-        masses.emplace_back(m);
     }
     //std::cout << masses << std::endl;
     //std::cout << masses << std::endl;
