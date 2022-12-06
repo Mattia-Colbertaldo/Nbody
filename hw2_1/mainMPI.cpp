@@ -7,13 +7,14 @@
 #include <random>
 #include <vector>
 #include <math.h>
+#include <mpi.h>
 
 // =================
 // Helper Functions
 // =================
 
 // I/O routines
-void save(std::ofstream& fsave, std::vector<particle_t>& parts, int num_parts, double size) {
+void save(std::ofstream& fsave, std::vector<particle_mpi>& parts, int num_parts, double size) {
     //int num_parts = parts.size();
     static bool first = true;
 
@@ -30,7 +31,7 @@ void save(std::ofstream& fsave, std::vector<particle_t>& parts, int num_parts, d
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_t>& parts, int num_parts, double size,int part_seed) {
+void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size,int part_seed) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -43,6 +44,8 @@ void init_particles(std::vector<particle_t>& parts, int num_parts, double size,i
         shuffle[i] = i;
     }
 
+    std::vector<float> masses;
+
     for (int i = 0; i < num_parts; ++i) {
         // Make sure particles are not spatially sorted
         std::uniform_int_distribution<int> rand_int(0, num_parts - i - 1);
@@ -54,12 +57,23 @@ void init_particles(std::vector<particle_t>& parts, int num_parts, double size,i
         parts[i].x = size * (1. + (k % sx)) / (1 + sx);
         parts[i].y = size * (1. + (k / sx)) / (1 + sy);
 
+        /*
         // Assign random velocities within a bound
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
         parts[i].vx = rand_real(gen);
         parts[i].vy = rand_real(gen);
+        */
+
+        // Assing random mass
+        std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
+        float m = rand_mass(gen);
+        parts[i].m = m;
+        masses.emplace_back(m);
     }
+    //std::cout << masses << std::endl;
 }
+
+
 
 // Command Line Option Processing
 int find_arg_idx(int argc, char** argv, const char* option) {
@@ -123,8 +137,8 @@ int main(int argc, char** argv) {
     
     std::cout << "Trying to init particles..." << std::endl;
     MPI_Init(&argc, &argv);
-    int rank, size;
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    int rank, mpi_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     init_particles(parts, num_parts, size, part_seed);
 
@@ -173,6 +187,6 @@ int main(int argc, char** argv) {
     std::cout << "Simulation Time = " << seconds << " seconds for " << num_parts <<
      " particles and " << nsteps << " steps.\n";
     fsave.close();
-    delete[] parts;
+    //delete[] parts;
     MPI_Finalize();
 }
