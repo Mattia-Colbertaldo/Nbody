@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
     
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
-            simulate_one_step(parts, num_parts, size);
+            simulate_one_step(parts, masses, num_parts, size);
 
             // Save state if necessary
             if(rank==0)

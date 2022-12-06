@@ -23,18 +23,17 @@ typedef struct particle_t {
 
 // Particle Data Structure: used in MPI
 typedef struct particle_mpi {
-    
     double x;    // Position X
     double y;    // Position Y
 } particle_mpi;
 
 //for MPI
 void init_simulation(std::vector<particle_mpi>& parts, std::vector<float>& masses, int num_parts, double size);
-void simulate_one_step(std::vector<particle_mpi>& parts, int num_parts, double size);
+void simulate_one_step(std::vector<particle_mpi>& parts,std::vector<float>& masses, int num_parts, double size);
 
 // Simulation routine
 void init_simulation(std::vector<particle_t>& parts, std::vector<float>& masses, int num_parts,double size);
-void simulate_one_step(std::vector<particle_t>& parts, int num_parts, double size);
+void simulate_one_step(std::vector<particle_t>& parts,std::vector<float>& masses, int num_parts, double size);
 
 
 #endif

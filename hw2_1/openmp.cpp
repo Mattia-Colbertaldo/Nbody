@@ -52,7 +52,7 @@ void init_simulation(std::vector<particle_t>& parts, int num_parts,  double size
 }
 
 
-void simulate_one_step(std::vector<particle_t>& parts, int num_parts, double size) {
+void simulate_one_step(std::vector<particle_t>& parts, std::vector<float>& masses, int num_parts, double size) {
     // Compute Forces
     //int num_parts = parts.size();
 	#pragma omp for schedule(dynamic)

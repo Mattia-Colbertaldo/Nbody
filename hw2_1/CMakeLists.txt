@@ -28,10 +28,32 @@ if (NOT "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 endif ()
 
 add_executable(serial main.cpp serial.cpp common.h)
-add_executable(mpi mainMPI.cpp serial.cpp common.h)
+
 add_executable(openmp main.cpp openmp.cpp common.h)
 target_link_libraries(openmp PRIVATE OpenMP::OpenMP_CXX)
 
 # Copy the job scripts
 #configure_file(job-serial job-serial COPYONLY)
 #configure_file(job-openmp job-openmp COPYONLY)
+
+
+
+#FOR MPI
+project(ITK_MPI)
+
+find_package(MPI REQUIRED)
+
+include_directories(${MPI_INCLUDE_PATH})
+
+add_executable(mpi mainMPI.cpp mpi.cpp common.h)
+target_link_libraries(mpi ${MPI_LIBRARIES})
+
+if(MPI_COMPILE_FLAGS)
+  set_target_properties(mpi PROPERTIES
+    COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+endif()
+
+if(MPI_LINK_FLAGS)
+  set_target_properties(mpi PROPERTIES
+    LINK_FLAGS "${MPI_LINK_FLAGS}")
+endif()

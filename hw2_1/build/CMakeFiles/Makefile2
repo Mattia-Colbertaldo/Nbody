@@ -63,6 +63,7 @@ CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/hw2_1/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/mpi.dir/all
 all: CMakeFiles/openmp.dir/all
 all: CMakeFiles/serial.dir/all
 .PHONY : all
@@ -72,9 +73,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/mpi.dir/clean
 clean: CMakeFiles/openmp.dir/clean
 clean: CMakeFiles/serial.dir/clean
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/mpi.dir
+
+# All Build rule for target.
+CMakeFiles/mpi.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles --progress-num=1,2,3 "Built target mpi"
+.PHONY : CMakeFiles/mpi.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/mpi.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mpi.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles 0
+.PHONY : CMakeFiles/mpi.dir/rule
+
+# Convenience name for target.
+mpi: CMakeFiles/mpi.dir/rule
+.PHONY : mpi
+
+# clean rule for target.
+CMakeFiles/mpi.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/clean
+.PHONY : CMakeFiles/mpi.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/openmp.dir
@@ -83,7 +111,7 @@ clean: CMakeFiles/serial.dir/clean
 CMakeFiles/openmp.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openmp.dir/build.make CMakeFiles/openmp.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openmp.dir/build.make CMakeFiles/openmp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles --progress-num=1,2,3 "Built target openmp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles --progress-num=4,5,6 "Built target openmp"
 .PHONY : CMakeFiles/openmp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -109,7 +137,7 @@ CMakeFiles/openmp.dir/clean:
 CMakeFiles/serial.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/serial.dir/build.make CMakeFiles/serial.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/serial.dir/build.make CMakeFiles/serial.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles --progress-num=4,5,6 "Built target serial"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles --progress-num=7,8,9 "Built target serial"
 .PHONY : CMakeFiles/serial.dir/all
 
 # Build rule for subdir invocation for target.

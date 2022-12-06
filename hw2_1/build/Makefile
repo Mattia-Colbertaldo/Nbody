@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named mpi
+
+# Build rule for target.
+mpi: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mpi
+.PHONY : mpi
+
+# fast build rule for target.
+mpi/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/build
+.PHONY : mpi/fast
+
+#=============================================================================
 # Target rules for targets named openmp
 
 # Build rule for target.
@@ -168,6 +181,54 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openmp.dir/build.make CMakeFiles/openmp.dir/main.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/serial.dir/build.make CMakeFiles/serial.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+mainMPI.o: mainMPI.cpp.o
+.PHONY : mainMPI.o
+
+# target to build an object file
+mainMPI.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mainMPI.cpp.o
+.PHONY : mainMPI.cpp.o
+
+mainMPI.i: mainMPI.cpp.i
+.PHONY : mainMPI.i
+
+# target to preprocess a source file
+mainMPI.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mainMPI.cpp.i
+.PHONY : mainMPI.cpp.i
+
+mainMPI.s: mainMPI.cpp.s
+.PHONY : mainMPI.s
+
+# target to generate assembly for a file
+mainMPI.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mainMPI.cpp.s
+.PHONY : mainMPI.cpp.s
+
+mpi.o: mpi.cpp.o
+.PHONY : mpi.o
+
+# target to build an object file
+mpi.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.o
+.PHONY : mpi.cpp.o
+
+mpi.i: mpi.cpp.i
+.PHONY : mpi.i
+
+# target to preprocess a source file
+mpi.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.i
+.PHONY : mpi.cpp.i
+
+mpi.s: mpi.cpp.s
+.PHONY : mpi.s
+
+# target to generate assembly for a file
+mpi.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.s
+.PHONY : mpi.cpp.s
 
 openmp.o: openmp.cpp.o
 .PHONY : openmp.o
@@ -225,11 +286,18 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... mpi"
 	@echo "... openmp"
 	@echo "... serial"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... mainMPI.o"
+	@echo "... mainMPI.i"
+	@echo "... mainMPI.s"
+	@echo "... mpi.o"
+	@echo "... mpi.i"
+	@echo "... mpi.s"
 	@echo "... openmp.o"
 	@echo "... openmp.i"
 	@echo "... openmp.s"
