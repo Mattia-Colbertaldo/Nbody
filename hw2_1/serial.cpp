@@ -2,7 +2,7 @@
 #include <cmath>
 
 // Apply the force from neighbor to particle
-void apply_force(particle_t& particle, particle_t& neighbor) {
+void apply_force(particle_t& particle, particle_t& neighbor, float mass_neigh) {
     // Calculate Distance
     double dx = neighbor.x - particle.x;
     double dy = neighbor.y - particle.y;
@@ -16,7 +16,7 @@ void apply_force(particle_t& particle, particle_t& neighbor) {
     double r = sqrt(r2);
 
     // Very simple short-range repulsive force
-    double coef = (1 - cutoff / r) / r2 / mass;
+    double coef = mass_neigh*(1 - cutoff / r) / r2 ;
     particle.ax += coef * dx;
     particle.ay += coef * dy;
 }
@@ -57,7 +57,7 @@ void simulate_one_step(std::vector<particle_t>& parts, int num_parts, double siz
     for (int i = 0; i < num_parts; ++i) {
         parts[i].ax = parts[i].ay = 0;
         for (int j = 0; j < num_parts; ++j) {
-            apply_force(parts[i], parts[j]);
+            apply_force(parts[i], parts[j], masses[j]);
         }
     }
 
