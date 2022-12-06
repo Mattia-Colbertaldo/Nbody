@@ -31,7 +31,7 @@ void save(std::ofstream& fsave, std::vector<particle_t>& parts, int num_parts, d
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_t>& parts, int num_parts, double size,int part_seed) {
+void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size,int part_seed) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -124,10 +124,10 @@ int main(int argc, char** argv) {
     
     std::cout << "Trying to init particles..." << std::endl;
     MPI_Init(&argc, &argv);
-    int rank, size;
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    int rank, size_th;
+    MPI_Comm_size(MPI_COMM_WORLD, &size_th);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    init_particles(parts, num_parts, size, part_seed);
+    init_particles(parts, num_parts, size_th, part_seed);
 
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
