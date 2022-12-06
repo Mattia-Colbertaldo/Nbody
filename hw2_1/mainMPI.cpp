@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
     auto start_time = std::chrono::steady_clock::now();
 
     std::cout << "Trying to init simulation..." << std::endl;
-    init_simulation(parts, num_parts, size);
+    init_simulation(parts, masses, num_parts, size);
     std::cout << "Init simulation ended." << std::endl;
 
     auto init_time = std::chrono::steady_clock::now();

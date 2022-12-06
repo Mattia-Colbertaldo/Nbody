@@ -23,6 +23,7 @@ typedef struct particle_t {
 
 // Particle Data Structure: used in MPI
 typedef struct particle_mpi {
+    
     double x;    // Position X
     double y;    // Position Y
 } particle_mpi;
