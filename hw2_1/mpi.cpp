@@ -119,6 +119,7 @@ void simulate_one_step( std::vector<particle_t>& parts,int num_parts, double siz
         move(parts[i], size);
     }
 
+   
     MPI_Allgather( parts , size , MPI_ , parts ,size , MPI_ , MPI_COMM_WORLD); //FLAG
     
 }

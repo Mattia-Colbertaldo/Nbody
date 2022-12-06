@@ -12,7 +12,7 @@
 #define dt       0.0005
 #define G        0.00000000000667
 
-// Particle Data Structure
+// Particle Data Structure: used in OPENMP
 typedef struct particle_t {
     double x;  // Position X
     double y;  // Position Y
@@ -21,6 +21,12 @@ typedef struct particle_t {
     double ax; // Acceleration X
     double ay; // Acceleration Y
 } particle_t;
+
+// Particle Data Structure: used in MPI
+typedef struct particle_mpi {
+    double x;  // Position X
+    double y;  // Position Y
+} particle_mpi;
 
 // Simulation routine
 void init_simulation(std::vector<particle_t>& parts, int num_parts,double size);

@@ -119,9 +119,13 @@ int main(int argc, char** argv) {
     double size = sqrt(density * num_parts);
     int num_th = find_int_arg(argc, argv, "-t", 8);
 
-    std::vector<particle_t> parts(num_parts);
+    std::vector<particle_mpi> parts(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
+    MPI_Init(&argc, &argv);
+    int rank, size;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     init_particles(parts, num_parts, size, part_seed);
 
     // Algorithm
@@ -137,18 +141,13 @@ int main(int argc, char** argv) {
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
 
-#ifdef _OPENMP
-#pragma omp parallel default(shared) num_threads(num_th)
-#endif
-    {
+    
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
             simulate_one_step(parts, num_parts, size);
 
             // Save state if necessary
-            #ifdef _OPENMP
-            #pragma omp master
-            #endif
+            if(rank==0)
             {
                 if (fsave.good() && (step % savefreq) == 0) {
                     save(fsave, parts, num_parts, size);
@@ -163,8 +162,7 @@ int main(int argc, char** argv) {
             
         }
         
-        
-    }
+    
 
     auto end_time = std::chrono::steady_clock::now();
 
@@ -176,4 +174,5 @@ int main(int argc, char** argv) {
      " particles and " << nsteps << " steps.\n";
     fsave.close();
     delete[] parts;
+    MPI_Finalize();
 }
