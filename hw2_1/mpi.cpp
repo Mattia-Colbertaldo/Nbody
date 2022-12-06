@@ -94,7 +94,7 @@ void init_simulation(std::vector<particle_mpi>& parts,int num_parts, double size
 
 }
 
-void simulate_one_step( std::vector<particle_mpi>& loc_parts,int num_parts, double size) {
+void simulate_one_step_mpi( std::vector<particle_mpi>& loc_parts,int num_parts, double size) {
     // Compute Forces
     //int num_parts = parts.size();
     int size_t;

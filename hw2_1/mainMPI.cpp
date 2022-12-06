@@ -69,7 +69,6 @@ void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size
         // Assing random mass
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
         float m = rand_mass(gen);
-        parts[i].m = m;
         masses.emplace_back(m);
     }
     //std::cout << masses << std::endl;
@@ -141,6 +140,7 @@ int main(int argc, char** argv) {
     std::vector<particle_mpi> parts(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
+    init_particles(parts, num_parts, size, part_seed);
     int rank, mpi_size;
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -164,7 +164,7 @@ int main(int argc, char** argv) {
     
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
-            simulate_one_step(parts, num_parts, size);
+            simulate_one_step_mpi(parts, num_parts, size);
 
             // Save state if necessary
             if(rank==0)
