@@ -8,6 +8,8 @@
 #include <vector>
 #include <math.h>
 
+#include <vector>
+
 // flag ifdef mpi
 
 // =================
@@ -15,7 +17,8 @@
 // =================
 
 // I/O routines
-void save(std::ofstream& fsave, particle_t* parts, int num_parts, double size) {
+void save(std::ofstream& fsave, std::vector<particle_t>& parts, double size) {
+    int num_parts = parts.size();
     static bool first = true;
 
     if (first) {
@@ -31,7 +34,15 @@ void save(std::ofstream& fsave, particle_t* parts, int num_parts, double size) {
 }
 
 // Particle Initialization
-void init_particles(particle_t* parts, int num_parts, double size, int part_seed) {
+void init_particles(std::vector<particle_t>& parts , double size, int part_seed) {
+    /*
+        input :  1. parts     : vettore di particelle
+                 2. size      : dimensione della particella
+                 3. part_seed : seme randomico
+    */
+
+    int num_parts = parts.size();
+
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
 
@@ -119,16 +130,16 @@ int main(int argc, char** argv) {
     double size = sqrt(density * num_parts);
     int num_th = find_int_arg(argc, argv, "-t", 8);
 
-    particle_t* parts = new particle_t[num_parts];
+    std::vector<particle_t> parts(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts, num_parts, size, part_seed);
+    init_particles(parts, size, part_seed);
 
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
     std::cout << "Trying to init simulation..." << std::endl;
-    init_simulation(parts, num_parts, size);
+    init_simulation(parts,num_parts, size);
     std::cout << "Init simulation ended." << std::endl;
 
     auto init_time = std::chrono::steady_clock::now();
@@ -136,7 +147,7 @@ int main(int argc, char** argv) {
     double seconds_1 = diff_1.count();
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
-#ifdef _MPI
+//#ifdef _MPI
 
 
 #ifdef _OPENMP
@@ -145,7 +156,7 @@ int main(int argc, char** argv) {
     {
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
-            simulate_one_step(parts, num_parts, size);
+            simulate_one_step(parts,num_parts,size);
 
             // Save state if necessary
             #ifdef _OPENMP
@@ -160,7 +171,7 @@ int main(int argc, char** argv) {
             #endif
             {
                 if (fsave.good() && (step % savefreq) == 0) {
-                    save(fsave, parts, num_parts, size);
+                    save(fsave, parts, size);
                 }
                 if(step > 0){
                     if (step%10 == 0){
@@ -184,7 +195,7 @@ int main(int argc, char** argv) {
     std::cout << "Simulation Time = " << seconds << " seconds for " << num_parts <<
      " particles and " << nsteps << " steps.\n";
     fsave.close();
-    delete[] parts;
+
     #ifdef _MPI
     MPI_Finalize();
     #endif

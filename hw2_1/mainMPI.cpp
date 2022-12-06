@@ -13,7 +13,8 @@
 // =================
 
 // I/O routines
-void save(std::ofstream& fsave, particle_t* parts, int num_parts, double size) {
+void save(std::ofstream& fsave, std::vector<particle_t>& parts, int num_parts, double size) {
+    //int num_parts = parts.size();
     static bool first = true;
 
     if (first) {
@@ -29,7 +30,8 @@ void save(std::ofstream& fsave, particle_t* parts, int num_parts, double size) {
 }
 
 // Particle Initialization
-void init_particles(particle_t* parts, int num_parts, double size, int part_seed) {
+void init_particles(std::vector<particle_t>& parts, int num_parts, double size,int part_seed) {
+    //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
 
@@ -117,7 +119,7 @@ int main(int argc, char** argv) {
     double size = sqrt(density * num_parts);
     int num_th = find_int_arg(argc, argv, "-t", 8);
 
-    particle_t* parts = new particle_t[num_parts];
+    std::vector<particle_t> parts(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts, num_parts, size, part_seed);

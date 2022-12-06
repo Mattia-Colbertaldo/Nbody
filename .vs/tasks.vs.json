@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "attività-Browse.VC",
+      "appliesTo": ".vs/nbody/v17/Browse.VC.db",
+      "type": "launch"
+    }
+  ]
+}

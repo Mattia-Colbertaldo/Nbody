@@ -1,5 +1,6 @@
 #include "common.h"
 #include <cmath>
+#include <vector>
 
 // Apply the force from neighbor to particle
 void apply_force(particle_t& particle, particle_t& neighbor) {
@@ -43,15 +44,17 @@ void move(particle_t& p, double size) {
 }
 
 
-void init_simulation(particle_t* parts, int num_parts, double size) {
+void init_simulation(std::vector<particle_t>& parts, int num_parts,  double size) {
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
     // algorithm begins. Do not do any particle simulation here
     
 }
 
-void simulate_one_step(particle_t* parts, int num_parts, double size) {
+
+void simulate_one_step(std::vector<particle_t>& parts, int num_parts, double size) {
     // Compute Forces
+    //int num_parts = parts.size();
 	#pragma omp for schedule(dynamic)
     for (int i = 0; i < num_parts; ++i) {
         parts[i].ax = parts[i].ay = 0;

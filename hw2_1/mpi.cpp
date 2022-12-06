@@ -44,7 +44,9 @@ void move(particle_t& p, double size) {
 }
 
 
-void init_simulation(particle_t* parts, int num_parts, double size) {
+void init_simulation(std::vector<particle_t>& parts,int num_parts, double size) {
+    //int num_parts = parts.size();
+
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
     // algorithm begins. Do not do any particle simulation here
@@ -79,22 +81,25 @@ void init_simulation(particle_t* parts, int num_parts, double size) {
 
     // scatter the chunks
     
-    MPI_Bcast( parts , num_parts , MPI_DOUBLE , 0 , MPI_COMMON_WORLD); //FLAG
+    auto partsdata = parts.data()
+
+    MPI_Bcast( partsdata, num_parts, MPI_DOUBLE, 0, MPI_COMMON_WORLD); //FLAG
     
-    MPI_Scatterv(parts->vx, sizes, displs, MPI_DOUBLE,
+    MPI_Scatterv(partsdata->vx, sizes, displs, MPI_DOUBLE,
                 local_vx, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(parts->vy, sizes, displs, MPI_DOUBLE,
+    MPI_Scatterv(partsdata->vy, sizes, displs, MPI_DOUBLE,
                 local_vy, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(parts->ax, sizes, displs, MPI_DOUBLE,
+    MPI_Scatterv(partsdata->ax, sizes, displs, MPI_DOUBLE,
                 local_ax, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(parts->ay, sizes, displs, MPI_DOUBLE,
+    MPI_Scatterv(partsdata->ay, sizes, displs, MPI_DOUBLE,
                 local_ay, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   
 
 }
 
-void simulate_one_step(particle_t* parts, int num_parts, double size) {
+void simulate_one_step( std::vector<particle_t>& parts,int num_parts, double size) {
     // Compute Forces
+    //int num_parts = parts.size();
     int size_t;
     MPI_Comm_size(MPI_COMM_WORLD, &size_t);
 	for(int t=0; t<size; i++){

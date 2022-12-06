@@ -11,8 +11,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.20.5/CMakeCCompiler.cmake"
   "CMakeFiles/3.20.5/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.20.5/CMakeSystem.cmake"
-  "../job-openmp"
-  "../job-serial"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/CMakeCInformation.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/CMakeCXXInformation.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/CMakeCommonLanguageInclude.cmake"
@@ -44,8 +42,6 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "job-serial"
-  "job-openmp"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

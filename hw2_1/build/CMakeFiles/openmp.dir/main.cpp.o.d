@@ -1,10 +1,9 @@
 CMakeFiles/openmp.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/Nbody/hw2_1/main.cpp \
+ /home/jellyfish/shared-folder/nbody/hw2_1/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/Nbody/hw2_1/common.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ratio \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/type_traits \
+ /home/jellyfish/shared-folder/nbody/hw2_1/common.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/os_defines.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/features.h \
@@ -14,6 +13,41 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/gnu/stubs.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/gnu/stubs-64.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/cpu_defines.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/functexcept.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/exception_defines.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cpp_type_traits.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/type_traits.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/numeric_traits.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_pair.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/move.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/type_traits \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_iterator_base_types.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_iterator_base_funcs.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/concept_check.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/debug/assertions.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_iterator.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ptr_traits.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/debug/debug.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/predefined_ops.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/allocator.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++allocator.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/new_allocator.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/new \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/exception.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/memoryfwd.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_construct.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_uninitialized.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/alloc_traits.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/alloc_traits.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_vector.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/initializer_list \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_bvector.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/functional_hash.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hash_bytes.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/range_access.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ratio \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdint \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stdint.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdint.h \
@@ -45,8 +79,6 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/__locale_t.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/parse_numbers.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cpp_type_traits.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/type_traits.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/math.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/math-vector.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/libm-simd-decl-stubs.h \
@@ -86,7 +118,6 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iosfwd \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stringfwd.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/memoryfwd.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/postypes.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cwchar \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/wchar.h \
@@ -97,28 +128,11 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/__FILE.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/FILE.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/exception \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/exception.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/exception_ptr.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/exception_defines.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_init_exception.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/typeinfo \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hash_bytes.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/new \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/nested_exception.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/move.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/char_traits.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/functexcept.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/numeric_traits.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_pair.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_iterator_base_types.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_iterator_base_funcs.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/concept_check.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/debug/assertions.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_iterator.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ptr_traits.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/debug/debug.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/predefined_ops.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/localefwd.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++locale.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/clocale \
@@ -141,19 +155,11 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/sys/single_threaded.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/locale_classes.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/string \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/allocator.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++allocator.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/new_allocator.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream_insert.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_forced.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_function.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/backward/binders.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/range_access.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/initializer_list \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_string.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/alloc_traits.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/alloc_traits.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_construct.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/string_conversions.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdlib \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdio \
@@ -172,7 +178,6 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/asm-generic/errno-base.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/error_t.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/charconv.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/functional_hash.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_string.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/locale_classes.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/system_error \
@@ -200,11 +205,6 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/random \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_uninitialized.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_vector.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_bvector.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uniform_int_dist.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/opt_random.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.tcc \
