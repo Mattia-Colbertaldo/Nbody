@@ -3,7 +3,7 @@
 #include <mpi.h>
 
 // Apply the force from neighbor to particle
-void apply_force(particle_t& particle, particle_t& neighbor) {
+void apply_force(particle_t& particle, particle_t& neighbor, float mass_neigh) {
     // Calculate Distance
     double dx = neighbor.x - particle.x;
     double dy = neighbor.y - particle.y;
@@ -17,7 +17,7 @@ void apply_force(particle_t& particle, particle_t& neighbor) {
     double r = sqrt(r2);
 
     // Very simple short-range repulsive force
-    double coef = (1 - cutoff / r) / r2 / mass;
+    double coef = mass_neigh* (1 - cutoff / r) / r2;
     particle.ax += coef * dx;
     particle.ay += coef * dy;
 }
@@ -85,7 +85,7 @@ void init_simulation(std::vector<particle_mpi>& parts,int num_parts, double size
 
     std::vector<particle_mpi> loc_parts(size[rank]);
 
-    MPI_Bcast( ); //FLAG BCAST MASSES
+    MPI_Bcast(masses , size[rank] , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
     
    
     MPI_Scatterv(parts, size[rank]*2 , displs, MPI_DOUBLE,
@@ -106,7 +106,7 @@ void simulate_one_step( std::vector<particle_mpi>& loc_parts,int num_parts, doub
             part_acc[i].y=loc_parts[i].y; 
             part_acc[i].ax = part_acc[i].ay = 0;
             for (int j = 0; j < num_parts; ++j) {
-                apply_force(part_acc[i], part_acc[j]);
+                apply_force(part_acc[i], part_acc[j], masses[j]);
             }
         }
     }
