@@ -23,13 +23,13 @@ void apply_force(particle_t& particle, particle_t& neighbor) {
 }
 
 // Integrate the ODE
-void move(particle_t& p, double size) {
+void move(particle_t& p,  std::vector<particle_mpi>& loc_parts, double size) {
     // Slightly simplified Velocity Verlet integration
     // Conserves energy better than explicit Euler method
     p.vx += p.ax * dt;
     p.vy += p.ay * dt;
-    p.x += p.vx * dt;
-    p.y += p.vy * dt;
+    loc_parts.x += p.vx * dt;
+    loc_parts.y += p.vy * dt;
 
     // Bounce from walls
     while (p.x < 0 || p.x > size) {
@@ -44,7 +44,7 @@ void move(particle_t& p, double size) {
 }
 
 
-void init_simulation(std::vector<particle_t>& parts,int num_parts, double size) {
+void init_simulation(std::vector<particle_mpi>& parts,int num_parts, double size) {
     //int num_parts = parts.size();
 
 	// You can use this space to initialize static, global data objects
@@ -83,30 +83,30 @@ void init_simulation(std::vector<particle_t>& parts,int num_parts, double size) 
     
     auto partsdata = parts.data()
 
-    MPI_Bcast( partsdata, num_parts, MPI_DOUBLE, 0, MPI_COMMON_WORLD); //FLAG
+    std::vector<particle_mpi> loc_parts(size[rank]);
+
+    MPI_Bcast( ); //FLAG BCAST MASSES
     
-    MPI_Scatterv(partsdata->vx, sizes, displs, MPI_DOUBLE,
-                local_vx, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(partsdata->vy, sizes, displs, MPI_DOUBLE,
-                local_vy, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(partsdata->ax, sizes, displs, MPI_DOUBLE,
-                local_ax, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(partsdata->ay, sizes, displs, MPI_DOUBLE,
-                local_ay, local_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+   
+    MPI_Scatterv(parts, size[rank]*2 , displs, MPI_DOUBLE,
+                loc_parts, size[rank]*2 , MPI_DOUBLE, 0, MPI_COMM_WORLD);
   
 
 }
 
-void simulate_one_step( std::vector<particle_t>& parts,int num_parts, double size) {
+void simulate_one_step( std::vector<particle_mpi>& loc_parts,int num_parts, double size) {
     // Compute Forces
     //int num_parts = parts.size();
     int size_t;
     MPI_Comm_size(MPI_COMM_WORLD, &size_t);
 	for(int t=0; t<size; i++){
         for (int i = displs[t]; i < sizes[t]; ++i) {
-            parts[i].ax = parts[i].ay = 0;
+            std::vector<particle_t>particle_t part_acc;
+            part_acc[i].x=loc_parts[i].x;
+            part_acc[i].y=loc_parts[i].y; 
+            part_acc[i].ax = part_acc[i].ay = 0;
             for (int j = 0; j < num_parts; ++j) {
-                apply_force(parts[i], parts[j]);
+                apply_force(part_acc[i], part_acc[j]);
             }
         }
     }
@@ -116,10 +116,10 @@ void simulate_one_step( std::vector<particle_t>& parts,int num_parts, double siz
     // Move Particles
 	
     for (int i = 0; i < num_parts; ++i) {
-        move(parts[i], size);
+        move(part_acc[i], loc_parts[i] , size);
     }
 
    
-    MPI_Allgather( parts , size , MPI_ , parts ,size , MPI_ , MPI_COMM_WORLD); //FLAG
+    MPI_Allgather( loc_parts , size*2 , MPI_DOUBLE , parts , size*2 , MPI_DOUBLE , MPI_COMMM_WORLD); //FLAG
     
 }

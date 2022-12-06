@@ -7,6 +7,7 @@
 #include <random>
 #include <vector>
 #include <math.h>
+#include <mpi.h>
 
 // =================
 // Helper Functions
