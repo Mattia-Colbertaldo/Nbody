@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
     int rank, mpi_size;
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    init_particles(parts, num_parts, size_th, part_seed);
+    init_particles(parts, num_parts, mpi_size, part_seed);
 
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
