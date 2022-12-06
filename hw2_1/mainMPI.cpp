@@ -32,7 +32,7 @@ void save(std::ofstream& fsave, std::vector<particle_mpi>& parts, int num_parts,
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size,int part_seed) {
+void init_particles(std::vector<particle_mpi>& parts,std::vector<float>& masses, int num_parts, double size,int part_seed) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -44,8 +44,6 @@ void init_particles(std::vector<particle_mpi>& parts, int num_parts, double size
     for (int i = 0; i < shuffle.size(); ++i) {
         shuffle[i] = i;
     }
-
-    std::vector<float> masses;
 
     for (int i = 0; i < num_parts; ++i) {
         // Make sure particles are not spatially sorted
@@ -138,7 +136,8 @@ int main(int argc, char** argv) {
     int num_th = find_int_arg(argc, argv, "-t", 8);
 
     std::vector<particle_mpi> parts(num_parts);
-    
+    std::vector<float> masses(num_parts);
+    init_particles(parts, masses, num_parts, size, part_seed);
     std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts, num_parts, size, part_seed);
     int rank, mpi_size;

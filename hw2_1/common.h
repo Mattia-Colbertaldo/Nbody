@@ -6,7 +6,6 @@
 #define nsteps   1000
 #define savefreq 10
 #define density  0.0005
-#define mass     0.01
 #define cutoff   0.01
 #define min_r    (cutoff / 100)
 #define dt       0.0005
