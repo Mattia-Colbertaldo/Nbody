@@ -33,6 +33,6 @@ void init_simulation(std::vector<particle_t>& parts, int num_parts,double size);
 void simulate_one_step(std::vector<particle_t>& parts, int num_parts, double size);
 //for MPI
 void init_simulation(std::vector<particle_mpi>& parts, int num_parts,double size);
-void simulate_one_step(std::vector<particle_mpi>& parts, int num_parts, double size);
+void simulate_one_step_mpi(std::vector<particle_mpi>& parts, int num_parts, double size);
 
 #endif

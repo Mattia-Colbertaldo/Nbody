@@ -139,6 +139,7 @@ int main(int argc, char** argv) {
     std::vector<float> masses(num_parts);
     init_particles(parts, masses, num_parts, size, part_seed);
     std::cout << "Trying to init particles..." << std::endl;
+    init_particles(parts, num_parts, size, part_seed);
     int rank, mpi_size;
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -162,7 +163,7 @@ int main(int argc, char** argv) {
     
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
-            simulate_one_step(parts, num_parts, size);
+            simulate_one_step_mpi(parts, num_parts, size);
 
             // Save state if necessary
             if(rank==0)
