@@ -1,6 +1,7 @@
 #include "common.h"
 #include <cmath>
 #include <mpi.h>
+#include <iostream>
 
 // Apply the force from neighbor to particle
 void apply_force(particle_t& particle, particle_t& neighbor, float mass_neigh) {
@@ -44,7 +45,7 @@ void move(particle_t& p,  particle_mpi& loc_parts, double size) {
 }
 
 
-void init_simulation(std::vector<particle_mpi>& parts,std::vector<float>& masses,int num_parts, int size) {
+void init_simulation(std::vector<particle_mpi>& parts,std::vector<float>& masses,int num_parts, double size) {
     //int num_parts = parts.size();
 
 	// You can use this space to initialize static, global data objects
@@ -65,11 +66,14 @@ void init_simulation(std::vector<particle_mpi>& parts,std::vector<float>& masses
 }
 
 void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& masses, int num_parts, double size) {
+    std::cout << "0\n";
     // Compute Forces
     //int num_parts = parts.size();
     int mpi_size, rank;
+    std::cout << "flag 1\n";
     MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::cout << "flag 2\n";
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
     // in this way we split the load in the most equilibrate way
     const auto local_size = num_parts / mpi_size + (num_parts % mpi_size > rank);
@@ -80,24 +84,29 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
         sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i))*2;
         displs[i + 1] = displs[i] + sizes[i];
     }
+    std::cout << "flag 3\n";
 
     std::vector<particle_mpi> loc_parts(sizes[rank]);
 
     MPI_Scatterv(&parts, &num_parts , &displs[rank], MPI_DOUBLE,
                 &loc_parts, sizes[rank] , MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    
+    std::cout << "After scattering\n";
     std::vector<particle_t> part_acc(sizes[rank]);
-	for(int t=0; t<size; t++){
-        for (int i = 0; i < loc_parts.size(); ++i) {
-            part_acc[i].x=loc_parts[i].x;
-            part_acc[i].y=loc_parts[i].y; 
-            part_acc[i].ax = part_acc[i].ay = 0;
-            for (int j = 0; j < num_parts; ++j) {
-                apply_force(part_acc[i], part_acc[j], masses[j]);
-            }
+    std::cout << "flag 5\n";
+
+    for (int i = 0; i < sizes[rank]; ++i) {
+        std::cout << "flag 5\n";
+        part_acc[i].x=loc_parts[i].x;
+        part_acc[i].y=loc_parts[i].y; 
+        part_acc[i].ax = part_acc[i].ay = 0;
+        std::cout << "flag 6\n";
+        for (int j = 0; j < num_parts; ++j) {
+            apply_force(part_acc[i], part_acc[j], masses[j]);
         }
     }
-    
+
+
+    std::cout << "After for\n";
 	
 
     // Move Particles
@@ -106,14 +115,16 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
         move(part_acc[i], loc_parts[i] , size);
     }
 
-   
+   std::cout << "flag 3";
     MPI_Allgather( &loc_parts , size*2 , MPI_DOUBLE , &parts , size*2 , MPI_DOUBLE , MPI_COMM_WORLD); //FLAG
     
 }
 
 
-void gather_for_save(particle_t* parts, int num_parts, double size, int rank, int num_procs) {
+/*
+void gather_for_save(particle_t* parts, ma int num_parts, double size, int rank, int num_procs) {
     // Write this function such that at the end of it, the master (rank == 0)
     // processor has an in-order view of all particles. That is, the array
     // parts is complete and sorted by particle id.
 }
+*/

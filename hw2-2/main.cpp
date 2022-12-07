@@ -134,15 +134,17 @@ int main(int argc, char** argv) {
     double size = sqrt(density * num_parts);
     int num_th = find_int_arg(argc, argv, "-t", 8);
 
+   
+
     std::vector<particle_mpi> parts(num_parts);
     std::vector<float> masses(num_parts);
     std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts, masses, num_parts, size, part_seed);
     int rank, mpi_size;
+    MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Init(&argc, &argv);
-
+   
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
@@ -156,28 +158,31 @@ int main(int argc, char** argv) {
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
 
-    
+
 
     
-        //for nel tempo: non parallelizzare
-        for (int step = 0; step < nsteps; ++step) {
-            simulate_one_step(parts, masses, num_parts, size);
+    //for nel tempo: non parallelizzare
+    for (int step = 0; step < nsteps; ++step) {
+        std::cout << "0\n";
+        simulate_one_step(parts, masses, num_parts, size);
+        std::cout << "One step simulated.\n";
 
-            // Save state if necessary
-            if(rank==0)
-            {
-                if (fsave.good() && (step % savefreq) == 0) {
-                    gather_for_save(parts, masses, num_parts, rank, size );
-                }
-                if(step > 0){
-                    if (step%10 == 0){
-                    fflush(stdout);
-                    printf("[ %d% ]\r", (int)(step*100/nsteps));
-                    }
+        // Save state if necessary
+        if(rank==0)
+        {/*
+            if (fsave.good() && (step % savefreq) == 0) {
+                gather_for_save(parts, masses, num_parts, rank, size );
+            }
+            */
+            if(step > 0){
+                if (step%10 == 0){
+                fflush(stdout);
+                printf("[ %d% ]\r", (int)(step*100/nsteps));
                 }
             }
-            
         }
+        
+    }
         
     
 

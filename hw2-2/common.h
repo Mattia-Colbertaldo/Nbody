@@ -27,12 +27,12 @@ typedef struct particle_mpi {
     double y;    // Position Y
 } particle_mpi;
 
-etern MPI_Datatype PARTICLE;
+
 
 
 //for MPI
 void init_simulation(std::vector<particle_mpi>& parts, std::vector<float>& masses, int num_parts, double size);
 void simulate_one_step(std::vector<particle_mpi>& parts,std::vector<float>& masses, int num_parts, double size);
-void gather_for_save(particle_mpi* parts, std::vector<float>& masses, int num_parts, int rank, double size);
+/*void gather_for_save(std::vector<particle_mpi> parts, std::vector<float>& masses, int num_parts, int rank, double size);*/
 
 #endif
