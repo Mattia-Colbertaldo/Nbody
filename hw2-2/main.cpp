@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
             if(rank==0)
             {
                 if (fsave.good() && (step % savefreq) == 0) {
-                    save(fsave, parts, num_parts, size);
+                    gather_for_save(parts, masses, num_parts, rank, size );
                 }
                 if(step > 0){
                     if (step%10 == 0){
