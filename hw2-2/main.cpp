@@ -4,16 +4,19 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <mpi.h>
 #include <random>
 #include <vector>
+#include <math.h>
+#include <mpi.h>
+#include <mpi.h>
 
 // =================
 // Helper Functions
 // =================
 
 // I/O routines
-void save(std::ofstream& fsave, particle_t* parts, int num_parts, double size) {
+void save(std::ofstream& fsave, std::vector<particle_mpi>& parts, int num_parts, double size) {
+    //int num_parts = parts.size();
     static bool first = true;
 
     if (first) {
@@ -29,7 +32,8 @@ void save(std::ofstream& fsave, particle_t* parts, int num_parts, double size) {
 }
 
 // Particle Initialization
-void init_particles(particle_t* parts, int num_parts, double size, int part_seed) {
+void init_particles(std::vector<particle_mpi>& parts, std::vector<float>& masses, int num_parts, double size,int part_seed) {
+    //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
 
@@ -52,16 +56,26 @@ void init_particles(particle_t* parts, int num_parts, double size, int part_seed
         parts[i].x = size * (1. + (k % sx)) / (1 + sx);
         parts[i].y = size * (1. + (k / sx)) / (1 + sy);
 
+        /*
+        /*
         // Assign random velocities within a bound
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
         parts[i].vx = rand_real(gen);
         parts[i].vy = rand_real(gen);
-    }
+        */
 
-    for (int i = 0; i < num_parts; ++i) {
-        parts[i].id = i + 1;
+        // Assing random mass
+        std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
+        float m = rand_mass(gen);
+        masses.emplace_back(m);
     }
+    //std::cout << masses << std::endl;
+    //std::cout << masses << std::endl;
 }
+
+
+
+
 
 // Command Line Option Processing
 int find_arg_idx(int argc, char** argv, const char* option) {
@@ -77,7 +91,7 @@ int find_int_arg(int argc, char** argv, const char* option, int default_value) {
     int iplace = find_arg_idx(argc, argv, option);
 
     if (iplace >= 0 && iplace < argc - 1) {
-        return std::stoi(argv[iplace + 1]);
+        return std::atoi(argv[iplace + 1]);
     }
 
     return default_value;
@@ -93,8 +107,6 @@ char* find_string_option(int argc, char** argv, const char* option, char* defaul
     return default_value;
 }
 
-MPI_Datatype PARTICLE;
-
 // ==============
 // Main Function
 // ==============
@@ -107,64 +119,68 @@ int main(int argc, char** argv) {
         std::cout << "-n <int>: set number of particles" << std::endl;
         std::cout << "-o <filename>: set the output file name" << std::endl;
         std::cout << "-s <int>: set particle initialization seed" << std::endl;
+        std::cout << "-t <int>: set number of threads (working only in parallel mode) [default = 8]" << std::endl;
         return 0;
     }
 
     // Open Output File
     char* savename = find_string_option(argc, argv, "-o", nullptr);
+    if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
     std::ofstream fsave(savename);
-
-    // Init MPI
-    int num_procs, rank;
-    MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    // Create MPI Particle Type
-    const int nitems = 7;
-    int blocklengths[7] = {1, 1, 1, 1, 1, 1, 1};
-    MPI_Datatype types[7] = {MPI_UINT64_T, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE,
-                             MPI_DOUBLE,   MPI_DOUBLE, MPI_DOUBLE};
-    MPI_Aint offsets[7];
-    offsets[0] = offsetof(particle_t, id);
-    offsets[1] = offsetof(particle_t, x);
-    offsets[2] = offsetof(particle_t, y);
-    offsets[3] = offsetof(particle_t, vx);
-    offsets[4] = offsetof(particle_t, vy);
-    offsets[5] = offsetof(particle_t, ax);
-    offsets[6] = offsetof(particle_t, ay);
-    MPI_Type_create_struct(nitems, blocklengths, offsets, types, &PARTICLE);
-    MPI_Type_commit(&PARTICLE);
+    if (savename != nullptr) std::cout << "File created." << std::endl;
 
     // Initialize Particles
     int num_parts = find_int_arg(argc, argv, "-n", 1000);
     int part_seed = find_int_arg(argc, argv, "-s", 0);
     double size = sqrt(density * num_parts);
+    int num_th = find_int_arg(argc, argv, "-t", 8);
 
-    particle_t* parts = new particle_t[num_parts];
-
-    if (rank == 0) {
-        init_particles(parts, num_parts, size, part_seed);
-    }
-
-    MPI_Bcast(parts, num_parts, PARTICLE, 0, MPI_COMM_WORLD);
+    std::vector<particle_mpi> parts(num_parts);
+    std::vector<float> masses(num_parts);
+    std::cout << "Trying to init particles..." << std::endl;
+    init_particles(parts, masses, num_parts, size, part_seed);
+    int rank, mpi_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Init(&argc, &argv);
 
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
-    init_simulation(parts, num_parts, size, rank, num_procs);
+    std::cout << "Trying to init simulation..." << std::endl;
+    init_simulation(parts, masses, num_parts, size);
+    std::cout << "Init simulation ended." << std::endl;
 
-    for (int step = 0; step < nsteps; ++step) {
-        simulate_one_step(parts, num_parts, size, rank, num_procs);
+    auto init_time = std::chrono::steady_clock::now();
+    std::chrono::duration<double> diff_1 = init_time - start_time;
+    double seconds_1 = diff_1.count();
+    std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
-        // Save state if necessary
-        if (fsave.good() && (step % savefreq) == 0) {
-            gather_for_save(parts, num_parts, size, rank, num_procs);
-            if (rank == 0) {
-                save(fsave, parts, num_parts, size);
+
+    
+
+    
+        //for nel tempo: non parallelizzare
+        for (int step = 0; step < nsteps; ++step) {
+            simulate_one_step(parts, masses, num_parts, size);
+
+            // Save state if necessary
+            if(rank==0)
+            {
+                if (fsave.good() && (step % savefreq) == 0) {
+                    save(fsave, parts, num_parts, size);
+                }
+                if(step > 0){
+                    if (step%10 == 0){
+                    fflush(stdout);
+                    printf("[ %d% ]\r", (int)(step*100/nsteps));
+                    }
+                }
             }
+            
         }
-    }
+        
+    
 
     auto end_time = std::chrono::steady_clock::now();
 
@@ -172,13 +188,9 @@ int main(int argc, char** argv) {
     double seconds = diff.count();
 
     // Finalize
-    if (rank == 0) {
-        std::cout << "Simulation Time = " << seconds << " seconds for " << num_parts
-                  << " particles.\n";
-    }
-    if (fsave) {
-        fsave.close();
-    }
-    delete[] parts;
+    std::cout << "Simulation Time = " << seconds << " seconds for " << num_parts <<
+     " particles and " << nsteps << " steps.\n";
+    fsave.close();
+    //delete[] parts;
     MPI_Finalize();
 }
