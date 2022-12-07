@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/jellyfish/shared-folder/nbody/hw2_1/main.cpp" "CMakeFiles/serial.dir/main.cpp.o" "gcc" "CMakeFiles/serial.dir/main.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/hw2_1/serial.cpp" "CMakeFiles/serial.dir/serial.cpp.o" "gcc" "CMakeFiles/serial.dir/serial.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/hw2_1/main.cpp" "CMakeFiles/serial.dir/main.cpp.o" "gcc" "CMakeFiles/serial.dir/main.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/hw2_1/serial.cpp" "CMakeFiles/serial.dir/serial.cpp.o" "gcc" "CMakeFiles/serial.dir/serial.cpp.o.d"
   )
 
 # Targets to which this target links.

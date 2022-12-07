@@ -11,7 +11,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.20.5/CMakeCCompiler.cmake"
   "CMakeFiles/3.20.5/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.20.5/CMakeSystem.cmake"
-  "CMakeFiles/FindMPI/test_mpi.cpp"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/CMakeCInformation.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/CMakeCXXInformation.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/CMakeCommonLanguageInclude.cmake"
@@ -25,8 +24,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/Compiler/GNU-C.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/Compiler/GNU-CXX.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/Compiler/GNU.cmake"
-  "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/FindMPI.cmake"
-  "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/FindMPI/test_mpi.c"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/FindOpenMP.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/FindPackageHandleStandardArgs.cmake"
   "/u/sw/toolchains/gcc-glibc/11.2.0/base/share/cmake-3.20/Modules/FindPackageMessage.cmake"
@@ -45,14 +42,11 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/FindMPI/test_mpi.cpp"
-  "CMakeFiles/FindMPI/test_mpi.cpp"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/mpi.dir/DependInfo.cmake"
   "CMakeFiles/openmp.dir/DependInfo.cmake"
   "CMakeFiles/serial.dir/DependInfo.cmake"
   )

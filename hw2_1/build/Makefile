@@ -57,10 +57,10 @@ RM = /u/sw/toolchains/gcc-glibc/11.2.0/base/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/nbody/hw2_1
+CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/Nbody/hw2_1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/hw2_1/build
+CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/Nbody/hw2_1/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles /home/jellyfish/shared-folder/nbody/hw2_1/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/hw2_1/build/CMakeFiles /home/jellyfish/shared-folder/Nbody/hw2_1/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2_1/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/hw2_1/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -115,19 +115,6 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
-
-#=============================================================================
-# Target rules for targets named mpi
-
-# Build rule for target.
-mpi: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mpi
-.PHONY : mpi
-
-# fast build rule for target.
-mpi/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/build
-.PHONY : mpi/fast
 
 #=============================================================================
 # Target rules for targets named openmp
@@ -181,54 +168,6 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openmp.dir/build.make CMakeFiles/openmp.dir/main.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/serial.dir/build.make CMakeFiles/serial.dir/main.cpp.s
 .PHONY : main.cpp.s
-
-mainMPI.o: mainMPI.cpp.o
-.PHONY : mainMPI.o
-
-# target to build an object file
-mainMPI.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mainMPI.cpp.o
-.PHONY : mainMPI.cpp.o
-
-mainMPI.i: mainMPI.cpp.i
-.PHONY : mainMPI.i
-
-# target to preprocess a source file
-mainMPI.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mainMPI.cpp.i
-.PHONY : mainMPI.cpp.i
-
-mainMPI.s: mainMPI.cpp.s
-.PHONY : mainMPI.s
-
-# target to generate assembly for a file
-mainMPI.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mainMPI.cpp.s
-.PHONY : mainMPI.cpp.s
-
-mpi.o: mpi.cpp.o
-.PHONY : mpi.o
-
-# target to build an object file
-mpi.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.o
-.PHONY : mpi.cpp.o
-
-mpi.i: mpi.cpp.i
-.PHONY : mpi.i
-
-# target to preprocess a source file
-mpi.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.i
-.PHONY : mpi.cpp.i
-
-mpi.s: mpi.cpp.s
-.PHONY : mpi.s
-
-# target to generate assembly for a file
-mpi.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.s
-.PHONY : mpi.cpp.s
 
 openmp.o: openmp.cpp.o
 .PHONY : openmp.o
@@ -286,18 +225,11 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... mpi"
 	@echo "... openmp"
 	@echo "... serial"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... mainMPI.o"
-	@echo "... mainMPI.i"
-	@echo "... mainMPI.s"
-	@echo "... mpi.o"
-	@echo "... mpi.i"
-	@echo "... mpi.s"
 	@echo "... openmp.o"
 	@echo "... openmp.i"
 	@echo "... openmp.s"
