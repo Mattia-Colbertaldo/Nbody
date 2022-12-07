@@ -163,10 +163,9 @@ int main(int argc, char** argv) {
     
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
-        std::cout << "0\n";
+        
         simulate_one_step(parts, masses, num_parts, size);
-        std::cout << "One step simulated.\n";
-
+        
         // Save state if necessary
         if(rank==0)
         {/*
