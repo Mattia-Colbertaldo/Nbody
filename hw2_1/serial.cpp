@@ -43,7 +43,7 @@ void move(particle_t& p, double size) {
 }
 
 
-void init_simulation(std::vector<particle_t>& parts, int num_parts, double size) {
+void init_simulation(std::vector<particle_t>& parts, std::vector<float>& masses, int num_parts, double size) {
     //int num_parts = parts.size();
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
@@ -51,7 +51,7 @@ void init_simulation(std::vector<particle_t>& parts, int num_parts, double size)
     
 }
 
-void simulate_one_step(std::vector<particle_t>& parts, std::vector<float>& masses , int num_parts, double size) {
+void simulate_one_step(std::vector<particle_t>& parts, std::vector<float>& masses, int num_parts, double size) {
     //int num_parts = parts.size();
     // Compute Forces
     for (int i = 0; i < num_parts; ++i) {

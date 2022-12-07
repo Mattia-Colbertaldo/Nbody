@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/home/jellyfish/shared-folder/Nbody/hw2_1")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/jellyfish/shared-folder/Nbody/hw2_1/build")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/jellyfish/shared-folder/Nbody/hw2_1/newbuild")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

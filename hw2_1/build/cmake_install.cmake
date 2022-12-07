@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/jellyfish/shared-folder/Nbody/hw2_1/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/jellyfish/shared-folder/Nbody/hw2_1/newbuild/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,7 +1,7 @@
 CMakeFiles/serial.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2_1/main.cpp \
+ /home/jellyfish/shared-folder/Nbody/hw2_1/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/hw2_1/common.h \
+ /home/jellyfish/shared-folder/Nbody/hw2_1/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \

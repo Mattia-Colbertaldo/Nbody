@@ -44,7 +44,7 @@ void move(particle_t& p, double size) {
 }
 
 
-void init_simulation(std::vector<particle_t>& parts, int num_parts,  double size) {
+void init_simulation(std::vector<particle_t>& parts, std::vector<float>& masses, int num_parts,  double size) {
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
     // algorithm begins. Do not do any particle simulation here
