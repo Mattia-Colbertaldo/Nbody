@@ -86,13 +86,14 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
     }
     std::cout << "flag 3\n";
 
-    std::vector<particle_mpi> loc_parts(sizes[rank]);
-
-    MPI_Scatterv(&parts, &num_parts , &displs[rank], MPI_DOUBLE,
+    std::vector<particle_mpi> loc_parts(sizes[rank]/2);
+    std::vector<particle_t> part_acc(sizes[rank]/2);
+    int double_num_parts= 2*num_parts;
+    MPI_Scatterv(&parts, &double_num_parts , &displs[rank], MPI_DOUBLE,
                 &loc_parts, sizes[rank] , MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    
     std::cout << "After scattering\n";
-    std::vector<particle_t> part_acc(sizes[rank]);
-    std::cout << "flag 5\n";
+    
 
     for (int i = 0; i < sizes[rank]; ++i) {
         std::cout << "flag 5\n";
