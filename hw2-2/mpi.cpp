@@ -80,6 +80,7 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
     
     std::vector<int> sizes(mpi_size);
     std::vector<int> displs(mpi_size + 1);
+    
     for (int i = 0; i < mpi_size; ++i) {
         sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i))*2;
         displs[i + 1] = displs[i] + sizes[i];
