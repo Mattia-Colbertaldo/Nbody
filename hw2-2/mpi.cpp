@@ -80,7 +80,8 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
     
     std::vector<int> sizes(mpi_size);
     std::vector<int> displs(mpi_size + 1);
-    
+
+    displs[0] = 0;
     for (int i = 0; i < mpi_size; ++i) {
         sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i))*2;
         displs[i + 1] = displs[i] + sizes[i];
@@ -91,7 +92,7 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
     std::vector<particle_mpi> loc_parts(sizes[rank]/2);
     std::vector<particle_t> part_acc(sizes[rank]/2);
     int double_num_parts= 2*num_parts;
-    MPI_Scatterv(parts.data(), &double_num_parts , &displs[rank], MPI_DOUBLE,
+    MPI_Scatterv(parts.data(), &sizes[rank] , &displs[rank], MPI_DOUBLE,
                 loc_parts.data(), sizes[rank] , MPI_DOUBLE, 0, MPI_COMM_WORLD);
     
    

@@ -168,11 +168,12 @@ int main(int argc, char** argv) {
         
         // Save state if necessary
         if(rank==0)
-        {/*
+        {
             if (fsave.good() && (step % savefreq) == 0) {
-                gather_for_save(parts, masses, num_parts, rank, size );
+                //gather_for_save(parts, masses, num_parts, rank, size );
+                save(fsave, parts, num_parts, size);
             }
-            */
+            
             if(step > 0){
                 if (step%10 == 0){
                 fflush(stdout);
