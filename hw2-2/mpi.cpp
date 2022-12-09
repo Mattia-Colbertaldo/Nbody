@@ -73,6 +73,7 @@ void simulate_one_step( std::vector<particle_t>& parts,std::vector<float>& masse
     
     MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::cout << "I'm process " << rank << std::endl;
    
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
     // in this way we split the load in the most equilibrate way

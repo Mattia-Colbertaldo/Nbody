@@ -2,6 +2,7 @@
 #include <cmath>
 #include <vector>
 
+
 // Apply the force from neighbor to particle
 void apply_force(particle_t& particle, particle_t& neighbor, float mass_neigh) {
     // Calculate Distance

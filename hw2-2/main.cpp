@@ -138,10 +138,12 @@ int main(int argc, char** argv) {
     std::vector<float> masses(num_parts);
     std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts, masses, num_parts, size, part_seed);
+
     int rank, mpi_size;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    
    
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
@@ -157,10 +159,10 @@ int main(int argc, char** argv) {
 
 
 
-
     
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
+    
         
         simulate_one_step(parts, masses, num_parts, size);
         
