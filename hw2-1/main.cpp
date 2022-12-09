@@ -34,11 +34,12 @@ void save(std::ofstream& fsave, std::vector<particle_t>& parts, double size) {
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_t>& parts , double size, int part_seed) {
+void init_particles(std::vector<particle_t>& parts , std::vector<float>& masses, double size, int part_seed) {
     /*
         input :  1. parts     : vettore di particelle
-                 2. size      : dimensione della particella
-                 3. part_seed : seme randomico
+                 2. masses    : vettore delle masse
+                 3. size      : dimensione della particella
+                 4. part_seed : seme randomico
     */
 
     int num_parts = parts.size();
@@ -69,6 +70,13 @@ void init_particles(std::vector<particle_t>& parts , double size, int part_seed)
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
         parts[i].vx = rand_real(gen);
         parts[i].vy = rand_real(gen);
+        
+
+       // Assing random mass
+        std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
+        float m = rand_mass(gen);
+        masses[i]=m;
+        //std::cout << "mass: " << masses[i] << std::endl;
     }
 }
 
@@ -133,7 +141,7 @@ int main(int argc, char** argv) {
     std::vector<particle_t> parts(num_parts);
     std::vector<float> masses(num_parts);
     std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts, size, part_seed);
+    init_particles(parts, masses, size, part_seed);
 
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();

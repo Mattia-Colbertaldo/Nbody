@@ -24,13 +24,13 @@ void apply_force(particle_t& particle, particle_t& neighbor, float mass_neigh) {
 }
 
 // Integrate the ODE
-void move(particle_t& p,  particle_mpi& loc_parts, double size) {
+void move(particle_t& p, double size) {
     // Slightly simplified Velocity Verlet integration
     // Conserves energy better than explicit Euler method
     p.vx += p.ax * dt;
     p.vy += p.ay * dt;
-    loc_parts.x += p.vx * dt;
-    loc_parts.y += p.vy * dt;
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
 
     // Bounce from walls
     while (p.x < 0 || p.x > size) {
@@ -45,7 +45,7 @@ void move(particle_t& p,  particle_mpi& loc_parts, double size) {
 }
 
 
-void init_simulation(std::vector<particle_mpi>& parts,std::vector<float>& masses,int num_parts, double size) {
+void init_simulation(std::vector<particle_t>& parts,std::vector<float>& masses,int num_parts, double size) {
     //int num_parts = parts.size();
 
 	// You can use this space to initialize static, global data objects
@@ -65,7 +65,7 @@ void init_simulation(std::vector<particle_mpi>& parts,std::vector<float>& masses
 
 }
 
-void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& masses, int num_parts, double size) {
+void simulate_one_step( std::vector<particle_t>& parts,std::vector<float>& masses, int num_parts, double size) {
    
     // Compute Forces
     //int num_parts = parts.size();
@@ -83,29 +83,35 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
 
     displs[0] = 0;
     for (int i = 0; i < mpi_size; ++i) {
-        sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i))*2;
+        sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i))*6;
         displs[i + 1] = displs[i] + sizes[i];
     }
 
+    /*
+    for(int t=0; t<num_parts; t++){
+        std::cout << t << "-" << parts[t].x << " " << parts[t].y << " ";
+    }
+    std::cout << std::endl;
+    */
 
 
-    std::vector<particle_mpi> loc_parts(sizes[rank]/2);
-    std::vector<particle_t> part_acc(sizes[rank]/2);
-    int double_num_parts= 2*num_parts;
+    std::vector<particle_t> loc_parts(sizes[rank]/6);
+    //int double_num_parts= 2*num_parts;
     MPI_Scatterv(parts.data(), &sizes[rank] , &displs[rank], MPI_DOUBLE,
                 loc_parts.data(), sizes[rank] , MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    
-   
-    
+    /*
+    for(int t=0; t<sizes[rank]/2; t++){
+        std::cout << t << "-" << loc_parts[t].x << " " << loc_parts[t].y << " ";
+    }
+    std::cout << "From process " << rank << std::endl;
+    */
 
-    for (int i = 0; i < sizes[rank]/2; ++i) {
-        
-        part_acc[i].x=loc_parts[i].x;
-        part_acc[i].y=loc_parts[i].y; 
-        part_acc[i].ax = part_acc[i].ay = 0;
+    for (int i = 0; i < sizes[rank]/6; ++i) {
+
+        loc_parts[i].ax = loc_parts[i].ay = 0;
         
         for (int j = 0; j < num_parts; ++j) {
-            apply_force(part_acc[i], part_acc[j], masses[j]);
+            apply_force(loc_parts[i], loc_parts[j], masses[j]);
         }
         
     }
@@ -114,8 +120,8 @@ void simulate_one_step( std::vector<particle_mpi>& parts,std::vector<float>& mas
 
     // Move Particles
 	
-    for (int i = 0; i < sizes[rank]/2; ++i) {
-        move(part_acc[i], loc_parts[i] , size);
+    for (int i = 0; i < sizes[rank]/6; ++i) {
+        move(loc_parts[i], size);
     }
 
 

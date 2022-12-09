@@ -14,7 +14,7 @@
 // =================
 
 // I/O routines
-void save(std::ofstream& fsave, std::vector<particle_mpi>& parts, int num_parts, double size) {
+void save(std::ofstream& fsave, std::vector<particle_t>& parts, int num_parts, double size) {
     //int num_parts = parts.size();
     static bool first = true;
 
@@ -31,7 +31,7 @@ void save(std::ofstream& fsave, std::vector<particle_mpi>& parts, int num_parts,
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_mpi>& parts, std::vector<float>& masses, int num_parts, double size,int part_seed) {
+void init_particles(std::vector<particle_t>& parts, std::vector<float>& masses, int num_parts, double size,int part_seed) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -55,21 +55,19 @@ void init_particles(std::vector<particle_mpi>& parts, std::vector<float>& masses
         parts[i].x = size * (1. + (k % sx)) / (1 + sx);
         parts[i].y = size * (1. + (k / sx)) / (1 + sy);
 
-        /*
-        /*
+        
         // Assign random velocities within a bound
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
         parts[i].vx = rand_real(gen);
         parts[i].vy = rand_real(gen);
-        */
+        
 
         // Assing random mass
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
         float m = rand_mass(gen);
-        masses.emplace_back(m);
+        masses[i]=m;
+        //std::cout << "mass: " <<  masses[i] << std::endl;
     }
-    //std::cout << masses << std::endl;
-    //std::cout << masses << std::endl;
 }
 
 
@@ -136,7 +134,7 @@ int main(int argc, char** argv) {
 
    
 
-    std::vector<particle_mpi> parts(num_parts);
+    std::vector<particle_t> parts(num_parts);
     std::vector<float> masses(num_parts);
     std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts, masses, num_parts, size, part_seed);
