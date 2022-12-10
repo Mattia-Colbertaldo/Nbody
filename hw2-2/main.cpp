@@ -36,7 +36,8 @@ void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts,
 
 // Particle Initialization
 void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<particle_pos>&parts_pos, int num_loc) {
-    
+    MPI_Bcast(&num_parts, 1, MPI_INTEGER, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&size, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -74,14 +75,15 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
         
         
     }
+    OK;
 
-    //if(rank==0){
+    if(rank==0){
     //just process 0 init masses
     for(int i=0; i<num_parts; i++){
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
         float m = rand_mass(gen);
         masses[i]=m;
-    //    }
+        }
     }
     OK;
     MPI_Bcast(&masses , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
