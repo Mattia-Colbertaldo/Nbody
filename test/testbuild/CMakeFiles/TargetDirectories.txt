@@ -1,0 +1,3 @@
+/home/jellyfish/shared-folder/Nbody/test/testbuild/CMakeFiles/rebuild_cache.dir
+/home/jellyfish/shared-folder/Nbody/test/testbuild/CMakeFiles/edit_cache.dir
+/home/jellyfish/shared-folder/Nbody/test/testbuild/CMakeFiles/mpi.dir
