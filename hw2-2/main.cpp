@@ -31,7 +31,7 @@ void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts,
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<particle_pos>&parts_pos, int num_loc) {
+void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<particle_pos>&parts_pos, int num_loc) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -56,17 +56,15 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
 
         // Distribute particles evenly to ensure proper spacing
         
-        parts_pos_vel_loc[i].x = size * (1. + (k % sx)) / (1 + sx);
-        parts_pos_vel_loc[i].y = size * (1. + (k / sx)) / (1 + sy);
+        parts_pos[i+ rank*num_loc].x = size * (1. + (k % sx)) / (1 + sx);
+        parts_pos[i+ rank*num_loc].y = size * (1. + (k / sx)) / (1 + sy);
         
-        parts_pos[i+ rank*num_loc].x=parts_pos_vel_loc[i].x;
-        parts_pos[i+ rank*num_loc].y=parts_pos_vel_loc[i].y;
 
         
         // Assign random velocities within a bound
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
-        parts_pos_vel_loc[i].vx = rand_real(gen);
-        parts_pos_vel_loc[i].vy = rand_real(gen);
+        parts_vel_acc_loc[i].vx = rand_real(gen);
+        parts_vel_acc_loc[i].vy = rand_real(gen);
         
         
     }
@@ -174,11 +172,11 @@ int main(int argc, char** argv) {
     int num_loc = num_parts/mpi_size;
     std::vector<particle_vel_acc> parts_vel_acc_loc(num_loc);
     std::vector<particle_pos> parts_pos(num_parts);
-    std::vector<particle_pos_vel> parts_pos_vel_loc(num_loc);
+    
     std::vector<float> masses(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts_pos_vel_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc); 
+    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc); 
 
     
     // Algorithm
@@ -201,7 +199,7 @@ int main(int argc, char** argv) {
     for (int step = 0; step < nsteps; ++step) {
     
         
-        simulate_one_step(parts_pos_vel_loc, parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size);
+        simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size);
         
         // Save state if necessary
         if(rank==0)
