@@ -93,7 +93,7 @@ void simulate_one_step( std::vector<particle_pos_vel>& parts_pos_vel_loc, std::v
     */
 
    //Ogni processore aggiorna le particelle nel range [rank*N, (rank+1)*N). Notate che per utilizzare apply_force e move vi servono posizione, velocità e massa delle particelle in [rank*N, (rank+1)*N) e solo posizione e massa delle particelle in [0, N)
-    for (int i = 0; i < sizes[rank]; ++i) {
+    for (int i = 0; i < sizes[rank]/2; ++i) {
 
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
         
@@ -107,12 +107,11 @@ void simulate_one_step( std::vector<particle_pos_vel>& parts_pos_vel_loc, std::v
 
     // Move Particles
 	
-    for (int i = 0; i < sizes[rank]; ++i) {
+    for (int i = 0; i < sizes[rank]/2; ++i) {
         move(parts_vel_acc_loc[i],parts_pos[i+displs[rank]] , size);
     }
-    int double_size= 2*sizes[rank];
     // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori. Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente. 
-    MPI_Allgatherv( MPI_IN_PLACE , 2*sizes[rank] , MPI_DATATYPE_NULL , &parts_pos[0] ,  &double_size , &displs[0] , MPI_DOUBLE , MPI_COMM_WORLD);
+    MPI_Allgatherv( MPI_IN_PLACE , sizes[rank] , MPI_DATATYPE_NULL , &parts_pos[0] ,  &double_size , &displs[0] , MPI_DOUBLE , MPI_COMM_WORLD);
     
 }
 

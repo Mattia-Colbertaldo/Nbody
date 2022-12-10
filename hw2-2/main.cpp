@@ -79,8 +79,7 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
         }
     }
     
-    int double_size= sizes[rank]*2;
-    MPI_Allgatherv( MPI_IN_PLACE , sizes[rank]*2 , MPI_DATATYPE_NULL , &parts_pos[0] , &double_size , &displs[0] , MPI_DOUBLE , MPI_COMM_WORLD);
+    MPI_Allgatherv( MPI_IN_PLACE , sizes[rank] , MPI_DATATYPE_NULL , &parts_pos[0] , &double_size , &displs[0] , MPI_DOUBLE , MPI_COMM_WORLD);
 
 }
 
@@ -178,9 +177,9 @@ int main(int argc, char** argv) {
         displs[i + 1] = displs[i] + sizes[i];
     }
 
-    std::vector<particle_vel_acc> parts_vel_acc_loc(sizes[rank]);
+    std::vector<particle_vel_acc> parts_vel_acc_loc(sizes[rank]/2)+;
     std::vector<particle_pos> parts_pos(num_parts);
-    std::vector<particle_pos_vel> parts_pos_vel_loc(sizes[rank]);
+    std::vector<particle_pos_vel> parts_pos_vel_loc(sizes[rank]/2);
     std::vector<float> masses(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
