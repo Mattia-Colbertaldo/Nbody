@@ -54,8 +54,7 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
 
     // broadcast the global size to prepare the local buffers
     
-    MPI_Bcast(&num_parts, 1, MPI_INTEGER, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&size, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    
 
     // since each chunk has a different size we have to prepare buffers with
     // sizes and displacements of the chunk we have to send
