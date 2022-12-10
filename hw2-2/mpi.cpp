@@ -60,8 +60,7 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
     // since each chunk has a different size we have to prepare buffers with
     // sizes and displacements of the chunk we have to send
 
-    MPI_Bcast(&masses , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
-    MPI_Bcast(&parts , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
+    
 
 }
 

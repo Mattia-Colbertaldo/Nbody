@@ -9,6 +9,8 @@
 #include <math.h>
 #include <mpi.h>
 
+#define OK std::cout << "At " __FILE__ ":" << __LINE__ << std::endl
+
 // =================
 // Helper Functions
 // =================
@@ -32,6 +34,7 @@ void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts,
 
 // Particle Initialization
 void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<particle_pos>&parts_pos, int num_loc) {
+    
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -56,8 +59,8 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
 
         // Distribute particles evenly to ensure proper spacing
         
-        parts_pos[i+ rank*num_loc].x = size * (1. + (k % sx)) / (1 + sx);
-        parts_pos[i+ rank*num_loc].y = size * (1. + (k / sx)) / (1 + sy);
+        parts_pos[i+ num_loc].x = size * (1. + (k % sx)) / (1 + sx);
+        parts_pos[i+ num_loc].y = size * (1. + (k / sx)) / (1 + sy);
         
 
         
@@ -69,14 +72,20 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
         
     }
 
-    if(rank==0){
-                //just process 0 init masses
-        for(int i=0; i<num_parts; i++){
-            std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
-            float m = rand_mass(gen);
-            masses[i]=m;
-        }
+    //if(rank==0){
+    //just process 0 init masses
+    for(int i=0; i<num_parts; i++){
+        std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
+        float m = rand_mass(gen);
+        masses[i]=m;
+    //    }
     }
+
+    MPI_Bcast(&masses , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
+    MPI_Bcast(&parts_pos , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
+
+    MPI_Barrier( MPI_COMM_WORLD);
+    OK;
     
     
     MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , 2*num_loc , MPI_DOUBLE , MPI_COMM_WORLD);
@@ -127,19 +136,22 @@ int main(int argc, char** argv) {
     
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    int part_seed;
+    double size;
+    int num_parts;
+    int num_th;
+    char* savename;
+
+    if(rank==0){
     
     // Open Output File
-    char* savename = find_string_option(argc, argv, "-o", nullptr);
-    if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
-    std::ofstream fsave(savename);
-    if (savename != nullptr) std::cout << "File created." << std::endl;
-   int part_seed;
-   double size;
-   int num_parts;
-   int num_th;
+        savename = find_string_option(argc, argv, "-o", nullptr);
+        if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
+        //std::ofstream fsave(savename);
+        if (savename != nullptr) std::cout << "File created." << std::endl;
+       
 
-   
-   if(rank==0){
         // Parse Args
         if (find_arg_idx(argc, argv, "-h") >= 0) {
             std::cout << "Options:" << std::endl;
@@ -185,7 +197,8 @@ int main(int argc, char** argv) {
   
 
     std::cout << "Trying to init simulation..." << std::endl;
-    init_simulation(parts_pos, masses, num_parts, size);
+    if(rank==0) init_simulation(parts_pos, masses, num_parts, size);
+    MPI_Barrier( MPI_COMM_WORLD);
     std::cout << "Init simulation ended." << std::endl;
 
     auto init_time = std::chrono::steady_clock::now();
@@ -200,10 +213,12 @@ int main(int argc, char** argv) {
     
         
         simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size);
+        MPI_Barrier( MPI_COMM_WORLD);
         
         // Save state if necessary
         if(rank==0)
         {
+            std::ofstream fsave(savename);
             if (fsave.good() && (step % savefreq) == 0) {
                 //gather_for_save(parts, masses, num_parts, rank, size );
                 save(fsave, parts_pos, num_parts, size);
@@ -213,6 +228,9 @@ int main(int argc, char** argv) {
                 if (step%10 == 0){
                 fflush(stdout);
                 printf("[ %d% ]\r", (int)(step*100/nsteps));
+                if(step = nsteps-1){
+                    fsave.close();
+                }
                 }
             }
         }
@@ -226,11 +244,10 @@ int main(int argc, char** argv) {
 
     std::chrono::duration<double> diff = end_time - start_time;
     double seconds = diff.count();
-
     // Finalize
+    //fsave.close();
     std::cout << "Simulation Time = " << seconds << " seconds for " << num_parts <<
      " particles and " << nsteps << " steps.\n";
-    fsave.close();
     //delete[] parts;
     MPI_Finalize();
 }
