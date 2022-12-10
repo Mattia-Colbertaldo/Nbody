@@ -54,10 +54,10 @@ RM = /u/sw/toolchains/gcc-glibc/11.2.0/base/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/Nbody/hw2-1
+CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/nbody/hw2-1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/Nbody/hw2-1/build
+CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/hw2-1/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -83,14 +83,14 @@ clean: CMakeFiles/serial.dir/clean
 CMakeFiles/openmp.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openmp.dir/build.make CMakeFiles/openmp.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openmp.dir/build.make CMakeFiles/openmp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/Nbody/hw2-1/build/CMakeFiles --progress-num=1,2,3 "Built target openmp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=1,2,3 "Built target openmp"
 .PHONY : CMakeFiles/openmp.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/openmp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/hw2-1/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/openmp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/hw2-1/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles 0
 .PHONY : CMakeFiles/openmp.dir/rule
 
 # Convenience name for target.
@@ -109,14 +109,14 @@ CMakeFiles/openmp.dir/clean:
 CMakeFiles/serial.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/serial.dir/build.make CMakeFiles/serial.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/serial.dir/build.make CMakeFiles/serial.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/Nbody/hw2-1/build/CMakeFiles --progress-num=4,5,6 "Built target serial"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=4,5,6 "Built target serial"
 .PHONY : CMakeFiles/serial.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/serial.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/hw2-1/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/serial.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/hw2-1/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles 0
 .PHONY : CMakeFiles/serial.dir/rule
 
 # Convenience name for target.

@@ -112,7 +112,7 @@ void simulate_one_step( std::vector<particle_pos_vel>& parts_pos_vel_loc, std::v
     }
     int double_size= 2*sizes[rank];
     // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori. Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente. 
-    MPI_Allgatherv( MPI_IN_PLACE , 2*sizes[rank] , MPI_DATATYPE_NULL , &parts_pos[0] ,  &double_size , &displs[rank] , MPI_DOUBLE , MPI_COMM_WORLD);
+    MPI_Allgatherv( MPI_IN_PLACE , 2*sizes[rank] , MPI_DATATYPE_NULL , &parts_pos[0] ,  &double_size , &displs[0] , MPI_DOUBLE , MPI_COMM_WORLD);
     
 }
 

@@ -47,7 +47,7 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
     // initialize local vector of positions and velocities (parts_pos_vel_loc)
     // also fill the local part of vector of positions (parts_pos) and then allgather it
     // --> result : all have local values of positions and velocities in parts_pos_vel_loc and the positions of ALL particles in parts_pos
-    for (int i = 0; i < sizes[rank]; ++i) {
+    for (int i = 0; i < sizes[rank]/2; ++i) {
         // Make sure particles are not spatially sorted
         std::uniform_int_distribution<int> rand_int(0, num_parts - i - 1);
         int j = rand_int(gen);
@@ -55,16 +55,18 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
         shuffle[j] = shuffle[num_parts - i - 1];
 
         // Distribute particles evenly to ensure proper spacing
+        
         parts_pos_vel_loc[i].x = size * (1. + (k % sx)) / (1 + sx);
         parts_pos_vel_loc[i].y = size * (1. + (k / sx)) / (1 + sy);
+        
         parts_pos[i+displs[rank]].x=parts_pos_vel_loc[i].x;
         parts_pos[i+displs[rank]].y=parts_pos_vel_loc[i].y;
+        
 
         
         // Assign random velocities within a bound
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
-        parts_pos_vel_loc[i].vx = rand_real(gen);
-        parts_pos_vel_loc[i].vy = rand_real(gen);
+        
         
     }
 
@@ -76,8 +78,9 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
             masses[i]=m;
         }
     }
+    
     int double_size= sizes[rank]*2;
-    MPI_Allgatherv( MPI_IN_PLACE , sizes[rank]*2 , MPI_DATATYPE_NULL , &parts_pos[0] , &double_size , &displs[rank] , MPI_DOUBLE , MPI_COMM_WORLD);
+    MPI_Allgatherv( MPI_IN_PLACE , sizes[rank]*2 , MPI_DATATYPE_NULL , &parts_pos[0] , &double_size , &displs[0] , MPI_DOUBLE , MPI_COMM_WORLD);
 
 }
 
@@ -171,7 +174,7 @@ int main(int argc, char** argv) {
 
     displs[0] = 0;
     for (int i = 0; i < mpi_size; ++i) {
-        sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i));
+        sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i))*2;
         displs[i + 1] = displs[i] + sizes[i];
     }
 
