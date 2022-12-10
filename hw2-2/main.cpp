@@ -31,7 +31,7 @@ void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts,
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<int> &sizes,std::vector<int> & displs, std::vector<particle_pos>&parts_pos) {
+void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<particle_pos>&parts_pos, int num_loc) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -47,7 +47,7 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
     // initialize local vector of positions and velocities (parts_pos_vel_loc)
     // also fill the local part of vector of positions (parts_pos) and then allgather it
     // --> result : all have local values of positions and velocities in parts_pos_vel_loc and the positions of ALL particles in parts_pos
-    for (int i = 0; i < sizes[rank]/2; ++i) {
+    for (int i = 0; i < num_loc; ++i) {
         // Make sure particles are not spatially sorted
         std::uniform_int_distribution<int> rand_int(0, num_parts - i - 1);
         int j = rand_int(gen);
@@ -59,13 +59,14 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
         parts_pos_vel_loc[i].x = size * (1. + (k % sx)) / (1 + sx);
         parts_pos_vel_loc[i].y = size * (1. + (k / sx)) / (1 + sy);
         
-        parts_pos[i+displs[rank]].x=parts_pos_vel_loc[i].x;
-        parts_pos[i+displs[rank]].y=parts_pos_vel_loc[i].y;
-        
+        parts_pos[i+ rank*num_loc].x=parts_pos_vel_loc[i].x;
+        parts_pos[i+ rank*num_loc].y=parts_pos_vel_loc[i].y;
 
         
         // Assign random velocities within a bound
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
+        parts_pos_vel_loc[i].vx = rand_real(gen);
+        parts_pos_vel_loc[i].vy = rand_real(gen);
         
         
     }
@@ -79,7 +80,8 @@ void init_particles(std::vector<particle_pos_vel>& parts_pos_vel_loc, std::vecto
         }
     }
     
-    MPI_Allgatherv( MPI_IN_PLACE , sizes[rank] , MPI_DATATYPE_NULL , &parts_pos[0] , &sizes[rank] , &displs[0] , MPI_DOUBLE , MPI_COMM_WORLD);
+    
+    MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , 2*num_loc , MPI_DOUBLE , MPI_COMM_WORLD);
 
 }
 
@@ -168,22 +170,15 @@ int main(int argc, char** argv) {
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
     // in this way we split the load in the most equilibrate way
     
-    std::vector<int> sizes(mpi_size);
-    std::vector<int> displs(mpi_size + 1);
-
-    displs[0] = 0;
-    for (int i = 0; i < mpi_size; ++i) {
-        sizes[i] = (num_parts / mpi_size + (num_parts % mpi_size > i))*2;
-        displs[i + 1] = displs[i] + sizes[i];
-    }
-
-    std::vector<particle_vel_acc> parts_vel_acc_loc(sizes[rank]/2);
+   
+    int num_loc = num_parts/mpi_size;
+    std::vector<particle_vel_acc> parts_vel_acc_loc(num_loc);
     std::vector<particle_pos> parts_pos(num_parts);
-    std::vector<particle_pos_vel> parts_pos_vel_loc(sizes[rank]/2);
+    std::vector<particle_pos_vel> parts_pos_vel_loc(num_loc);
     std::vector<float> masses(num_parts);
     
     std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts_pos_vel_loc, masses, num_parts, size, part_seed, rank, sizes, displs, parts_pos); 
+    init_particles(parts_pos_vel_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc); 
 
     
     // Algorithm
@@ -206,7 +201,7 @@ int main(int argc, char** argv) {
     for (int step = 0; step < nsteps; ++step) {
     
         
-        simulate_one_step(parts_pos_vel_loc, parts_pos, parts_vel_acc_loc, masses, num_parts, size, sizes, displs);
+        simulate_one_step(parts_pos_vel_loc, parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size);
         
         // Save state if necessary
         if(rank==0)
