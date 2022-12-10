@@ -9,7 +9,9 @@
 #include <math.h>
 #include <mpi.h>
 
-#define OK std::cout << "At " __FILE__ ":" << __LINE__ << std::endl
+int rank;
+
+#define OK std::cout << "At main:" << __LINE__ << " from process " << rank << std::endl
 
 // =================
 // Helper Functions
@@ -38,9 +40,10 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
-
+    OK;
     int sx = (int)ceil(sqrt((double)num_parts));
     int sy = (num_parts + sx - 1) / sx;
+    OK;
 
     std::vector<int> shuffle(num_parts);
     for (int i = 0; i < shuffle.size(); ++i) {
@@ -80,7 +83,7 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
         masses[i]=m;
     //    }
     }
-
+    OK;
     MPI_Bcast(&masses , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
     MPI_Bcast(&parts_pos , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
 
@@ -132,7 +135,8 @@ char* find_string_option(int argc, char** argv, const char* option, char* defaul
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
-    int rank, mpi_size;
+    //int rank;
+    int mpi_size;
     
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
