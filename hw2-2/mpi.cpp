@@ -3,9 +3,9 @@
 #include <mpi.h>
 #include <iostream>
 
-int rank;
+int mpi_rank;
 
-#define OK std::cout << "At mpi:" << __LINE__ << " from process " << rank << std::endl
+#define OK std::cout << "At mpi:" << __LINE__ << " from process " << mpi_rank << std::endl
 
 
 // Apply the force from neighbor to particle
@@ -72,13 +72,12 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
    
     // Compute Forces
     //int num_parts = parts.size();
-    int mpi_size, rank;
-    
+    int mpi_size;
     MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    //std::cout << "I'm process " << rank << std::endl;
+    MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+    //std::cout << "I'm process " << mpi_rank << std::endl;
    
-    // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
+    // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
     // in this way we split the load in the most equilibrate way
 
 
@@ -89,13 +88,13 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
     std::cout << std::endl;
     */
     /*
-    for(int t=0; t<sizes[rank]/2; t++){
+    for(int t=0; t<sizes[mpi_rank]/2; t++){
         std::cout << t << "-" << loc_parts[t].x << " " << loc_parts[t].y << " ";
     }
-    std::cout << "From process " << rank << std::endl;
+    std::cout << "From process " << mpi_rank << std::endl;
     */
 
-   //Ogni processore aggiorna le particelle nel range [rank*N, (rank+1)*N). Notate che per utilizzare apply_force e move vi servono posizione, velocità e massa delle particelle in [rank*N, (rank+1)*N) e solo posizione e massa delle particelle in [0, N)
+   //Ogni processore aggiorna le particelle nel range [mpi_rank*N, (mpi_rank+1)*N). Notate che per utilizzare apply_force e move vi servono posizione, velocità e massa delle particelle in [mpi_rank*N, (mpi_rank+1)*N) e solo posizione e massa delle particelle in [0, N)
     for (int i = 0; i < num_loc; ++i) {
 
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
@@ -111,7 +110,7 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
     // Move Particles
 	
     for (int i = 0; i < num_loc; ++i) {
-        move(parts_vel_acc_loc[i],parts_pos[i+num_loc*rank] , size);
+        move(parts_vel_acc_loc[i],parts_pos[i+num_loc*mpi_rank] , size);
     }
     // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori. Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente. 
     
@@ -121,8 +120,8 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
 
 
 /*
-void gather_for_save(particle_t* parts, ma int num_parts, double size, int rank, int num_procs) {
-    // Write this function such that at the end of it, the master (rank == 0)
+void gather_for_save(particle_t* parts, ma int num_parts, double size, int mpi_rank, int num_procs) {
+    // Write this function such that at the end of it, the master (mpi_rank == 0)
     // processor has an in-order view of all particles. That is, the array
     // parts is complete and sorted by particle id.
 }

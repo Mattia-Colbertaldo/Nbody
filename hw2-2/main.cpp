@@ -203,8 +203,8 @@ int main(int argc, char** argv) {
   
 
     std::cout << "Trying to init simulation..." << std::endl;
-    if(rank==0) init_simulation(parts_pos, masses, num_parts, size);
-    MPI_Barrier( MPI_COMM_WORLD);
+    //init_simulation(parts_pos, masses, num_parts, size);
+    //MPI_Barrier( MPI_COMM_WORLD);
     std::cout << "Init simulation ended." << std::endl;
 
     auto init_time = std::chrono::steady_clock::now();
