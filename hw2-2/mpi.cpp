@@ -3,6 +3,11 @@
 #include <mpi.h>
 #include <iostream>
 
+int rank;
+
+#define OK std::cout << "At mpi:" << __LINE__ << " from process " << rank << std::endl
+
+
 // Apply the force from neighbor to particle
 void apply_force(particle_vel_acc& particle_vel_acc_loc,  particle_pos& particle,  particle_pos& neighbor, float mass_neigh) {
     // Calculate Distance
