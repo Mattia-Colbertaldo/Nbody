@@ -31,7 +31,7 @@ void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts,
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<particle_pos>&parts_pos, int num_loc) {
+void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vector<float>& masses, int num_parts, double size,int part_seed, int rank, std::vector<particle_pos>&parts_pos, int num_loc) {
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
