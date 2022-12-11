@@ -4,6 +4,7 @@
 #include <iostream>
 
 int mpi_rank;
+int mpi_size;
 
 #define OK std::cout << "At mpi:" << __LINE__ << " from process " << mpi_rank << std::endl
 
@@ -53,6 +54,9 @@ void move(particle_vel_acc& particle_vel_acc_loc, particle_pos& pos ,double size
 void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses,int num_parts, double size) {
     //int num_parts = parts.size();
 
+    MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
     // algorithm begins. Do not do any particle simulation here
@@ -69,12 +73,10 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
 }
 
 void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, double size) {
-   
+    OK;
     // Compute Forces
     //int num_parts = parts.size();
-    int mpi_size;
-    MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+    
     //std::cout << "I'm process " << mpi_rank << std::endl;
    
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
@@ -99,8 +101,8 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
 
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
         
-        for (int j = 0; j < num_parts; ++j) {
-            apply_force(parts_vel_acc_loc[i], parts_pos[i], parts_pos[j], masses[j]);
+        for (int j = i+1; j < num_parts; ++j) {
+            apply_force(parts_vel_acc_loc[i], parts_pos[i+mpi_rank*num_loc], parts_pos[j], masses[j]);
         }
         
     }

@@ -150,6 +150,8 @@ int main(int argc, char** argv) {
     char* savename;
 
     if(rank==0){
+
+    OK;
     
     // Open Output File
         savename = find_string_option(argc, argv, "-o", nullptr);
@@ -179,7 +181,7 @@ int main(int argc, char** argv) {
         // Assing random mass
         
         //std::cout << "mass: " <<  masses[i] << std::endl;
-
+        OK;
     
    }
 
@@ -212,12 +214,12 @@ int main(int argc, char** argv) {
     double seconds_1 = diff_1.count();
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
-
+    OK;
 
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
     
-        
+        OK;
         simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size);
         MPI_Barrier( MPI_COMM_WORLD);
         
