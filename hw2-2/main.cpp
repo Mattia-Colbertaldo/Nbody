@@ -70,24 +70,20 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
 
         
         // Assign random velocities within a bound
-        std::uniform_real_distribution<double> rand_real(-1.0, 1.0);
+        std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
         parts_vel_acc_loc[i].vx = rand_real(gen);
         parts_vel_acc_loc[i].vy = rand_real(gen);
-        
-        
-    }
-    
 
-    if(rank==0){
-    //just process 0 init masses
-    for(int i=0; i<num_parts; i++){
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
         float m = rand_mass(gen);
         masses[i]=m;
-        }
+
+        
+        
+        
     }
         
-    MPI_Bcast(&masses , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
+    MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &masses[0] , num_loc, MPI_FLOAT , MPI_COMM_WORLD);
     //MPI_Bcast(&parts_pos , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
 
     MPI_Barrier( MPI_COMM_WORLD);

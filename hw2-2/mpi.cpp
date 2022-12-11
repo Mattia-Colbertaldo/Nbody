@@ -78,14 +78,12 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
 
    //Ogni processore aggiorna le particelle nel range [mpi_rank*N, (mpi_rank+1)*N). Notate che per utilizzare apply_force e move vi servono posizione, velocità e massa delle particelle in [mpi_rank*N, (mpi_rank+1)*N) e solo posizione e massa delle particelle in [0, N)
     for (int i = 0; i < num_loc; ++i) {
-
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
-        
         for (int j = 0; j < num_parts; ++j) {
             apply_force(parts_vel_acc_loc[i], parts_pos[i+mpi_rank*num_loc], parts_pos[j], masses[j]);
         }
-        
     }
+    
 
 
 
