@@ -63,6 +63,7 @@ void simulate_one_step(std::vector<particle_t>& parts, std::vector<float>& masse
         }
     }
 
+
     // Move Particles
     for (int i = 0; i < num_parts; ++i) {
         move(parts[i], size);

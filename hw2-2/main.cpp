@@ -193,7 +193,7 @@ int main(int argc, char** argv) {
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
     // in this way we split the load in the most equilibrate way
     
-   
+    MPI_Bcast( &num_parts , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
     int num_loc = num_parts/mpi_size;
     std::cout << "num_loc: " << num_loc << std::endl;
     std::vector<particle_vel_acc> parts_vel_acc_loc(num_loc);
@@ -224,11 +224,10 @@ int main(int argc, char** argv) {
     save(fsave, parts_pos, num_parts, size);
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
-        //OK;
         MPI_Barrier( MPI_COMM_WORLD);
-        //OK;
+        OK;
         simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size, rank);
-        //OK;
+        OK;
         MPI_Barrier( MPI_COMM_WORLD);
         //OK;
         

@@ -37,13 +37,13 @@ void move(particle_vel_acc& particle_vel_acc_loc, particle_pos& pos ,double size
     particle_vel_acc_loc.vy += particle_vel_acc_loc.ay * dt;
     pos.x += particle_vel_acc_loc.vx * dt;
     pos.y += particle_vel_acc_loc.vy * dt;
-
+    OK;
     // Bounce from walls
     while (pos.x < 0 || pos.x > size) {
         pos.x = pos.x < 0 ? -pos.x : 2 * size - pos.x;
         particle_vel_acc_loc.vx = -particle_vel_acc_loc.vx;
     }
-
+    OK;
     while (pos.y < 0 || pos.y > size) {
         pos.y = pos.y < 0 ? -pos.y : 2 * size - pos.y;
         particle_vel_acc_loc.vy = -particle_vel_acc_loc.vy;
@@ -70,7 +70,7 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
 
 void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, double size, int rank) {
     mpi_rank = rank;
-    //OK;
+
     
    
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
@@ -86,16 +86,16 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
     
 
 
-
     // Move Particles
-	
+	OK;
     for (int i = 0; i < num_loc; ++i) {
         move(parts_vel_acc_loc[i],parts_pos[i+num_loc*mpi_rank] , size);
+        OK;
     }
     // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori. Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente. 
-    
+    OK;
     MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , num_loc*2 , MPI_DOUBLE , MPI_COMM_WORLD);
-
+    OK;
 }
 
 
