@@ -52,10 +52,6 @@ void move(particle_vel_acc& particle_vel_acc_loc, particle_pos& pos ,double size
 
 
 void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses,int num_parts, double size) {
-    //int num_parts = parts.size();
-
-    //MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
-    //MPI_Comm_mpi_rank(MPI_COMM_WORLD, &mpi_rank);
 
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
@@ -74,35 +70,18 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
 
 void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, double size, int rank) {
     mpi_rank = rank;
-    OK;
-    // Compute Forces
-    //int num_parts = parts.size();
+    //OK;
     
-    //std::cout << "I'm process " << mpi_rank << std::endl;
    
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
     // in this way we split the load in the most equilibrate way
-
-
-    /*
-    for(int t=0; t<num_parts; t++){
-        std::cout << t << "-" << parts[t].x << " " << parts[t].y << " ";
-    }
-    std::cout << std::endl;
-    */
-    /*
-    for(int t=0; t<sizes[mpi_rank]/2; t++){
-        std::cout << t << "-" << loc_parts[t].x << " " << loc_parts[t].y << " ";
-    }
-    std::cout << "From process " << mpi_rank << std::endl;
-    */
 
    //Ogni processore aggiorna le particelle nel range [mpi_rank*N, (mpi_rank+1)*N). Notate che per utilizzare apply_force e move vi servono posizione, velocità e massa delle particelle in [mpi_rank*N, (mpi_rank+1)*N) e solo posizione e massa delle particelle in [0, N)
     for (int i = 0; i < num_loc; ++i) {
 
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
         
-        for (int j = i+1; j < num_parts; ++j) {
+        for (int j = 0; j < num_parts; ++j) {
             apply_force(parts_vel_acc_loc[i], parts_pos[i+mpi_rank*num_loc], parts_pos[j], masses[j]);
         }
         

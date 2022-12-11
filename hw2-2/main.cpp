@@ -10,6 +10,7 @@
 #include <mpi.h>
 
 int rank;
+bool first = true;
 
 #define OK std::cout << "At main:" << __LINE__ << " from process " << rank << std::endl
 
@@ -20,12 +21,12 @@ int rank;
 // I/O routines
 void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts, double size) {
     //int num_parts = parts.size();
-    static bool first = true;
 
     if (first) {
         fsave << num_parts << " " << size << "\n";
         first = false;
     }
+    
 
     for (int i = 0; i < num_parts; ++i) {
         fsave << parts[i].x << " " << parts[i].y << "\n";
@@ -41,10 +42,10 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
     //int num_parts = parts.size();
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
-    OK;
+    
     int sx = (int)ceil(sqrt((double)num_parts));
     int sy = (num_parts + sx - 1) / sx;
-    OK;
+    
 
     std::vector<int> shuffle(num_parts);
     for (int i = 0; i < shuffle.size(); ++i) {
@@ -69,13 +70,13 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
 
         
         // Assign random velocities within a bound
-        std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
+        std::uniform_real_distribution<double> rand_real(-1.0, 1.0);
         parts_vel_acc_loc[i].vx = rand_real(gen);
         parts_vel_acc_loc[i].vy = rand_real(gen);
         
         
     }
-    OK;
+    
 
     if(rank==0){
     //just process 0 init masses
@@ -85,7 +86,7 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
         masses[i]=m;
         }
     }
-    OK;
+        
     MPI_Bcast(&masses , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
     //MPI_Bcast(&parts_pos , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
 
@@ -143,22 +144,33 @@ int main(int argc, char** argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    std::cout << "mpi_size: " << mpi_size << std::endl;
+
     int part_seed;
     double size;
     int num_parts;
     int num_th;
     char* savename;
 
+    savename = find_string_option(argc, argv, "-o", nullptr);
+    if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
+    std::ofstream fsave(savename);
+    if (savename != nullptr) std::cout << "File created." << std::endl;
+    if(rank != 0) fsave.close();
+    
+
     if(rank==0){
 
-    OK;
+    
+
+    //savename = find_string_option(argc, argv, "-o", nullptr);
+    //if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
+    //std::ofstream fsave(savename);
+    //if (savename != nullptr) std::cout << "File created." << std::endl;
+       
     
     // Open Output File
-        savename = find_string_option(argc, argv, "-o", nullptr);
-        if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
-        //std::ofstream fsave(savename);
-        if (savename != nullptr) std::cout << "File created." << std::endl;
-       
+        
 
         // Parse Args
         if (find_arg_idx(argc, argv, "-h") >= 0) {
@@ -178,10 +190,7 @@ int main(int argc, char** argv) {
         size = sqrt(density * num_parts);
         num_th = find_int_arg(argc, argv, "-t", 8);
         
-        // Assing random mass
         
-        //std::cout << "mass: " <<  masses[i] << std::endl;
-        OK;
     
    }
 
@@ -190,6 +199,7 @@ int main(int argc, char** argv) {
     
    
     int num_loc = num_parts/mpi_size;
+    std::cout << "num_loc: " << num_loc << std::endl;
     std::vector<particle_vel_acc> parts_vel_acc_loc(num_loc);
     std::vector<particle_pos> parts_pos(num_parts);
     
@@ -215,24 +225,24 @@ int main(int argc, char** argv) {
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
     OK;
-
+    save(fsave, parts_pos, num_parts, size);
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
-    
-        OK;
+        //OK;
         MPI_Barrier( MPI_COMM_WORLD);
-        OK;
+        //OK;
         simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size, rank);
-        OK;
+        //OK;
         MPI_Barrier( MPI_COMM_WORLD);
-        OK;
+        //OK;
         
         // Save state if necessary
         if(rank==0)
         {
-            std::ofstream fsave(savename);
+            //std::ofstream fsave(savename);
             if (fsave.good() && (step % savefreq) == 0) {
                 //gather_for_save(parts, masses, num_parts, rank, size );
+                //std::cout << "rank " << rank << " : saving at step " << step <<std::endl;
                 save(fsave, parts_pos, num_parts, size);
             }
             
@@ -240,14 +250,14 @@ int main(int argc, char** argv) {
                 if (step%10 == 0){
                 fflush(stdout);
                 printf("[ %d% ]\r", (int)(step*100/nsteps));
-                if(step = nsteps-1){
+                }
+                if(step == nsteps-1){
+                    std::cout << "Closing file..." << std::endl;
                     fsave.close();
                 }
-                }
+                
             }
         }
-    
-        
     }
         
     

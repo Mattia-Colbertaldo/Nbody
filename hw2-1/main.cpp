@@ -157,13 +157,14 @@ int main(int argc, char** argv) {
 
 //#ifdef _MPI
 
-
+save(fsave, parts, size);
 #ifdef _OPENMP
 #pragma omp parallel default(shared) num_threads(num_th)
 #endif
     {
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
+            
             simulate_one_step(parts,masses,num_parts,size);
 
             // Save state if necessary
