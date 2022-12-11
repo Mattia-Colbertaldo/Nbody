@@ -63,8 +63,8 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
 
         // Distribute particles evenly to ensure proper spacing
         
-        parts_pos[i+ num_loc].x = size * (1. + (k % sx)) / (1 + sx);
-        parts_pos[i+ num_loc].y = size * (1. + (k / sx)) / (1 + sy);
+        parts_pos[i+ num_loc*rank].x = size * (1. + (k % sx)) / (1 + sx);
+        parts_pos[i+ num_loc*rank].y = size * (1. + (k / sx)) / (1 + sy);
         
 
         
@@ -87,14 +87,14 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc , std::vect
     }
     OK;
     MPI_Bcast(&masses , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD); //FLAG BCAST MASSES
-    MPI_Bcast(&parts_pos , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
+    //MPI_Bcast(&parts_pos , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
 
     MPI_Barrier( MPI_COMM_WORLD);
     OK;
     
+    MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , 2*num_loc, MPI_DOUBLE , MPI_COMM_WORLD);
     
-    MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , 2*num_loc , MPI_DOUBLE , MPI_COMM_WORLD);
-
+    OK;
 }
 
 
@@ -220,8 +220,12 @@ int main(int argc, char** argv) {
     for (int step = 0; step < nsteps; ++step) {
     
         OK;
-        simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size);
         MPI_Barrier( MPI_COMM_WORLD);
+        OK;
+        simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, size, rank);
+        OK;
+        MPI_Barrier( MPI_COMM_WORLD);
+        OK;
         
         // Save state if necessary
         if(rank==0)

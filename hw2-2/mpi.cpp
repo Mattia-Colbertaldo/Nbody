@@ -4,7 +4,7 @@
 #include <iostream>
 
 int mpi_rank;
-int mpi_size;
+
 
 #define OK std::cout << "At mpi:" << __LINE__ << " from process " << mpi_rank << std::endl
 
@@ -54,8 +54,8 @@ void move(particle_vel_acc& particle_vel_acc_loc, particle_pos& pos ,double size
 void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses,int num_parts, double size) {
     //int num_parts = parts.size();
 
-    MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+    //MPI_Comm_size( MPI_COMM_WORLD , &mpi_size);
+    //MPI_Comm_mpi_rank(MPI_COMM_WORLD, &mpi_rank);
 
 	// You can use this space to initialize static, global data objects
     // that you may need. This function will be called once before the
@@ -72,7 +72,8 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
 
 }
 
-void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, double size) {
+void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, double size, int rank) {
+    mpi_rank = rank;
     OK;
     // Compute Forces
     //int num_parts = parts.size();

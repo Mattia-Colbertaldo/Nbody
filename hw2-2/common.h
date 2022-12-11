@@ -28,7 +28,7 @@ typedef struct particle_vel_acc {
 
 //for MPI
 void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses,int num_parts, double size);
-void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc,  double size);
+void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc,  double size, int rank);
 /*void gather_for_save(std::vector<particle_mpi> parts, std::vector<float>& masses, int num_parts, int rank, double size);*/
 
 #endif
