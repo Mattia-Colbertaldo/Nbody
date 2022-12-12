@@ -256,12 +256,12 @@ int main(int argc, char** argv) {
     
     std::vector<float> masses(num_parts);
     
-    std::cout << rank << " -> Trying to init particles..." << std::endl;
+    if (!rank) std::cout << "Trying to init particles..." << std::endl;
     init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc); 
     
     
     // Algorithm
-    std::cout << rank << " -> Starting..." << std::endl;
+    //std::cout << rank << " -> Starting..." << std::endl;
     auto start_time = std::chrono::steady_clock::now();
     
     /*

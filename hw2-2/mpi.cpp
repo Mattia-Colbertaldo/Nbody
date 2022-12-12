@@ -77,7 +77,9 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
     for (int i = 0; i < num_loc; ++i) {
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
         for (int j = 0; j < num_parts; ++j) {
+            //OK;
             apply_force(parts_vel_acc_loc[i], parts_pos[i+mpi_rank*num_loc], parts_pos[j], masses[j]);
+            //OK;
         }
     }
 
@@ -90,7 +92,9 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
     // Move Particles
 	
     for (int i = 0; i < num_loc; ++i) {
+        //OK;
         move(parts_vel_acc_loc[i],parts_pos[i+num_loc*mpi_rank] , size);
+        //OK;
         
     }
     // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori. Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente. 
