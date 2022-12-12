@@ -67,7 +67,7 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
 
 }
 
-void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, double size, int rank) {
+void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, int displ_loc,  double size, int rank){
     mpi_rank = rank;
 
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
@@ -78,7 +78,7 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
         for (int j = 0; j < num_parts; ++j) {
             //OK;
-            apply_force(parts_vel_acc_loc[i], parts_pos[i+mpi_rank*num_loc], parts_pos[j], masses[j]);
+            apply_force(parts_vel_acc_loc[i], parts_pos[i+displ_loc], parts_pos[j], masses[j]);
             //OK;
         }
     }
@@ -93,7 +93,7 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
 	
     for (int i = 0; i < num_loc; ++i) {
         //OK;
-        move(parts_vel_acc_loc[i],parts_pos[i+num_loc*mpi_rank] , size);
+        move(parts_vel_acc_loc[i],parts_pos[i+displ_loc] , size);
         //OK;
         
     }
