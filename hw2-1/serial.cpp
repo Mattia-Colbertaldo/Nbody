@@ -52,7 +52,6 @@ void init_simulation(std::vector<particle_t>& parts, std::vector<float>& masses,
     // algorithm begins. Do not do any particle simulation here
     
 }
-
 void simulate_one_step(std::vector<particle_t>& parts, std::vector<float>& masses, int num_parts, double size) {
     //int num_parts = parts.size();
     // Compute Forces

@@ -46,6 +46,9 @@ CMakeFiles/mpi.dir/mpi.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hash_bytes.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/range_access.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stddef.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/math.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/libc-header-start.h \
@@ -66,7 +69,6 @@ CMakeFiles/mpi.dir/mpi.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/iscanonical.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/std_abs.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdlib.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stddef.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/waitflags.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/waitstatus.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/locale_t.h \
@@ -95,8 +97,6 @@ CMakeFiles/mpi.dir/mpi.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/struct_rwlock.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/alloca.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/stdlib-float.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ostream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \

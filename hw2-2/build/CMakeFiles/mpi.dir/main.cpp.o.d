@@ -46,6 +46,9 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hash_bytes.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/range_access.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stddef.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ratio \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdint \
@@ -62,7 +65,6 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/limits \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ctime \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/time.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stddef.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/time.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/timex.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/struct_timeval.h \
@@ -210,6 +212,4 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/numeric \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_numeric.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h

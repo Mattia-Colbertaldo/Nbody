@@ -19,7 +19,6 @@ void apply_force(particle_vel_acc& particle_vel_acc_loc,  particle_pos& particle
     // Check if the two particles should interact
     if (r2 > cutoff * cutoff)
         return;
-
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
 
@@ -71,8 +70,6 @@ void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses
 void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, double size, int rank) {
     mpi_rank = rank;
 
-    
-   
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
     // in this way we split the load in the most equilibrate way
 
@@ -83,8 +80,12 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
             apply_force(parts_vel_acc_loc[i], parts_pos[i+mpi_rank*num_loc], parts_pos[j], masses[j]);
         }
     }
+
+    //MPI_Barrier( MPI_COMM_WORLD );
+
     
-    MPI_Barrier( MPI_COMM_WORLD);
+    
+
 
     // Move Particles
 	
@@ -93,8 +94,6 @@ void simulate_one_step( std::vector<particle_pos>& parts_pos, std::vector<partic
         
     }
     // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori. Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente. 
-    
-    MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , num_loc*2 , MPI_DOUBLE , MPI_COMM_WORLD);
     
 }
 
