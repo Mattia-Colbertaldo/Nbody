@@ -8,7 +8,7 @@
 #include <vector>
 #include <math.h>
 
-#include <vector>
+
 
 
 // flag ifdef mpi
@@ -57,28 +57,28 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
     }
 
     for (int i = 0; i < num_parts; ++i) {
+        
         // Make sure particles are not spatially sorted
         std::uniform_int_distribution<int> rand_int(0, num_parts - i - 1);
         int j = rand_int(gen);
         int k = shuffle[j];
         shuffle[j] = shuffle[num_parts - i - 1];
 
-        // Distribute particles evenly to ensure proper spacing
-        parts[i].x = size * (1. + (k % sx)) / (1 + sx);
-        parts[i].y = size * (1. + (k / sx)) / (1 + sy);
+        //
+        const double x = size * (1. + (k % sx)) / (1 + sx);
+        const double y = size * (1. + (k / sx)) / (1 + sy);
 
-        // Assign random velocities within a bound
+        //
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
-        parts[i].vx = rand_real(gen);
-        parts[i].vy = rand_real(gen);
-        
+        const double vx = rand_real(gen);
+        const double vy = rand_real(gen);
 
-       // Assing random mass
+        //
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
-        float m = rand_mass(gen);
-        parts[i].mass = m;
-        //std::cout << "mass: " << masses[i] << std::endl;
+        const float m = rand_mass(gen);
+        parts[i]=particle(x, y, vx, vy, m);
     }
+
 }
 
 // Command Line Option Processing
