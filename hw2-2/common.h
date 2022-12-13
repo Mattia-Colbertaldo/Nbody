@@ -13,17 +13,38 @@
 #define G        0.00000000000667
 
 // Particle Data Structure: used in OPENMP
-typedef struct particle_pos {
+class particle_pos {
+    public:
+    particle_pos(){};
+    particle_pos(const double x, const double y){
+    this->x = x;
+    this->y = y;
+    };
+        
     double x;  // Position X
     double y;  // Position Y
-} particle_pos;
+    
+};
 
-typedef struct particle_vel_acc {
+
+class particle_vel_acc {
+    public:
+    
     double vx; // Velocity X
     double vy; // Velocity Y
     double ax; // Acceleration X
     double ay; // Acceleration Y
-} particle_vel_acc;
+    particle_vel_acc(){};
+            
+    particle_vel_acc(const double vx, const double vy){
+    this->vx = vx;
+    this->vy = vy;
+    this->ax = 0.;
+    this->ay = 0.;
+    };
+    void apply_force(particle_pos & me, particle_pos& neighbor, float mass);
+    void move(particle_pos & me, double size);
+};
 
 
 

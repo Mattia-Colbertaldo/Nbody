@@ -10,10 +10,10 @@ int mpi_rank;
 
 
 // Apply the force from neighbor to particle
-void apply_force(particle_vel_acc& particle_vel_acc_loc,  particle_pos& particle,  particle_pos& neighbor, float mass_neigh) {
+void particle_vel_acc :: apply_force(particle_pos& me, particle_pos& neighbor, float mass_neigh) {
     // Calculate Distance
-    double dx = neighbor.x - particle.x;
-    double dy = neighbor.y - particle.y;
+    double dx = neighbor.x - me.x;
+    double dy = neighbor.y - me.y;
     double r2 = dx * dx + dy * dy;
 
     // Check if the two particles should interact
@@ -24,28 +24,28 @@ void apply_force(particle_vel_acc& particle_vel_acc_loc,  particle_pos& particle
 
     // Very simple short-range repulsive force
     double coef = mass_neigh* (1 - cutoff / r) / r2;
-    particle_vel_acc_loc.ax += coef * dx;
-    particle_vel_acc_loc.ay += coef * dy;
+    this->ax += coef * dx;
+    this->ay += coef * dy;
 }
 
 // Integrate the ODE
-void move(particle_vel_acc& particle_vel_acc_loc, particle_pos& pos ,double size) {
+void particle_vel_acc:: move(particle_pos& pos ,double size) {
     // Slightly simplified Velocity Verlet integration
     // Conserves energy better than explicit Euler method
-    particle_vel_acc_loc.vx += particle_vel_acc_loc.ax * dt;
-    particle_vel_acc_loc.vy += particle_vel_acc_loc.ay * dt;
-    pos.x += particle_vel_acc_loc.vx * dt;
-    pos.y += particle_vel_acc_loc.vy * dt;
+    this->vx += this->ax * dt;
+    this->vy += this->ay * dt;
+    pos.x += this->vx * dt;
+    pos.y += this->vy * dt;
     
     // Bounce from walls
     while (pos.x < 0 || pos.x > size) {
         pos.x = pos.x < 0 ? -pos.x : 2 * size - pos.x;
-        particle_vel_acc_loc.vx = -particle_vel_acc_loc.vx;
+        this->vx = -this->vx;
     }
     
     while (pos.y < 0 || pos.y > size) {
         pos.y = pos.y < 0 ? -pos.y : 2 * size - pos.y;
-        particle_vel_acc_loc.vy = -particle_vel_acc_loc.vy;
+        this->vy = -this->vy;
     }
 }
 
@@ -78,7 +78,7 @@ void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particl
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
         for (int j = 0; j < num_parts; ++j) {
             //OK;
-            apply_force(parts_vel_acc_loc[i], parts_pos[i+displ_loc], parts_pos[j], masses[j]);
+            parts_vel_acc_loc[i].apply_force(parts_pos[i+displ_loc], parts_pos[j], masses[j]);
             //OK;
         }
     }
@@ -93,7 +93,7 @@ void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particl
 	
     for (int i = 0; i < num_loc; ++i) {
         //OK;
-        move(parts_vel_acc_loc[i],parts_pos[i+displ_loc] , size);
+        parts_vel_acc_loc[i].move(parts_pos[i+displ_loc] , size);
         //OK;
         
     }
