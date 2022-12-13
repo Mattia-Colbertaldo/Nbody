@@ -42,7 +42,7 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
                     std::vector<float>& masses,
                     int num_parts, double size,int part_seed, int rank,
                     std::vector<particle_pos>&parts_pos, int num_loc, 
-                    int loc_displ, std::vector<int>& sizes) {
+                     std::vector<int>& displs, std::vector<int>& sizes) {
     
     //int num_parts = parts.size();
     std::random_device rd;
@@ -91,10 +91,11 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
     for (int i = 0; i < shuffle.size(); ++i) {
         shuffle[i] = i;
     }
+    
+    std::vector<particle_vel_acc> parts_vel_acc_temp(num_parts);
 
     if(rank==0){
 
-        std::vector<particle_vel_acc> parts_vel_acc_temp(num_parts);
 
         // initialize local vector of positions and velocities (parts_pos_vel_loc)
         // also fill the local part of vector of positions (parts_pos) and then allgather it
@@ -126,18 +127,11 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
             parts_vel_acc_loc[i].vx = parts_vel_acc_temp[i].vx;
             parts_vel_acc_loc[i].vy = parts_vel_acc_temp[i].vy;
         }
-        //sending to others
-        int d=sizes[0];
-        for(int r=1; r<mpi_size; r++){
-            MPI_Send( &parts_vel_acc_temp[d], sizes[r] , mpi_part_vel_acc_type , r , r, MPI_COMM_WORLD);
-            d+=sizes[r];
-        }
          
     }
-    //else (i'm not rank 0)
-    else MPI_Recv( &parts_vel_acc_loc[0] , num_loc , mpi_part_vel_acc_type , 0 , rank , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
-
-
+    MPI_Scatterv( &parts_vel_acc_temp[0] , &sizes[0] , &displs[0], mpi_part_vel_acc_type , &parts_vel_acc_loc[0] , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
+            
+ 
     
     
     //MPI_Barrier( MPI_COMM_WORLD );
@@ -256,8 +250,6 @@ int main(int argc, char** argv) {
             std::cout << "Size of process " << i << " = " << sizes[i] << std::endl;
             displs[i+1]= displs[i]+sizes[i];
             std::cout << "Displ of process " << i << " = " << displs[i] << std::endl;
-            MPI_Send( &sizes[i] , 1 , MPI_INT , i , i+mpi_size , MPI_COMM_WORLD);
-            MPI_Send( &displs[i] , 1 , MPI_INT , i , i , MPI_COMM_WORLD);
         }
         
         
@@ -272,9 +264,8 @@ int main(int argc, char** argv) {
     MPI_Bcast( &sizes[0] , mpi_size , MPI_INT , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &displs[0] , mpi_size+1 , MPI_INT , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &part_seed , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
-    MPI_Recv( &num_loc , 1 , MPI_INT , 0 , rank+mpi_size , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
-    MPI_Recv( &displ_loc , 1 , MPI_INT , 0 , rank , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
-    
+    num_loc=sizes[rank];
+    displ_loc=displs[rank];
     //std::cout << "num_loc: " << num_loc << std::endl;
     //std::cout << "size: " << size << std::endl;
     std::vector<particle_vel_acc> parts_vel_acc_loc(num_loc);
@@ -283,7 +274,7 @@ int main(int argc, char** argv) {
     std::vector<float> masses(num_parts);
     
     if (!rank) std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc, displ_loc, sizes); 
+    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc, displs, sizes); 
     
     
     // Algorithm
