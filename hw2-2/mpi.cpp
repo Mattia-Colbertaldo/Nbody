@@ -10,7 +10,7 @@ int mpi_rank;
 
 
 // Apply the force from neighbor to particle
-void particle_vel_acc :: apply_force(particle_pos& me, particle_pos& neighbor, float mass_neigh) {
+void particle_vel_acc :: apply_force(const particle_pos& me, const particle_pos& neighbor, float mass_neigh) {
     // Calculate Distance
     double dx = neighbor.x - me.x;
     double dy = neighbor.y - me.y;
