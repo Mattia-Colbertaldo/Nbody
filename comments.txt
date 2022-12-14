@@ -1,0 +1,32 @@
+1. If a class has only public members you can call it a struct (but is not a mistake doing otherwise).
+
+2. I'd suggest not to call a file mpi.cpp since mpi.h is the header file of MPI. Anyway, the probelm with mpi.cpp
+is that there is no corresponding header file with the pure declarations of the functions. 
+
+3. If you pass by reference quantities that are not changed in a function, they should to be declared const. Failure to do so is make your code less usable. For instance
+
+int f(double & x); // this function does not change x
+...
+
+auto y = f(3.5); //SYNTAX ERROR. A literal constant cannot bint to a reference
+
+While instead with
+
+int f(const double & x);
+
+it would have worked fine. Constants can bind to const references. So,
+remember the rule: if you pass by reference a variable that is not
+chenged in the function you have to add const.
+
+4. Why do you use float in float mass_neigh (mpi.cpp). You use double elsewhere, I do not understand the need of float.
+
+5. A lot of C-style stuff. Try to meke it a little more C++. For intance  (int)(step*100/nsteps)
+in C++ is static_cast<int>(step*100/nsteps). static_cast is a safe cast, if it is not possible you get a compiler error. 
+C-style cast is not safe. If the types are incompatible the code compiles but you get garbage.
+
+6. BUILD DIRECTORIES as well as object files and compiled libraries SHOULD NOT BE PUT IN A GIT REPOSITORY!!! Nothing that is
+build by compilation goes in the repo!
+
+
+
+
