@@ -253,9 +253,9 @@ int main(int argc, char** argv) {
         displs[0]=0;
         for(int i=0; i<mpi_size; i++){
             sizes[i]= num_parts/mpi_size + (i < num_parts%mpi_size);
-            std::cout << "Size of process " << i << " = " << sizes[i] << std::endl;
+            //std::cout << "Size of process " << i << " = " << sizes[i] << std::endl;
             displs[i+1]= displs[i]+sizes[i];
-            std::cout << "Displ of process " << i << " = " << displs[i] << std::endl;
+            //std::cout << "Displ of process " << i << " = " << displs[i] << std::endl;
             MPI_Send( &sizes[i] , 1 , MPI_INT , i , i+mpi_size , MPI_COMM_WORLD);
             MPI_Send( &displs[i] , 1 , MPI_INT , i , i , MPI_COMM_WORLD);
         }
@@ -297,15 +297,19 @@ int main(int argc, char** argv) {
     //MPI_Barrier( MPI_COMM_WORLD);
     std::cout << "Init simulation ended." << std::endl;
     
-
-    auto init_time = std::chrono::steady_clock::now();
-    std::chrono::duration<double> diff_1 = init_time - start_time;
-    double seconds_1 = diff_1.count();
-    std::cout << "initialization Time = " << seconds_1 << " seconds\n";
-
     */
+   if(!rank){
+        auto init_time = std::chrono::steady_clock::now();
+        std::chrono::duration<double> diff_1 = init_time - start_time;
+        double seconds_1 = diff_1.count();
+        std::cout << "initialization Time = " << seconds_1 << " seconds\n";
+    }
 
-   std::cout << rank << " -> displ_loc: " << displ_loc << std::endl;
+    
+
+    
+
+   //std::cout << rank << " -> displ_loc: " << displ_loc << std::endl;
 
     if(!rank) save(fsave, parts_pos, num_parts, size);
     //for nel tempo: non parallelizzare

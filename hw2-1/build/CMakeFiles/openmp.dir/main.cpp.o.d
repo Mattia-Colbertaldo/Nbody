@@ -1,7 +1,7 @@
 CMakeFiles/openmp.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/hw2-1/common.h \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -210,4 +210,16 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/numeric \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_numeric.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/thread \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/std_thread.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tuple \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/utility \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_relops.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/array \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uses_allocator.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/invoke.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/refwrap.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/unique_ptr.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/this_thread_sleep.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/omp.h
