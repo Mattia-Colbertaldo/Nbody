@@ -7,6 +7,8 @@
 #include <random>
 #include <vector>
 #include <math.h>
+#include <thread>
+#include <omp.h>
 
 #include <vector>
 
@@ -155,10 +157,10 @@ int main(int argc, char** argv) {
     double seconds_1 = diff_1.count();
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
-//#ifdef _MPI
-
 save(fsave, parts, size);
 #ifdef _OPENMP
+std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\nRunning "
+          << num_th << " thread(s)." <<std::endl;
 #pragma omp parallel default(shared) num_threads(num_th)
 #endif
     {

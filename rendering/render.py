@@ -5,6 +5,18 @@ from sys import argv, exit
 from PIL import Image
 from PIL import ImageDraw
 
+import numpy as np
+import random
+
+def random_color():
+    r = random.randint(0,255)
+    g = random.randint(0,255)
+    b = random.randint(0,255)
+    return [r,g,b]
+
+colors = []
+
+
 # Parse Command Line Arguments
 if len(argv) < 3:
     exit("Usage is render.py <input file> <output file> [cutoff]")
@@ -44,8 +56,9 @@ with open(input_file, 'r') as f:
             center_x, center_y = line.split()
             center_x = int(1024 * (float(center_x) / box_size))
             center_y = int(1024 * (float(center_y) / box_size))
+            
 
             drawer.ellipse(circle_to_box(center_x, center_y, cutuff_radius), 'yellow')
-            drawer.ellipse(circle_to_box(center_x, center_y, 1), 'black')
+            drawer.ellipse(circle_to_box(center_x, center_y, 2), 'black')
 
-    frames[0].save(output_file, format='GIF', append_images=frames[1:], save_all=True, duration=100, loop=0)
+    frames[0].save(output_file, format='GIF', append_images=frames[1:], save_all=True, duration=50, loop=0)

@@ -53,10 +53,10 @@ RM = /u/sw/toolchains/gcc-glibc/11.2.0/base/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/nbody/hw2-1
+CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/nbody/Nbody/hw2-1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/hw2-1/build
+CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/openmp.dir/depend.make
@@ -72,30 +72,30 @@ include CMakeFiles/openmp.dir/flags.make
 CMakeFiles/openmp.dir/main.cpp.o: CMakeFiles/openmp.dir/flags.make
 CMakeFiles/openmp.dir/main.cpp.o: ../main.cpp
 CMakeFiles/openmp.dir/main.cpp.o: CMakeFiles/openmp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/openmp.dir/main.cpp.o"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/openmp.dir/main.cpp.o -MF CMakeFiles/openmp.dir/main.cpp.o.d -o CMakeFiles/openmp.dir/main.cpp.o -c /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/openmp.dir/main.cpp.o"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/openmp.dir/main.cpp.o -MF CMakeFiles/openmp.dir/main.cpp.o.d -o CMakeFiles/openmp.dir/main.cpp.o -c /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp
 
 CMakeFiles/openmp.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openmp.dir/main.cpp.i"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp > CMakeFiles/openmp.dir/main.cpp.i
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp > CMakeFiles/openmp.dir/main.cpp.i
 
 CMakeFiles/openmp.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/openmp.dir/main.cpp.s"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp -o CMakeFiles/openmp.dir/main.cpp.s
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp -o CMakeFiles/openmp.dir/main.cpp.s
 
 CMakeFiles/openmp.dir/openmp.cpp.o: CMakeFiles/openmp.dir/flags.make
 CMakeFiles/openmp.dir/openmp.cpp.o: ../openmp.cpp
 CMakeFiles/openmp.dir/openmp.cpp.o: CMakeFiles/openmp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/openmp.dir/openmp.cpp.o"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/openmp.dir/openmp.cpp.o -MF CMakeFiles/openmp.dir/openmp.cpp.o.d -o CMakeFiles/openmp.dir/openmp.cpp.o -c /home/jellyfish/shared-folder/nbody/hw2-1/openmp.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/openmp.dir/openmp.cpp.o"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/openmp.dir/openmp.cpp.o -MF CMakeFiles/openmp.dir/openmp.cpp.o.d -o CMakeFiles/openmp.dir/openmp.cpp.o -c /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/openmp.cpp
 
 CMakeFiles/openmp.dir/openmp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openmp.dir/openmp.cpp.i"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/hw2-1/openmp.cpp > CMakeFiles/openmp.dir/openmp.cpp.i
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/openmp.cpp > CMakeFiles/openmp.dir/openmp.cpp.i
 
 CMakeFiles/openmp.dir/openmp.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/openmp.dir/openmp.cpp.s"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/hw2-1/openmp.cpp -o CMakeFiles/openmp.dir/openmp.cpp.s
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/openmp.cpp -o CMakeFiles/openmp.dir/openmp.cpp.s
 
 # Object files for target openmp
 openmp_OBJECTS = \
@@ -111,7 +111,7 @@ openmp: CMakeFiles/openmp.dir/build.make
 openmp: /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/libgomp.so
 openmp: /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/libpthread.so
 openmp: CMakeFiles/openmp.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable openmp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable openmp"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/openmp.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -123,6 +123,6 @@ CMakeFiles/openmp.dir/clean:
 .PHONY : CMakeFiles/openmp.dir/clean
 
 CMakeFiles/openmp.dir/depend:
-	cd /home/jellyfish/shared-folder/nbody/hw2-1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jellyfish/shared-folder/nbody/hw2-1 /home/jellyfish/shared-folder/nbody/hw2-1 /home/jellyfish/shared-folder/nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles/openmp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jellyfish/shared-folder/nbody/Nbody/hw2-1 /home/jellyfish/shared-folder/nbody/Nbody/hw2-1 /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles/openmp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/openmp.dir/depend
 
