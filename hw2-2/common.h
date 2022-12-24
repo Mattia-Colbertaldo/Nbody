@@ -13,24 +13,31 @@
 #define G        0.00000000000667
 
 // Particle Data Structure: used in OPENMP
-typedef struct particle_pos {
+class particle_pos {
+    public:
+
+    particle_pos(){};
+    particle_pos(const double x, const double y, const double z) : x(x), y(y), z(z){};
     double x;  // Position X
     double y;  // Position Y
-} particle_pos;
+    double z;
+    
+};
 
-typedef struct particle_vel_acc {
+
+class particle_vel_acc {
+    public:
+
     double vx; // Velocity X
     double vy; // Velocity Y
+    double vz;
     double ax; // Acceleration X
     double ay; // Acceleration Y
-} particle_vel_acc;
-
-
-
-//for MPI
-void init_simulation(std::vector<particle_pos>& parts,std::vector<float>& masses,int num_parts, double size);
-void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc, std::vector<float>& masses, int num_parts, int num_loc, int displ_loc, double size, int rank);
-
-/*void gather_for_save(std::vector<particle_mpi> parts, std::vector<float>& masses, int num_parts, int rank, double size);*/
+    double az;
+    particle_vel_acc(){}; 
+    particle_vel_acc(const double vx, const double vy, const double vz) : vx(vx), vy(vy), ax(0.), ay(0.), az(0.){};
+    void apply_force(particle_pos & me, particle_pos& neighbor, float mass);
+    void move(particle_pos & me, double size);
+};
 
 #endif

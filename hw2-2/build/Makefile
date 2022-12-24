@@ -153,29 +153,29 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-mpi.o: mpi.cpp.o
-.PHONY : mpi.o
+particle.o: particle.cpp.o
+.PHONY : particle.o
 
 # target to build an object file
-mpi.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.o
-.PHONY : mpi.cpp.o
+particle.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/particle.cpp.o
+.PHONY : particle.cpp.o
 
-mpi.i: mpi.cpp.i
-.PHONY : mpi.i
+particle.i: particle.cpp.i
+.PHONY : particle.i
 
 # target to preprocess a source file
-mpi.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.i
-.PHONY : mpi.cpp.i
+particle.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/particle.cpp.i
+.PHONY : particle.cpp.i
 
-mpi.s: mpi.cpp.s
-.PHONY : mpi.s
+particle.s: particle.cpp.s
+.PHONY : particle.s
 
 # target to generate assembly for a file
-mpi.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/mpi.cpp.s
-.PHONY : mpi.cpp.s
+particle.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/particle.cpp.s
+.PHONY : particle.cpp.s
 
 # Help Target
 help:
@@ -189,9 +189,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... mpi.o"
-	@echo "... mpi.i"
-	@echo "... mpi.s"
+	@echo "... particle.o"
+	@echo "... particle.i"
+	@echo "... particle.s"
 .PHONY : help
 
 

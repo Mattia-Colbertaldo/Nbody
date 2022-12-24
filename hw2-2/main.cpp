@@ -16,13 +16,21 @@ MPI_Datatype mpi_part_pos_type;
 
 #define OK std::cout << "At main:" << __LINE__ << " from process " << rank << std::endl
 
+
+
+
+
 // =================
 // Helper Functions
 // =================
 
-// I/O routines
+
+
+
+
+/******         SAVING       *******/
+
 void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts, double size) {
-    //int num_parts = parts.size();
 
     if (first) {
         fsave << num_parts << " " << size << "\n";
@@ -31,39 +39,47 @@ void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts,
     
 
     for (int i = 0; i < num_parts; ++i) {
-        fsave << parts[i].x << " " << parts[i].y << "\n";
+        fsave << parts[i].x << " " << parts[i].y << " " << parts[i].z <<"\n";
     }
 
     fsave << std::endl;
 }
 
-// Particle Initialization
+
+
+
+
+/******         PARTICLE INITIALIZATION       *******/
+
+
 void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
                     std::vector<float>& masses,
                     int num_parts, double size,int part_seed, int rank,
                     std::vector<particle_pos>&parts_pos, int num_loc, 
-                    int loc_displ, std::vector<int>& sizes) {
-    
-    //int num_parts = parts.size();
+                     std::vector<int>& displs, std::vector<int>& sizes) {
+
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
     
     int sx = (int)ceil(sqrt((double)num_parts));
     int sy = (num_parts + sx - 1) / sx;
+    int sz = sy;
 
 
     ////// MPI STRUCT /////////////
 
-    const int nitems=4;
-    int          blocklengths[4] = {1,1,1,1};
-    MPI_Datatype types[4] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
+    const int nitems=6;
+    int          blocklengths[6] = {1,1,1,1,1,1};
+    MPI_Datatype types[6] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
     //MPI_Datatype mpi_part_vel_acc_type;
-    MPI_Aint     offsets[4];
+    MPI_Aint     offsets[6];
 
     offsets[0] = offsetof(particle_vel_acc, vx);
     offsets[1] = offsetof(particle_vel_acc, vy);
-    offsets[2] = offsetof(particle_vel_acc, ax);
-    offsets[3] = offsetof(particle_vel_acc, ay);
+    offsets[2] = offsetof(particle_vel_acc, vz);
+    offsets[3] = offsetof(particle_vel_acc, ax);
+    offsets[4] = offsetof(particle_vel_acc, ay);
+    offsets[5] = offsetof(particle_vel_acc, az);
 
     MPI_Type_create_struct(nitems, blocklengths, offsets, types, &mpi_part_vel_acc_type);
     MPI_Type_commit(&mpi_part_vel_acc_type);
@@ -72,14 +88,15 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
 
     ////// MPI STRUCT /////////////
     
-    const int nitems1=2;
-    int          blocklengths1[2] = {1,1};
-    MPI_Datatype types1[2] = {MPI_DOUBLE, MPI_DOUBLE};
+    const int nitems1=3;
+    int          blocklengths1[3] = {1,1,1};
+    MPI_Datatype types1[3] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
     //MPI_Datatype mpi_part_pos_type;
-    MPI_Aint     offsets1[2];
+    MPI_Aint     offsets1[3];
 
     offsets1[0] = offsetof(particle_pos, x);
     offsets1[1] = offsetof(particle_pos, y);
+    offsets1[2] = offsetof(particle_pos, z);
 
     MPI_Type_create_struct(nitems1, blocklengths1, offsets1, types1, &mpi_part_pos_type);
     MPI_Type_commit(&mpi_part_pos_type);
@@ -91,10 +108,11 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
     for (int i = 0; i < shuffle.size(); ++i) {
         shuffle[i] = i;
     }
+    
+    std::vector<particle_vel_acc> parts_vel_acc_temp(num_parts);
 
     if(rank==0){
 
-        std::vector<particle_vel_acc> parts_vel_acc_temp(num_parts);
 
         // initialize local vector of positions and velocities (parts_pos_vel_loc)
         // also fill the local part of vector of positions (parts_pos) and then allgather it
@@ -109,11 +127,13 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
             
             parts_pos[i].x = size * (1. + (k % sx)) / (1 + sx);
             parts_pos[i].y = size * (1. + (k / sx)) / (1 + sy);
+            parts_pos[i].z = parts_pos[i].x * parts_pos[i].y;
             
             // Assign random velocities within a bound
             std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
             parts_vel_acc_temp[i].vx = rand_real(gen);
             parts_vel_acc_temp[i].vy = rand_real(gen);
+            parts_vel_acc_temp[i].vz = rand_real(gen);
 
             std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
             float m = rand_mass(gen);
@@ -125,38 +145,54 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
         for(int i=0; i<num_loc; i++){
             parts_vel_acc_loc[i].vx = parts_vel_acc_temp[i].vx;
             parts_vel_acc_loc[i].vy = parts_vel_acc_temp[i].vy;
-        }
-        //sending to others
-        int d=sizes[0];
-        for(int r=1; r<mpi_size; r++){
-            MPI_Send( &parts_vel_acc_temp[d], sizes[r] , mpi_part_vel_acc_type , r , r, MPI_COMM_WORLD);
-            d+=sizes[r];
+            parts_vel_acc_loc[i].vz = parts_vel_acc_temp[i].vz;
         }
          
     }
-    //else (i'm not rank 0)
-    else MPI_Recv( &parts_vel_acc_loc[0] , num_loc , mpi_part_vel_acc_type , 0 , rank , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
-
-
-    
-    
-    //MPI_Barrier( MPI_COMM_WORLD );
-
-
+    MPI_Scatterv( &parts_vel_acc_temp[0] , &sizes[0] , &displs[0], mpi_part_vel_acc_type ,
+                  &parts_vel_acc_loc[0] , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
     MPI_Bcast( &masses[0] , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
     MPI_Bcast(&parts_pos[0] , num_parts, mpi_part_pos_type , 0 , MPI_COMM_WORLD);
-
-
-
-    //MPI_Barrier( MPI_COMM_WORLD );
-    
-    
-    //MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , 2*num_loc, MPI_DOUBLE , MPI_COMM_WORLD);
 }
 
 
 
 
+
+
+
+/******         ONE STEP SIMULATION       *******/
+
+
+void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc,
+                       std::vector<float>& masses, int num_parts, int num_loc, int displ_loc,  double size, int rank){
+
+    // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
+    // in this way we split the load in the most equilibrate way
+    // Ogni processore aggiorna le particelle nel range [mpi_rank*N, (mpi_rank+1)*N).
+    // Notate che per utilizzare apply_force e move vi servono posizione, velocità e massa
+    // delle particelle in [mpi_rank*N, (mpi_rank+1)*N) e solo posizione e massa delle particelle in [0, N)
+
+    for (int i = 0; i < num_loc; ++i) {
+        parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
+        for (int j = 0; j < num_parts; ++j) {
+            //OK;
+            parts_vel_acc_loc[i].apply_force(parts_pos[i+displ_loc], parts_pos[j], masses[j]);
+            //OK;
+        }
+    }
+
+    // Move Particles
+	
+    for (int i = 0; i < num_loc; ++i) {
+        //OK;
+        parts_vel_acc_loc[i].move(parts_pos[i+displ_loc] , size);
+        //OK;
+        
+    }
+     
+    
+}
 
 // Command Line Option Processing
 int find_arg_idx(int argc, char** argv, const char* option) {
@@ -218,16 +254,7 @@ int main(int argc, char** argv) {
     
     
 
-    if(rank==0){
-        
-
-    
-
-    //savename = find_string_option(argc, argv, "-o", nullptr);
-    //if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
-    //std::ofstream fsave(savename);
-    //if (savename != nullptr) std::cout << "File created." << std::endl;
-       
+    if(rank==0){       
     
     // Open Output File
         
@@ -272,32 +299,20 @@ int main(int argc, char** argv) {
     MPI_Bcast( &sizes[0] , mpi_size , MPI_INT , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &displs[0] , mpi_size+1 , MPI_INT , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &part_seed , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
-    MPI_Recv( &num_loc , 1 , MPI_INT , 0 , rank+mpi_size , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
-    MPI_Recv( &displ_loc , 1 , MPI_INT , 0 , rank , MPI_COMM_WORLD , MPI_STATUS_IGNORE);
-    
-    //std::cout << "num_loc: " << num_loc << std::endl;
-    //std::cout << "size: " << size << std::endl;
+    num_loc=sizes[rank];
+    displ_loc=displs[rank];
     std::vector<particle_vel_acc> parts_vel_acc_loc(num_loc);
     std::vector<particle_pos> parts_pos(num_parts);
     
     std::vector<float> masses(num_parts);
     
     if (!rank) std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc, displ_loc, sizes); 
+    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc, displs, sizes); 
     
     
     // Algorithm
-    //std::cout << rank << " -> Starting..." << std::endl;
     auto start_time = std::chrono::steady_clock::now();
-    
-    /*
 
-    if(!rank) std::cout << "Trying to init simulation..." << std::endl;
-    //init_simulation(parts_pos, masses, num_parts, size);
-    //MPI_Barrier( MPI_COMM_WORLD);
-    std::cout << "Init simulation ended." << std::endl;
-    
-    */
    if(!rank){
         auto init_time = std::chrono::steady_clock::now();
         std::chrono::duration<double> diff_1 = init_time - start_time;
@@ -305,32 +320,23 @@ int main(int argc, char** argv) {
         std::cout << "initialization Time = " << seconds_1 << " seconds\n";
     }
 
-    
-
-    
-
-   //std::cout << rank << " -> displ_loc: " << displ_loc << std::endl;
 
     if(!rank) save(fsave, parts_pos, num_parts, size);
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
-        //MPI_Barrier( MPI_COMM_WORLD);
         
         simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, displ_loc, size, rank);
         
         MPI_Barrier( MPI_COMM_WORLD);
+
+        // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori.
+        // Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente.
         MPI_Allgatherv( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL , &parts_pos[0] , &sizes[0] , &displs[0] , mpi_part_pos_type , MPI_COMM_WORLD);
-        
-        //MPI_Allgather( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL ,  &parts_pos[0] , num_loc, mpi_part_pos_type , MPI_COMM_WORLD);
-        //MPI_Barrier( MPI_COMM_WORLD);
         
         // Save state if necessary
         if(rank==0)
         {
-            //std::ofstream fsave(savename);
             if (fsave.good() && (step % savefreq) == 0) {
-                //gather_for_save(parts, masses, num_parts, rank, size );
-                //std::cout << "rank " << rank << " : saving at step " << step <<std::endl;
                 save(fsave, parts_pos, num_parts, size);
             }
             
@@ -352,6 +358,7 @@ int main(int argc, char** argv) {
 
     std::chrono::duration<double> diff = end_time - start_time;
     double seconds = diff.count();
+
     // Finalize
 
     std::cout << "Closing file..." << std::endl;

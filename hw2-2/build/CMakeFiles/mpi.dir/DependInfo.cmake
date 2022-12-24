@@ -9,7 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/jellyfish/shared-folder/nbody/Nbody/hw2-2/main.cpp" "CMakeFiles/mpi.dir/main.cpp.o" "gcc" "CMakeFiles/mpi.dir/main.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-2/mpi.cpp" "CMakeFiles/mpi.dir/mpi.cpp.o" "gcc" "CMakeFiles/mpi.dir/mpi.cpp.o.d"
+  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-2/particle.cpp" "CMakeFiles/mpi.dir/particle.cpp.o" "gcc" "CMakeFiles/mpi.dir/particle.cpp.o.d"
   )
 
 # Targets to which this target links.

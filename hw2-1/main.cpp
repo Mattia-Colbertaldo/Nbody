@@ -10,16 +10,14 @@
 #include <thread>
 #include <omp.h>
 
-#include <vector>
 
-// flag ifdef mpi
 
 // =================
 // Helper Functions
 // =================
 
 // I/O routines
-void save(std::ofstream& fsave, std::vector<particle_t>& parts, double size) {
+void save(std::ofstream& fsave, std::vector<particle>& parts, double size) {
     int num_parts = parts.size();
     static bool first = true;
 
@@ -36,7 +34,7 @@ void save(std::ofstream& fsave, std::vector<particle_t>& parts, double size) {
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle_t>& parts , std::vector<float>& masses, double size, int part_seed) {
+void init_particles(std::vector<particle>& parts, double size, int part_seed) {
     /*
         input :  1. parts     : vettore di particelle
                  2. masses    : vettore delle masse
@@ -58,28 +56,28 @@ void init_particles(std::vector<particle_t>& parts , std::vector<float>& masses,
     }
 
     for (int i = 0; i < num_parts; ++i) {
+        
         // Make sure particles are not spatially sorted
         std::uniform_int_distribution<int> rand_int(0, num_parts - i - 1);
         int j = rand_int(gen);
         int k = shuffle[j];
         shuffle[j] = shuffle[num_parts - i - 1];
 
-        // Distribute particles evenly to ensure proper spacing
-        parts[i].x = size * (1. + (k % sx)) / (1 + sx);
-        parts[i].y = size * (1. + (k / sx)) / (1 + sy);
+        //
+        const double x = size * (1. + (k % sx)) / (1 + sx);
+        const double y = size * (1. + (k / sx)) / (1 + sy);
 
-        // Assign random velocities within a bound
+        //
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
-        parts[i].vx = rand_real(gen);
-        parts[i].vy = rand_real(gen);
-        
+        const double vx = rand_real(gen);
+        const double vy = rand_real(gen);
 
-       // Assing random mass
+        //
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
-        float m = rand_mass(gen);
-        masses[i]=m;
-        //std::cout << "mass: " << masses[i] << std::endl;
+        const float m = rand_mass(gen);
+        parts[i]=particle(x, y, vx, vy, m);
     }
+
 }
 
 // Command Line Option Processing
@@ -135,21 +133,20 @@ int main(int argc, char** argv) {
     if (savename != nullptr) std::cout << "File created." << std::endl;
 
     // Initialize Particles
-    int num_parts = find_int_arg(argc, argv, "-n", 1000);
-    int part_seed = find_int_arg(argc, argv, "-s", 0);
-    double size = sqrt(density * num_parts);
-    int num_th = find_int_arg(argc, argv, "-t", 8);
+    const int num_parts = find_int_arg(argc, argv, "-n", 1000);
+    const int part_seed = find_int_arg(argc, argv, "-s", 0);
+    const double size = sqrt(density * num_parts);
+    const int num_th = find_int_arg(argc, argv, "-t", 8);
 
-    std::vector<particle_t> parts(num_parts);
-    std::vector<float> masses(num_parts);
+    std::vector<particle> parts(num_parts);
+    
     std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts, masses, size, part_seed);
-
+    init_particles(parts, size, part_seed);
+    
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
     std::cout << "Trying to init simulation..." << std::endl;
-    init_simulation(parts, masses, num_parts, size);
     std::cout << "Init simulation ended." << std::endl;
 
     auto init_time = std::chrono::steady_clock::now();
@@ -167,7 +164,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
             
-            simulate_one_step(parts,masses,num_parts,size);
+            simulate_one_step(parts,num_parts,size);
 
             // Save state if necessary
             #ifdef _OPENMP

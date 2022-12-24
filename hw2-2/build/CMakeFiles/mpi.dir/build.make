@@ -83,30 +83,30 @@ CMakeFiles/mpi.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mpi.dir/main.cpp.s"
 	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/main.cpp -o CMakeFiles/mpi.dir/main.cpp.s
 
-CMakeFiles/mpi.dir/mpi.cpp.o: CMakeFiles/mpi.dir/flags.make
-CMakeFiles/mpi.dir/mpi.cpp.o: ../mpi.cpp
-CMakeFiles/mpi.dir/mpi.cpp.o: CMakeFiles/mpi.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mpi.dir/mpi.cpp.o"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mpi.dir/mpi.cpp.o -MF CMakeFiles/mpi.dir/mpi.cpp.o.d -o CMakeFiles/mpi.dir/mpi.cpp.o -c /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/mpi.cpp
+CMakeFiles/mpi.dir/particle.cpp.o: CMakeFiles/mpi.dir/flags.make
+CMakeFiles/mpi.dir/particle.cpp.o: ../particle.cpp
+CMakeFiles/mpi.dir/particle.cpp.o: CMakeFiles/mpi.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mpi.dir/particle.cpp.o"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mpi.dir/particle.cpp.o -MF CMakeFiles/mpi.dir/particle.cpp.o.d -o CMakeFiles/mpi.dir/particle.cpp.o -c /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/particle.cpp
 
-CMakeFiles/mpi.dir/mpi.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mpi.dir/mpi.cpp.i"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/mpi.cpp > CMakeFiles/mpi.dir/mpi.cpp.i
+CMakeFiles/mpi.dir/particle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mpi.dir/particle.cpp.i"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/particle.cpp > CMakeFiles/mpi.dir/particle.cpp.i
 
-CMakeFiles/mpi.dir/mpi.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mpi.dir/mpi.cpp.s"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/mpi.cpp -o CMakeFiles/mpi.dir/mpi.cpp.s
+CMakeFiles/mpi.dir/particle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mpi.dir/particle.cpp.s"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/particle.cpp -o CMakeFiles/mpi.dir/particle.cpp.s
 
 # Object files for target mpi
 mpi_OBJECTS = \
 "CMakeFiles/mpi.dir/main.cpp.o" \
-"CMakeFiles/mpi.dir/mpi.cpp.o"
+"CMakeFiles/mpi.dir/particle.cpp.o"
 
 # External object files for target mpi
 mpi_EXTERNAL_OBJECTS =
 
 mpi: CMakeFiles/mpi.dir/main.cpp.o
-mpi: CMakeFiles/mpi.dir/mpi.cpp.o
+mpi: CMakeFiles/mpi.dir/particle.cpp.o
 mpi: CMakeFiles/mpi.dir/build.make
 mpi: /u/sw/toolchains/gcc-glibc/11.2.0/base/lib/libmpi.so
 mpi: CMakeFiles/mpi.dir/link.txt

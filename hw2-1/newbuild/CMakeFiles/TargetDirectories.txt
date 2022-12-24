@@ -1,4 +1,0 @@
-/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/newbuild/CMakeFiles/rebuild_cache.dir
-/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/newbuild/CMakeFiles/edit_cache.dir
-/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/newbuild/CMakeFiles/openmp.dir
-/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/newbuild/CMakeFiles/serial.dir
