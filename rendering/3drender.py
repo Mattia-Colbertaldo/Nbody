@@ -1,40 +1,56 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from itertools import groupby
+import matplotlib.animation
 from sys import argv, exit
+import pandas as pd
 
 plt.style.use('_mpl-gallery')
 
-# Make data
-np.random.seed(19680801)
-n = 100
-rng = np.random.default_rng()
-xs = rng.uniform(23, 32, n)
-ys = rng.uniform(0, 100, n)
-zs = rng.uniform(-50, -25, n)
-###
-
 # Parse Command Line Arguments
-if len(argv) < 3:
-    exit("Usage is render.py <input file> <output file> [cutoff]")
+if len(argv) < 2:
+    exit("Usage is render.py <input file> <num parts>")
 input_file = argv[1]
-output_file = argv[2]
+num_parts = int(argv[2])
+
+savefreq = 1
+nsteps = 1000
+nsaves = int(nsteps / savefreq)
+
+density = 0.0005
+size = np.sqrt(density * num_parts);
 
 # Read data
 with open(input_file, 'r') as f:
-    lines = []
-    for line in f:
-        lines.append([float(i) for i in line.rstrip().split(" ")])
-    print(lines)
+    parts = np.loadtxt(input_file)
 
-    # Plot
-    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-    ax.scatter(xs, ys, zs)
+print(len(parts[:,0]))
+print(len(parts[:,1]))
+print(len(parts[:,2]))
 
-    ax.set(xticklabels=[],
-        yticklabels=[],
-        zticklabels=[])
+t = np.array([np.ones(num_parts)*i for i in range(nsaves+1)]).flatten()
+print(t)
+print(len(t))
+df = pd.DataFrame({"time": t ,"x" : parts[:,0], "y" : parts[:,1], "z" : parts[:,2]})
 
-    plt.show()
+def update_graph(num):
+    data=df[df['time']==num]
+    graph._offsets3d = (data.x, data.y, data.z)
+    title.set_text(str(num_parts) + ' particles, time={}ms'.format(num*10))
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.set_zlim3d(0,size)
+title = ax.set_title('NBody Simulation')
+
+data=df[df['time']==0]
+graph = ax.scatter(data.x, data.y, data.z)
+
+ani = matplotlib.animation.FuncAnimation(fig, update_graph, nsaves+1, 
+                               interval=20, blit=False)
+
+# Save as mp4. This requires mplayer or ffmpeg to be installed
+# anim.save('lorentz_attractor.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
+
+
+plt.show()

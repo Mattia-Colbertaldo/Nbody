@@ -5,7 +5,7 @@
 
 // Program Constants
 #define nsteps   1000
-#define savefreq 10
+#define savefreq 1
 #define density  0.0005
 #define cutoff   0.01
 #define min_r    (cutoff / 100)

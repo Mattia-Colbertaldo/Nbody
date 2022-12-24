@@ -32,17 +32,19 @@ MPI_Datatype mpi_part_pos_type;
 
 void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts, double size) {
 
+    /*
     if (first) {
         fsave << num_parts << " " << size << "\n";
         first = false;
     }
+    */
     
 
     for (int i = 0; i < num_parts; ++i) {
         fsave << parts[i].x << " " << parts[i].y << " " << parts[i].z <<"\n";
     }
 
-    fsave << std::endl;
+    //fsave << std::endl;
 }
 
 
