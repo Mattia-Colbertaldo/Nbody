@@ -176,7 +176,7 @@ void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particl
     // delle particelle in [mpi_rank*N, (mpi_rank+1)*N) e solo posizione e massa delle particelle in [0, N)
 
     for (int i = 0; i < num_loc; ++i) {
-        parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = 0;
+        parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = parts_vel_acc_loc[i].az= 0.;
         for (int j = 0; j < num_parts; ++j) {
             //OK;
             parts_vel_acc_loc[i].apply_force(parts_pos[i+displ_loc], parts_pos[j], masses[j]);

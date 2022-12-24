@@ -20,22 +20,20 @@ class particle {
         
         double x;  // Position X
         double y;  // Position Y
+        double z;  // Position Z
         double vx; // Velocity X
         double vy; // Velocity Y
+        double vz; // Velocity Z
         double ax; // Acceleration X
         double ay; // Acceleration Y
+        double az; // Acceleration Z
         float mass;
         particle(){};
         
-        particle(const double x, const double y, const double vx, const double vy, const float m){
-        this->x = x;
-        this->y = y;
-        this->vx = vx;
-        this->vy = vy;
-        this->mass = m;
-        this->ax = 0.;
-        this->ay = 0.;
-        };
+        particle(const double x, const double y, const double z,
+                const double vx, const double vy, const double vz,
+                const float m): x(x), y(y), z(z), vx(vx), vy(vy), vz(vz),
+                ax(0.), ay(0.), az(0.), m(m);
         
         void apply_force(particle& neighbor);
         void move(double size);

@@ -49,6 +49,7 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
 
     int sx = (int)ceil(sqrt((double)num_parts));
     int sy = (num_parts + sx - 1) / sx;
+    int sz = sy;
 
     std::vector<int> shuffle(num_parts);
     for (int i = 0; i < shuffle.size(); ++i) {
@@ -66,16 +67,18 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
         //
         const double x = size * (1. + (k % sx)) / (1 + sx);
         const double y = size * (1. + (k / sx)) / (1 + sy);
+        const double z = x*y;
 
         //
         std::uniform_real_distribution<float> rand_real(-1.0, 1.0);
         const double vx = rand_real(gen);
         const double vy = rand_real(gen);
+        const double vz = rand_real(gen);
 
         //
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
         const float m = rand_mass(gen);
-        parts[i]=particle(x, y, vx, vy, m);
+        parts[i]=particle(x, y, z, vx, vy, vz, m);
     }
 
 }
@@ -197,4 +200,23 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
      " particles and " << nsteps << " steps.\n";
     fsave.close();
 
+}
+
+void simulate_one_step(std::vector<particle>& parts,int num_parts, double size) {
+    // Compute Forces
+    //int num_parts = parts.size();
+	#pragma omp for schedule(dynamic)
+    for (int i = 0; i < num_parts; ++i) {
+        parts[i].ax = parts[i].ay = parts[i].az = 0.;
+        for (int j = 0; j < num_parts; ++j) {
+            parts[i].apply_force(parts[j]);
+        }
+    }
+	#pragma omp barrier
+
+    // Move Particles
+	#pragma omp for schedule(dynamic)
+    for (int i = 0; i < num_parts; ++i) {
+        parts[i].move(size);
+    }
 }

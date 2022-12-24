@@ -1,1 +1,0 @@
-/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ CMakeFiles/serial.dir/main.cpp.o CMakeFiles/serial.dir/serial.cpp.o -o serial 
