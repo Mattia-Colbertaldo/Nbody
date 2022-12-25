@@ -187,7 +187,7 @@ int main(int argc, char** argv) {
         {"coulomb", std::make_shared<CoulombForce>() },
     };
     
-    AbstractForce force; 
+    std::shared_ptr<AbstractForce> force; 
     try {
         force = fmap.at(forcename);      // vector::at throws an out-of-range
     }

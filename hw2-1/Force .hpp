@@ -1,3 +1,5 @@
+#ifndef HH_FORCE_HH
+#define HH_FORCE_HH
 #include "common.h"
 #include <cmath>
 #include <vector>
