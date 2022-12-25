@@ -50,18 +50,14 @@ This will create a serial.parts.out file with the particle positions after each 
 
 * Checking correctness:
 
-        path/to/correctness/correctness_check.py <file1.txt> <file2.txt>
+        path/to/correctness/check.py <file1.txt> <file2.txt>
 
-* Rendering:
+* Rendering ( Not working on Docker ) :
 
     * Synopsis:
 
-            render.py <input_file> <output_file.gif> [cutoff]
+            3drender.py <input_file.txt>
 
     * Example:
         
-            ./render.py save.txt image.gif 0.01
-
-    * Requires Python 3 and pillow:
-
-            pip install pillow
+            python3 .\3drender.py save.txt

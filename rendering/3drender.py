@@ -38,7 +38,7 @@ data=df[df['time']==0]
 graph = ax.scatter(data.x, data.y, data.z)
 
 ani = matplotlib.animation.FuncAnimation(fig, update_graph, nsaves+1, 
-                            interval=0.001, blit=False)
+                            interval=10, blit=False)
 
 # Save as mp4. This requires mplayer or ffmpeg to be installed (NOT WORKING)
 # ani.save('lorentz_attractor.mp4', fps=60, extra_args=['-vcodec', 'libx264'])
