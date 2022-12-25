@@ -12,6 +12,7 @@
 #include <math.h>
 #include <thread>
 #include <omp.h>
+#include <stdexcept>
 
 
 

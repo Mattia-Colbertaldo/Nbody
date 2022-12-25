@@ -1,7 +1,7 @@
-
 #include "common.h"
 
 #include <memory>
+#include <stdexcept>
 #include <cmath>
 
     // Apply the force from neighbor to particle
