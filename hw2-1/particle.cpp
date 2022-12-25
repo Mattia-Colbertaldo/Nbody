@@ -1,8 +1,9 @@
 #include "common.h"
+#include "Force.hpp"
 #include <cmath>
 
     // Apply the force from neighbor to particle
-    void particle:: apply_force(const particle& neighbor, const AbstractForceorce force) {
+    void particle:: apply_force(const particle& neighbor, const std::shared_ptr<AbstractForce> force) {
         force.force_application (this, neighbor);
     }
 

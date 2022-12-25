@@ -1,4 +1,5 @@
 #include "common.h"
+#include <memory>
 #include <cmath>
 #include <vector>
 
@@ -11,11 +12,7 @@ public:
   virtual ~AbstractForce() = default;
 
   virtual void  
-  force_application(particle& p,const particle& neighbour) const
-  {
-    return p;
-  }
-  
+  force_application(particle& p,const particle& neighbour) const =0;
 protected:
     std::string name;    
 };
@@ -30,7 +27,7 @@ public:
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual void force_application(particle& p,const particle& neighbour) const override{
+  virtual void force_application(particle& p,const particle& neighbor) const override{
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -52,7 +49,7 @@ public:
     }
 
 protected: 
-  
+  std::string name;   
 };
 
 class GravitationalForce final : public AbstractForce
@@ -64,7 +61,7 @@ public:
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual void force_application(particle& p,const particle& neighbour) const override{
+  virtual void force_application(particle& p,const particle& neighbor) const override{
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -106,7 +103,7 @@ public:
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual void force_application(particle& p,const particle& neighbour) const override{
+  virtual void force_application(particle& p,const particle& neighbor) const override{
     constexpr double k= 8.98 *10^9;
     constexpr double proton_charge= 1.6 *10^(-19);
     // Calculate Distance

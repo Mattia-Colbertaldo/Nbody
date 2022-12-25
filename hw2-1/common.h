@@ -37,7 +37,7 @@ class particle {
                 const float m) : x(x), y(y), z(z), vx(vx), vy(vy), vz(vz),
                 ax(0.), ay(0.), az(0.), mass(m){};
         
-        void apply_force(const particle& neighbor, const AbstractForce force);
+        void apply_force(const particle& neighbor, const std::shared_ptr<AbstractForce> force);
         void move(double size);
         
 

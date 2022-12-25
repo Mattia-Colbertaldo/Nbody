@@ -87,7 +87,7 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
 }
 
 
-void simulate_one_step(std::vector<particle>& parts, const AbstractForce force, int num_parts, double size) {
+void simulate_one_step(std::vector<particle>& parts, const std::shared_ptr<AbstractForce> force, int num_parts, double size) {
     // Compute Forces
     //int num_parts = parts.size();
     #ifdef _OPENMP
