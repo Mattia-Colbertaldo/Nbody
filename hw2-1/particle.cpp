@@ -1,7 +1,5 @@
 #include "common.h"
 #include <cmath>
-#include <vector>
-#include <random>
 
     // Apply the force from neighbor to particle
     void particle:: apply_force(particle& neighbor) {
@@ -36,7 +34,6 @@
         this->x += this->vx * dt;
         this->y += this->vy * dt;
         this->z += this->vz * dt;
-
 
         // Bounce from walls
         while (this->x < 0 || this->x > size) {

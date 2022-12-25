@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(hw2_1)
+project(hw2-1)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
@@ -13,7 +13,7 @@ set(GROUP_NAME "None" CACHE STRING "Your group name as it appears on bCourses (n
 if (NOT ${GROUP_NAME} STREQUAL None)
     set(CPACK_GENERATOR TGZ)
     set(CPACK_PACKAGE_FILE_NAME "cs267${GROUP_NAME}_hw2_1")
-    install(FILES serial.cpp openmp.cpp DESTINATION .)
+    install(FILES main.cpp particle.cpp DESTINATION .)
     install(FILES ${CPACK_PACKAGE_FILE_NAME}.pdf DESTINATION .)
     include(CPack)
 endif ()
@@ -27,10 +27,10 @@ if (NOT "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
             "module swap ${Prg-${CMAKE_C_COMPILER_ID}} PrgEnv-gnu")
 endif ()
 
-add_executable(serial main.cpp serial.cpp common.h)
+add_executable(serial main.cpp particle.cpp common.h)
 
-add_executable(openmp main.cpp openmp.cpp common.h)
-target_link_libraries(openmp PRIVATE OpenMP::OpenMP_CXX)
+add_executable(openmp main.cpp particle.cpp common.h)
+target_link_libraries(openmp PUBLIC OpenMP::OpenMP_CXX)
 
 # Copy the job scripts
 configure_file(job-serial job-serial COPYONLY)

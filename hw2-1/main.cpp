@@ -22,15 +22,15 @@ void save(std::ofstream& fsave, std::vector<particle>& parts, double size) {
     static bool first = true;
 
     if (first) {
-        fsave << num_parts << " " << size << "\n";
+        fsave << num_parts << " " << size << " " << nsteps << "\n";
         first = false;
     }
 
     for (int i = 0; i < num_parts; ++i) {
-        fsave << parts[i].x << " " << parts[i].y << "\n";
+        fsave << parts[i].x << " " << parts[i].y << " " << parts[i].z << "\n";
     }
 
-    fsave << std::endl;
+    // fsave << std::endl;
 }
 
 // Particle Initialization
@@ -82,6 +82,34 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
     }
 
 }
+
+
+void simulate_one_step(std::vector<particle>& parts,int num_parts, double size) {
+    // Compute Forces
+    //int num_parts = parts.size();
+    #ifdef _OPENMP
+	#pragma omp for schedule(dynamic)
+    #endif
+    for (int i = 0; i < num_parts; ++i) {
+        parts[i].ax = parts[i].ay = parts[i].az = 0.;
+        for (int j = 0; j < num_parts; ++j) {
+            parts[i].apply_force(parts[j]);
+        }
+    }
+    #ifdef _OPENMP
+	#pragma omp barrier
+    #endif
+
+    // Move Particles
+    #ifdef _OPENMP
+	#pragma omp for schedule(dynamic)
+    #endif
+    for (int i = 0; i < num_parts; ++i) {
+        parts[i].move(size);
+    }
+}
+
+
 
 // Command Line Option Processing
 int find_arg_idx(int argc, char** argv, const char* option) {
@@ -200,23 +228,4 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
      " particles and " << nsteps << " steps.\n";
     fsave.close();
 
-}
-
-void simulate_one_step(std::vector<particle>& parts,int num_parts, double size) {
-    // Compute Forces
-    //int num_parts = parts.size();
-	#pragma omp for schedule(dynamic)
-    for (int i = 0; i < num_parts; ++i) {
-        parts[i].ax = parts[i].ay = parts[i].az = 0.;
-        for (int j = 0; j < num_parts; ++j) {
-            parts[i].apply_force(parts[j]);
-        }
-    }
-	#pragma omp barrier
-
-    // Move Particles
-	#pragma omp for schedule(dynamic)
-    for (int i = 0; i < num_parts; ++i) {
-        parts[i].move(size);
-    }
 }

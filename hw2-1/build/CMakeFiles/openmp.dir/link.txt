@@ -1,0 +1,1 @@
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ CMakeFiles/openmp.dir/main.cpp.o CMakeFiles/openmp.dir/particle.cpp.o -o openmp  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/libgomp.so /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/libpthread.so 

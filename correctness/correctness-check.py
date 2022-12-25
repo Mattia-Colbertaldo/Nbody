@@ -14,8 +14,8 @@ def get_frames ( out_file ):
     out_frames = []
 
     # Read Header
-    num_parts, box_size = next(out_file).split()
-    num_parts, box_size = int(num_parts), float(box_size)
+    num_parts, box_size, nsteps = next(out_file).split(" ")
+    num_parts, box_size, nsteps = int(num_parts), float(box_size), int(nsteps)
 
     # Read Body
     file_sections = groupby(out_file, lambda x: x and not x.isspace())
@@ -23,9 +23,9 @@ def get_frames ( out_file ):
     for frame_section in frame_sections:
         out_frames.append( [] )
         for line in frame_section:
-            x, y = line.split()
-            x, y = float(x), float(y)
-            out_frames[-1].append( (x, y) )
+            x, y, z = line.split(" ")
+            x, y, z = float(x), float(y), float(z)
+            out_frames[-1].append( (x, y, z) )
         assert( len( out_frames[-1] ) == num_parts )
 
     return out_frames
@@ -45,12 +45,13 @@ def calculate_dist ( frames1, frames2 ):
 
     for i, frames in enumerate( zip( frames1, frames2 ) ):
         frame1, frame2 = frames
-        test_xs, test_ys = list( zip( *frame1 ) )
-        verf_xs, verf_ys = list( zip( *frame2 ) )
-        test_xs, test_ys = np.array( test_xs ), np.array( test_ys )
-        verf_xs, verf_ys = np.array( verf_xs ), np.array( verf_ys )
+        test_xs, test_ys, test_zs = list( zip( *frame1 ) )
+        verf_xs, verf_ys, verf_zs = list( zip( *frame2 ) )
+        test_xs, test_ys, test_zs = np.array( test_xs ), np.array( test_ys ), np.array( test_zs )
+        verf_xs, verf_ys, verf_zs = np.array( verf_xs ), np.array( verf_ys ), np.array( verf_zs )
         dists = np.sqrt(   np.square( test_xs - verf_xs )
-                         + np.square( test_ys - verf_ys ) )
+                         + np.square( test_ys - verf_ys )
+                         + np.square( test_zs - verf_zs ) )
         avg_dists.append( np.mean( dists ) )
 
     return avg_dists
