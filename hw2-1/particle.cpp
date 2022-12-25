@@ -2,25 +2,8 @@
 #include <cmath>
 
     // Apply the force from neighbor to particle
-    void particle:: apply_force(particle& neighbor) {
-        // Calculate Distance
-        double dx = neighbor.x - this->x;
-        double dy = neighbor.y - this->y;
-        double dz = neighbor.z - this->z;
-        double r2 = dx * dx + dy * dy + dz * dz;
-
-        // Check if the two particles should interact
-        if (r2 > cutoff * cutoff)
-            return;
-
-        r2 = fmax(r2, min_r * min_r);
-        double r = sqrt(r2);
-
-        // Very simple short-range repulsive force
-        double coef = neighbor.mass*(1 - cutoff / r) / r2 ;
-        this->ax += coef * dx;
-        this->ay += coef * dy;
-        this->az += coef * dz;
+    void particle:: apply_force(const particle& neighbor, const AbstractForceorce force) {
+        force.force_application (this, neighbor);
     }
 
     // Integrate the ODE

@@ -1,6 +1,9 @@
 #include "common.h"
+#include "Force.hpp"
 #include <chrono>
 #include <cmath>
+#include <memory>
+#include <unordered_map>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -84,7 +87,7 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
 }
 
 
-void simulate_one_step(std::vector<particle>& parts,int num_parts, double size) {
+void simulate_one_step(std::vector<particle>& parts, const AbstractForce force, int num_parts, double size) {
     // Compute Forces
     //int num_parts = parts.size();
     #ifdef _OPENMP
@@ -93,7 +96,7 @@ void simulate_one_step(std::vector<particle>& parts,int num_parts, double size) 
     for (int i = 0; i < num_parts; ++i) {
         parts[i].ax = parts[i].ay = parts[i].az = 0.;
         for (int j = 0; j < num_parts; ++j) {
-            parts[i].apply_force(parts[j]);
+            parts[i].apply_force(parts[j], force);
         }
     }
     #ifdef _OPENMP
@@ -141,6 +144,16 @@ char* find_string_option(int argc, char** argv, const char* option, char* defaul
     return default_value;
 }
 
+char* find_force_option(int argc, char** argv, const char* option, char* default_value) {
+    int iplace = find_arg_idx(argc, argv, option);
+
+    if (iplace >= 0 && iplace < argc - 1) {
+        return argv[iplace + 1];
+    }
+
+    return default_value;
+}
+
 // ==============
 // Main Function
 // ==============
@@ -162,6 +175,27 @@ int main(int argc, char** argv) {
     if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
     std::ofstream fsave(savename);
     if (savename != nullptr) std::cout << "File created." << std::endl;
+
+    //Find force
+    char* forcename = find_force_option(argc, argv, "-f", nullptr);
+    if (forcename != nullptr) std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
+
+    const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
+    {
+        {"repulsive", std::make_shared<RepulsiveForce>() },
+        {"gravitational", std::make_shared<GravitationalForce>() },
+        {"coulomb", std::make_shared<CoulombForce>() },
+    };
+    
+    AbstractForce force; 
+    try {
+        force = fmap.at(forcename);      // vector::at throws an out-of-range
+    }
+    catch (const std::out_of_range& oor) {
+        std::cerr << "Default Force chosen "<< '\n';
+        force =  fmap.at("repulsive");
+    }
+    
 
     // Initialize Particles
     const int num_parts = find_int_arg(argc, argv, "-n", 1000);
@@ -195,7 +229,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
             
-            simulate_one_step(parts,num_parts,size);
+            simulate_one_step(parts, force, num_parts,size);
 
             // Save state if necessary
             #ifdef _OPENMP

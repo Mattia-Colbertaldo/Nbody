@@ -2,6 +2,8 @@
 #define __CS267_COMMON_H__
 #include <vector>
 #include <random>
+#include "Force.hpp"
+
 
 // Program Constants
 #define nsteps   1000
@@ -35,7 +37,7 @@ class particle {
                 const float m) : x(x), y(y), z(z), vx(vx), vy(vy), vz(vz),
                 ax(0.), ay(0.), az(0.), mass(m){};
         
-        void apply_force(particle& neighbor);
+        void apply_force(const particle& neighbor, const AbstractForce force);
         void move(double size);
         
 
