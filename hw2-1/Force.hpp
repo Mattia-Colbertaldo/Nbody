@@ -1,8 +1,9 @@
+#ifndef HH_FORCE_HH
+#define HH_FORCE_HH
 #include "common.h"
 #include <memory>
 #include <cmath>
 #include <vector>
-
 class AbstractForce
 {
 public:
@@ -21,7 +22,7 @@ protected:
 class RepulsiveForce final : public AbstractForce
 {
 public:
-  RepulsiveForce():name( "RepulsiveForce");
+  RepulsiveForce():name( "RepulsiveForce"){};
   virtual ~RepulsiveForce(){} override;
   /*!
     The area is positive if vertices are given in
@@ -55,7 +56,7 @@ protected:
 class GravitationalForce final : public AbstractForce
 {
 public:
-  GravitationalForce():name( "GravitationalForce");
+  GravitationalForce():name( "GravitationalForce"){};
   virtual ~GravitationalForce(){} override;
   /*!
     The area is positive if vertices are given in
@@ -97,7 +98,7 @@ class CoulombForce final : public AbstractForce
 {
     //equal charged particles : all are protons
 public:
-  CoulombForce():name( "CoulombForce");
+  CoulombForce():name( "CoulombForce"){};
   virtual ~CoulombForce(){} override;
   /*!
     The area is positive if vertices are given in
@@ -128,3 +129,4 @@ protected:
   std::string name ; 
 };
 
+#endif

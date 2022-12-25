@@ -16,7 +16,6 @@
 
 // Particle Data Structure: used in OPENMP
 
-
 class particle {
     public:
         
@@ -42,5 +41,6 @@ class particle {
         
 
 };
+
 
 #endif
