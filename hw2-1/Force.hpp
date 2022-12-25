@@ -10,8 +10,8 @@ public:
   //! virtual destructor
   virtual ~AbstractForce() = default;
 
-  virtual particle  
-  force_application(const particle& p,const particle& neighbour) const
+  virtual void  
+  force_application(particle& p,const particle& neighbour) const
   {
     return p;
   }
@@ -30,7 +30,7 @@ public:
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual particle force_application(const particle& p,const particle& neighbour) const override{
+  virtual void force_application(particle& p,const particle& neighbour) const override{
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -64,7 +64,7 @@ public:
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual particle force_application(const particle& p,const particle& neighbour) const override{
+  virtual void force_application(particle& p,const particle& neighbour) const override{
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -106,7 +106,7 @@ public:
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual particle force_application(const particle& p,const particle& neighbour) const override{
+  virtual void force_application(particle& p,const particle& neighbour) const override{
     constexpr double k= 8.98 *10^9;
     constexpr double proton_charge= 1.6 *10^(-19);
     // Calculate Distance

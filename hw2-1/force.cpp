@@ -6,8 +6,8 @@
 
 
 
-particle
-RepulsiveForce :: force_application(const particle& p,const particle& neighbour) const {
+void
+RepulsiveForce :: force_application(particle& p,const particle& neighbour) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -33,8 +33,8 @@ RepulsiveForce :: force_application(const particle& p,const particle& neighbour)
 
 
 
-particle
-GravitationalForce :: force_application(const particle& p,const particle& neighbour) const {
+void
+GravitationalForce :: force_application(particle& p,const particle& neighbour) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -67,8 +67,8 @@ GravitationalForce :: force_application(const particle& p,const particle& neighb
 
 
 
-particle
-CoulombForce :: force_application(const particle& p,const particle& neighbour) const {
+void
+CoulombForce :: force_application(particle& p,const particle& neighbour) const {
     constexpr double k= 8.98 *10^9;
     constexpr double proton_charge= 1.6 *10^(-19);
     // Calculate Distance
