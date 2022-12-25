@@ -1,6 +1,7 @@
 #ifndef HH_FORCE_HH
 #define HH_FORCE_HH
 #include "common.h"
+#include "particle.hpp"
 #include <memory>
 #include <cmath>
 #include <vector>

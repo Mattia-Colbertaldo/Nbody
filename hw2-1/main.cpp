@@ -1,5 +1,6 @@
 #include "common.h"
 #include "Force.hpp"
+#include "particle.hpp"
 #include <chrono>
 #include <cmath>
 #include <memory>

@@ -1,5 +1,7 @@
+#include "particle.hpp"
 #include "common.h"
 #include "Force.hpp"
+#include <memory>
 #include <cmath>
 
     // Apply the force from neighbor to particle
