@@ -1,6 +1,5 @@
 #include "common.h"
-#include "Force.hpp"
-#include "particle.hpp"
+
 #include <chrono>
 #include <cmath>
 #include <memory>
@@ -88,7 +87,7 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
 }
 
 
-void simulate_one_step(std::vector<particle>& parts, const std::shared_ptr<AbstractForce> force, int num_parts, double size) {
+void simulate_one_step(std::vector<particle>& parts, const std::string forcename, int num_parts, double size) {
     // Compute Forces
     //int num_parts = parts.size();
     #ifdef _OPENMP
@@ -97,7 +96,7 @@ void simulate_one_step(std::vector<particle>& parts, const std::shared_ptr<Abstr
     for (int i = 0; i < num_parts; ++i) {
         parts[i].ax = parts[i].ay = parts[i].az = 0.;
         for (int j = 0; j < num_parts; ++j) {
-            parts[i].apply_force(parts[j], force);
+            parts[i].apply_force(parts[j], forcename);
         }
     }
     #ifdef _OPENMP
@@ -181,21 +180,7 @@ int main(int argc, char** argv) {
     char* forcename = find_force_option(argc, argv, "-f", nullptr);
     if (forcename != nullptr) std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
 
-    const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
-    {
-        {"repulsive", std::make_shared<RepulsiveForce>() },
-        {"gravitational", std::make_shared<GravitationalForce>() },
-        {"coulomb", std::make_shared<CoulombForce>() },
-    };
     
-    std::shared_ptr<AbstractForce> force; 
-    try {
-        force = fmap.at(forcename);      // vector::at throws an out-of-range
-    }
-    catch (const std::out_of_range& oor) {
-        std::cerr << "Default Force chosen "<< '\n';
-        force =  fmap.at("repulsive");
-    }
     
 
     // Initialize Particles
@@ -230,7 +215,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
             
-            simulate_one_step(parts, force, num_parts,size);
+            simulate_one_step(parts, forcename, num_parts,size);
 
             // Save state if necessary
             #ifdef _OPENMP

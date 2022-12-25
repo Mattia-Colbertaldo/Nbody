@@ -1,6 +1,5 @@
 #include "common.h"
-#include "Force.hpp"
-#include "particle.hpp"
+
 #include <cmath>
 #include <vector>
 

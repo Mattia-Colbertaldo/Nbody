@@ -1,12 +1,27 @@
-#include "particle.hpp"
+
 #include "common.h"
-#include "Force.hpp"
+
 #include <memory>
 #include <cmath>
 
     // Apply the force from neighbor to particle
-    void particle:: apply_force(const particle& neighbor, const std::shared_ptr<AbstractForce> force) {
-        force.force_application (this, neighbor);
+    void particle:: apply_force(const particle& neighbor, const std::string forcename) {
+        const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
+        {
+            {"repulsive", std::make_shared<RepulsiveForce>() },
+            {"gravitational", std::make_shared<GravitationalForce>() },
+            {"coulomb", std::make_shared<CoulombForce>() },
+        };
+        
+        std::shared_ptr<AbstractForce> force; 
+        try {
+            force = fmap.at(forcename);      // vector::at throws an out-of-range
+        }
+        catch (const std::out_of_range& oor) {
+            std::cerr << "Default Force chosen "<< '\n';
+            force =  fmap.at("repulsive");
+        }
+        force->force_application (*this, neighbor);
     }
 
     // Integrate the ODE

@@ -1,5 +1,5 @@
-CMakeFiles/openmp.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp \
+CMakeFiles/openmp.dir/particle.cpp.o: \
+ /home/jellyfish/shared-folder/nbody/hw2-1/particle.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
  /home/jellyfish/shared-folder/nbody/hw2-1/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
@@ -224,21 +224,4 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_ios.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ratio \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ctime \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/parse_numbers.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstring \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/string.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/strings.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/codecvt.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/basic_file.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++io.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/fstream.tcc \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/thread \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/std_thread.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/this_thread_sleep.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/omp.h
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc

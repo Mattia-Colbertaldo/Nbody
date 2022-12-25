@@ -1,4 +1,4 @@
-CMakeFiles/openmp.dir/main.cpp.o: \
+CMakeFiles/serial.dir/main.cpp.o: \
  /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
  /home/jellyfish/shared-folder/nbody/hw2-1/common.h \
