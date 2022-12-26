@@ -30,7 +30,7 @@ MPI_Datatype mpi_part_pos_type;
 
 /******         SAVING       *******/
 
-void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts, double size) {
+void save(std::ofstream& fsave, const std::vector<particle_pos>& parts, const int num_parts, const double size) {
 
     if (first) {
         fsave << num_parts << " " << size << " " << nsteps << "\n";
@@ -54,9 +54,9 @@ void save(std::ofstream& fsave, std::vector<particle_pos>& parts, int num_parts,
 
 void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
                     std::vector<float>& masses,
-                    int num_parts, double size,int part_seed, int rank,
-                    std::vector<particle_pos>&parts_pos, int num_loc, 
-                     std::vector<int>& displs, std::vector<int>& sizes) {
+                    const int num_parts, const double size,const int part_seed,
+                    std::vector<particle_pos>&parts_pos, const int num_loc, 
+                    const std::vector<int>& displs, const std::vector<int>& sizes) {
 
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
@@ -307,7 +307,7 @@ int main(int argc, char** argv) {
     std::vector<float> masses(num_parts);
     
     if (!rank) std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, rank, parts_pos, num_loc, displs, sizes); 
+    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, parts_pos, num_loc, displs, sizes); 
     
     
     // Algorithm

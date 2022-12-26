@@ -22,7 +22,7 @@
 // =================
 
 // I/O routines
-void save(std::ofstream& fsave, std::vector<particle>& parts, double size) {
+void save(std::ofstream& fsave, const std::vector<particle>& parts, const double size) {
     int num_parts = parts.size();
     static bool first = true;
 
@@ -39,7 +39,7 @@ void save(std::ofstream& fsave, std::vector<particle>& parts, double size) {
 }
 
 // Particle Initialization
-void init_particles(std::vector<particle>& parts, double size, int part_seed) {
+void init_particles(std::vector<particle>& parts, const double size, const int part_seed) {
     /*
         input :  1. parts     : vettore di particelle
                  2. masses    : vettore delle masse
@@ -93,7 +93,7 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
 }
 
 
-void simulate_one_step(std::vector<particle>& parts, const std::shared_ptr<AbstractForce> force, int num_parts, double size) {
+void simulate_one_step(std::vector<particle>& parts, const std::shared_ptr<AbstractForce> force,const int num_parts,const double size) {
     // Compute Forces
     //int num_parts = parts.size();
     #ifdef _OPENMP
