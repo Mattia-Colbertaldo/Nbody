@@ -4,16 +4,17 @@
 #include <stdexcept>
 #include <cmath>
 
-    // Apply the force from neighbor to particle
-    void particle:: apply_force(const particle& neighbor, const std::string forcename) {
-        const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
+const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
         {
             {"default", std::make_shared<RepulsiveForce>() },
             {"repulsive", std::make_shared<RepulsiveForce>() },
             {"gravitational", std::make_shared<GravitationalForce>() },
             {"coulomb", std::make_shared<CoulombForce>() },
         };
-        
+
+    // Apply the force from neighbor to particle
+    void particle:: apply_force(const particle& neighbor, const std::string forcename) {
+
         //scalable if you want to add other kind of forces
         
         std::shared_ptr<AbstractForce> force; 
