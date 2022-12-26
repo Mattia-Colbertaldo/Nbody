@@ -4,31 +4,6 @@
 #include <stdexcept>
 #include <cmath>
 
-const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
-        {
-            {"default", std::make_shared<RepulsiveForce>() },
-            {"repulsive", std::make_shared<RepulsiveForce>() },
-            {"gravitational", std::make_shared<GravitationalForce>() },
-            {"coulomb", std::make_shared<CoulombForce>() },
-        };
-
-    // Apply the force from neighbor to particle
-    void particle:: apply_force(const particle& neighbor, const std::string forcename) {
-
-        //scalable if you want to add other kind of forces
-        
-        std::shared_ptr<AbstractForce> force; 
-        try {
-            force = fmap.at(forcename);      // vector::at throws an out-of-range
-        }
-        catch (const std::out_of_range& oor) {
-            std::cerr << "Wrong Force chosen "<< '\n';
-            force =  fmap.at("repulsive");
-        }
-        force->force_application (*this, neighbor);
-        
-
-    }
 
     // Integrate the ODE
 
