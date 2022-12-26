@@ -180,6 +180,11 @@ int main(int argc, char** argv) {
     //Find force
     char* forcename = find_force_option(argc, argv, "-f", nullptr);
     if (forcename != nullptr) std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
+    else{
+        std::string def="default";
+        forcename= &def[0];
+        std::cout << "Choosing default force ";
+    }
 
     
     
