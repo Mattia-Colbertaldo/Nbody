@@ -7,7 +7,7 @@
 
     // Integrate the ODE
 
-    void particle:: move(double size) {
+    void particle:: move(const double size) {
         // Slightly simplified Velocity Verlet integration
         // Conserves energy better than explicit Euler method
         this->vx += this->ax * dt;
