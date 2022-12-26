@@ -35,12 +35,13 @@ class particle {
         double ay; // Acceleration Y
         double az; // Acceleration Z
         float mass;
+        float charge;
         particle(){};
         
         particle(const double x, const double y, const double z,
                 const double vx, const double vy, const double vz,
-                const float m) : x(x), y(y), z(z), vx(vx), vy(vy), vz(vz),
-                ax(0.), ay(0.), az(0.), mass(m){};
+                const float m, const float c) : x(x), y(y), z(z), vx(vx), vy(vy), vz(vz),
+                ax(0.), ay(0.), az(0.), mass(m), charge(c){};
         
         void move(double size);
         
@@ -52,7 +53,7 @@ class AbstractForce
 {
 public:
 
-  AbstractForce() = default;
+  AbstractForce(std::string name) : name(name){};
   //! virtual destructor
   virtual ~AbstractForce() = default;
 
@@ -66,33 +67,15 @@ protected:
 class RepulsiveForce final : public AbstractForce
 {
 public:
-  RepulsiveForce():name( "RepulsiveForce"){};
-  virtual ~RepulsiveForce(){} ;
+  using AbstractForce::AbstractForce;
+  RepulsiveForce():AbstractForce("RepulsiveForce"){};
+  virtual ~RepulsiveForce() override = default ;
   /*!
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual void force_application(particle& p,const particle& neighbor) const override{
-    // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
-
-    // Check if the two particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
-
-    r2 = fmax(r2, min_r * min_r);
-    double r = sqrt(r2);
-
-    // Very simple short-range repulsive force
-    double coef = neighbor.mass*(1 - cutoff / r) / r2 ;
-    p.ax += coef * dx;
-    p.ay += coef * dy;
-    p.az += coef * dz;
-    }
-
+  virtual
+  void force_application(particle& p,const particle& neighbor) const override;
 protected: 
   std::string name;   
 };
@@ -100,79 +83,77 @@ protected:
 class GravitationalForce final : public AbstractForce
 {
 public:
-  GravitationalForce():name( "GravitationalForce"){};
-  virtual ~GravitationalForce(){} ;
+  using AbstractForce::AbstractForce;
+  GravitationalForce():AbstractForce("GravitationalForce"){};
+  virtual ~GravitationalForce() override = default ;
   /*!
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual void force_application(particle& p,const particle& neighbor) const override{
-    // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
-    // Check if the two particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
-
-    r2 = fmax(r2, min_r * min_r);
-    double r = sqrt(r2);
-    
-    double coef;
-    constexpr double G= 0.00000000000667;
-    // Very simple short-range repulsive force
-    if(r2>0.0001){
-        coef =  - G * neighbor.mass / r2 ;
-    }
-    else
-    //gravity-assist : repulsive force
-    {
-        coef = ( G * neighbor.mass / r2 ) * 3 ;
-    }
-
-    p.ax += coef * dx;
-    p.ay += coef * dy;
-    p.az += coef * dz;
-    }
+  virtual
+  void force_application(particle& p,const particle& neighbor) const override;
 protected:
   std::string name;
 };
+
+
+class GravitationalAssistForce final : public AbstractForce
+{
+public:
+  using AbstractForce::AbstractForce;
+  GravitationalAssistForce():AbstractForce("GravitationalAssistForce"){};
+ 
+  virtual ~GravitationalAssistForce() override = default ;
+  /*!
+    The area is positive if vertices are given in
+    counterclockwise order
+  */
+  virtual
+  void force_application(particle& p,const particle& neighbor) const override;
+
+protected:
+  std::string name;
+};
+
+class ProtonForce final : public AbstractForce
+{
+    //equal charged particles : all are protons
+public:
+  using AbstractForce::AbstractForce;
+  ProtonForce():AbstractForce("ProtonForce"){};
+ 
+  virtual ~ProtonForce() override = default ;
+  /*!
+    The area is positive if vertices are given in
+    counterclockwise order
+  */
+  virtual
+  void force_application(particle& p,const particle& neighbor) const override;
+
+protected:
+  std::string name ; 
+};
+
+
 
 class CoulombForce final : public AbstractForce
 {
     //equal charged particles : all are protons
 public:
-  CoulombForce():name( "CoulombForce"){};
-  virtual ~CoulombForce(){} ;
+  using AbstractForce::AbstractForce;
+  CoulombForce():AbstractForce("CoulombForce"){};
+  virtual ~CoulombForce() override = default ;
   /*!
     The area is positive if vertices are given in
     counterclockwise order
   */
-  virtual void force_application(particle& p,const particle& neighbor) const override{
-    constexpr double k= 8.98e9;
-    constexpr double proton_charge= 1.6e-19;
-    // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
-    // Check if the two particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
+ virtual
+  void force_application(particle& p,const particle& neighbor) const override;
 
-    r2 = fmax(r2, min_r * min_r);
-    double r = sqrt(r2);
-    double coef =  k * proton_charge * proton_charge / r2  ;
-    
-
-    p.ax += coef * dx;
-    p.ay += coef * dy;
-    p.az += coef * dz;
-    }
 protected:
   std::string name ; 
 };
+
 
 
 

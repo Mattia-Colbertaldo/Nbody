@@ -1,5 +1,6 @@
 #include "common.h"
 
+#include<cmath>
 #include <chrono>
 #include <cmath>
 #include <memory>
@@ -79,10 +80,14 @@ void init_particles(std::vector<particle>& parts, double size, int part_seed) {
         const double vy = rand_real(gen);
         const double vz = rand_real(gen);
 
+        const double pow= std::pow(10, -19);
+        const double charge=rand_real(gen) * pow;
+
+
         //
         std::uniform_real_distribution<float> rand_mass(0.001, 0.1);
         const float m = rand_mass(gen);
-        parts[i]=particle(x, y, z, vx, vy, vz, m);
+        parts[i]=particle(x, y, z, vx, vy, vz, m, charge);
     }
 
 }
@@ -168,6 +173,7 @@ int main(int argc, char** argv) {
         std::cout << "-o <filename>: set the output file name" << std::endl;
         std::cout << "-s <int>: set particle initialization seed" << std::endl;
         std::cout << "-t <int>: set number of threads (working only in parallel mode) [default = 8]" << std::endl;
+        std::cout << "-f <int>: set force: default, repulsive, gravitational, assist, proton, coulomb" << std::endl;
         return 0;
     }
 
@@ -191,6 +197,8 @@ int main(int argc, char** argv) {
         {"default", std::make_shared<RepulsiveForce>() },
         {"repulsive", std::make_shared<RepulsiveForce>() },
         {"gravitational", std::make_shared<GravitationalForce>() },
+        {"assist", std::make_shared<GravitationalAssistForce>() },
+        {"proton", std::make_shared<ProtonForce>() },
         {"coulomb", std::make_shared<CoulombForce>() },
     };
     std::shared_ptr<AbstractForce> force; 
