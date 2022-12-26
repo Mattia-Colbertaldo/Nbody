@@ -4,10 +4,8 @@
 #include <vector>
 
 
-
-
 void
-RepulsiveForce :: force_application(particle& p,const particle& neighbour) const {
+RepulsiveForce :: force_application(particle& p,const particle& neighbor) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -34,7 +32,7 @@ RepulsiveForce :: force_application(particle& p,const particle& neighbour) const
 
 
 void
-GravitationalForce :: force_application(particle& p,const particle& neighbour) const {
+GravitationalForce :: force_application(particle& p,const particle& neighbor) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -46,10 +44,9 @@ GravitationalForce :: force_application(particle& p,const particle& neighbour) c
 
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
-    constexpr double G= 6.67 * 10^(-11);
 
     // Very simple short-range repulsive force
-    double coef =  - G * neighbor.mass* / r2 ;
+    double coef =  - (G * neighbor.mass / r2) ;
 
     p.ax += coef * dx;
     p.ay += coef * dy;
@@ -60,7 +57,7 @@ GravitationalForce :: force_application(particle& p,const particle& neighbour) c
 
 
 void
-GravitationalAssistForce :: force_application(particle& p,const particle& neighbour) const {
+GravitationalAssistForce :: force_application(particle& p,const particle& neighbor) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -72,16 +69,16 @@ GravitationalAssistForce :: force_application(particle& p,const particle& neighb
 
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
-    constexpr double G= 6.67 * 10^(-11);
+    double coef;
 
     // Very simple short-range repulsive force
     if(r2>0.0001){
-        double coef =  - G * neighbor.mass* / r2 ;
+        coef =  - G * neighbor.mass / r2 ;
     }
     else
     //gravity-assist : repulsive force
     {
-        double coef = ( G * neighbor.mass* / r2 ) * 3 ;
+        coef = ( G * neighbor.mass / r2 ) * 3 ;
     }
 
     p.ax += coef * dx;
@@ -91,9 +88,7 @@ GravitationalAssistForce :: force_application(particle& p,const particle& neighb
 
 
 void
-ProtonForce :: force_application(particle& p,const particle& neighbour) const {
-    constexpr double k= 8.98 *10^9;
-    constexpr double proton_charge= 1.6 *10^(-19);
+ProtonForce :: force_application(particle& p,const particle& neighbor) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -105,7 +100,7 @@ ProtonForce :: force_application(particle& p,const particle& neighbour) const {
 
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
-    double coef =  k * proton_charge * proton_charge / r2  ;
+    double coef =  K * proton_charge * proton_charge / r2  ;
     
 
     p.ax += coef * dx;
@@ -116,8 +111,7 @@ ProtonForce :: force_application(particle& p,const particle& neighbour) const {
 
 
 void
-CoulombForce :: force_application(particle& p,const particle& neighbour) const {
-    constexpr double k= 8.98e9;
+CoulombForce :: force_application(particle& p,const particle& neighbor) const {
     
     // Calculate Distance
     double dx = neighbor.x - p.x;
@@ -130,7 +124,7 @@ CoulombForce :: force_application(particle& p,const particle& neighbour) const {
 
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
-    double coef =  k * p.charge * neighbour.charge / r2  ;
+    double coef =  K * p.charge * neighbor.charge / r2  ;
     
 
     p.ax += coef * dx;

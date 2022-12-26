@@ -53,10 +53,10 @@ RM = /u/sw/toolchains/gcc-glibc/11.2.0/base/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/nbody/hw2-1
+CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/nbody/Nbody/hw2-1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/hw2-1/build
+CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/serial.dir/depend.make
@@ -72,30 +72,30 @@ include CMakeFiles/serial.dir/flags.make
 CMakeFiles/serial.dir/main.cpp.o: CMakeFiles/serial.dir/flags.make
 CMakeFiles/serial.dir/main.cpp.o: ../main.cpp
 CMakeFiles/serial.dir/main.cpp.o: CMakeFiles/serial.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/serial.dir/main.cpp.o"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/serial.dir/main.cpp.o -MF CMakeFiles/serial.dir/main.cpp.o.d -o CMakeFiles/serial.dir/main.cpp.o -c /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/serial.dir/main.cpp.o"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/serial.dir/main.cpp.o -MF CMakeFiles/serial.dir/main.cpp.o.d -o CMakeFiles/serial.dir/main.cpp.o -c /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp
 
 CMakeFiles/serial.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/serial.dir/main.cpp.i"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp > CMakeFiles/serial.dir/main.cpp.i
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp > CMakeFiles/serial.dir/main.cpp.i
 
 CMakeFiles/serial.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/serial.dir/main.cpp.s"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp -o CMakeFiles/serial.dir/main.cpp.s
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp -o CMakeFiles/serial.dir/main.cpp.s
 
 CMakeFiles/serial.dir/particle.cpp.o: CMakeFiles/serial.dir/flags.make
 CMakeFiles/serial.dir/particle.cpp.o: ../particle.cpp
 CMakeFiles/serial.dir/particle.cpp.o: CMakeFiles/serial.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/serial.dir/particle.cpp.o"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/serial.dir/particle.cpp.o -MF CMakeFiles/serial.dir/particle.cpp.o.d -o CMakeFiles/serial.dir/particle.cpp.o -c /home/jellyfish/shared-folder/nbody/hw2-1/particle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/serial.dir/particle.cpp.o"
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/serial.dir/particle.cpp.o -MF CMakeFiles/serial.dir/particle.cpp.o.d -o CMakeFiles/serial.dir/particle.cpp.o -c /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/particle.cpp
 
 CMakeFiles/serial.dir/particle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/serial.dir/particle.cpp.i"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/hw2-1/particle.cpp > CMakeFiles/serial.dir/particle.cpp.i
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/particle.cpp > CMakeFiles/serial.dir/particle.cpp.i
 
 CMakeFiles/serial.dir/particle.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/serial.dir/particle.cpp.s"
-	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/hw2-1/particle.cpp -o CMakeFiles/serial.dir/particle.cpp.s
+	/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/particle.cpp -o CMakeFiles/serial.dir/particle.cpp.s
 
 # Object files for target serial
 serial_OBJECTS = \
@@ -109,7 +109,7 @@ serial: CMakeFiles/serial.dir/main.cpp.o
 serial: CMakeFiles/serial.dir/particle.cpp.o
 serial: CMakeFiles/serial.dir/build.make
 serial: CMakeFiles/serial.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable serial"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable serial"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/serial.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -121,6 +121,6 @@ CMakeFiles/serial.dir/clean:
 .PHONY : CMakeFiles/serial.dir/clean
 
 CMakeFiles/serial.dir/depend:
-	cd /home/jellyfish/shared-folder/nbody/hw2-1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jellyfish/shared-folder/nbody/hw2-1 /home/jellyfish/shared-folder/nbody/hw2-1 /home/jellyfish/shared-folder/nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/hw2-1/build/CMakeFiles/serial.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jellyfish/shared-folder/nbody/Nbody/hw2-1 /home/jellyfish/shared-folder/nbody/Nbody/hw2-1 /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/build/CMakeFiles/serial.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/serial.dir/depend
 

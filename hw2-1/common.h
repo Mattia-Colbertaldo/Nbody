@@ -17,8 +17,9 @@
 #define min_r    (cutoff / 100)
 #define dt       0.0005
 
-
-class AbstractForce;
+#define G             6.67e-11
+#define K             8.98e9
+#define proton_charge 1.6e-19
 
 // Particle Data Structure: used in OPENMP
 
@@ -52,30 +53,26 @@ class particle {
 class AbstractForce
 {
 public:
-
   AbstractForce(std::string name) : name(name){};
   //! virtual destructor
-  virtual ~AbstractForce() = default;
 
-  virtual void  
-  force_application(particle& p,const particle& neighbour) const =0;
+  virtual void force_application(particle& p,const particle& neighbor) const = 0;
+  
+  virtual ~AbstractForce(){};
 protected:
     std::string name;    
 };
 
 
-class RepulsiveForce final : public AbstractForce
+class RepulsiveForce : public AbstractForce
 {
 public:
   using AbstractForce::AbstractForce;
   RepulsiveForce():AbstractForce("RepulsiveForce"){};
-  virtual ~RepulsiveForce() override = default ;
-  /*!
-    The area is positive if vertices are given in
-    counterclockwise order
-  */
-  virtual
+  
+  
   void force_application(particle& p,const particle& neighbor) const override;
+  virtual ~RepulsiveForce(){};
 protected: 
   std::string name;   
 };
@@ -85,12 +82,8 @@ class GravitationalForce final : public AbstractForce
 public:
   using AbstractForce::AbstractForce;
   GravitationalForce():AbstractForce("GravitationalForce"){};
-  virtual ~GravitationalForce() override = default ;
-  /*!
-    The area is positive if vertices are given in
-    counterclockwise order
-  */
-  virtual
+  virtual ~GravitationalForce(){};
+  
   void force_application(particle& p,const particle& neighbor) const override;
 protected:
   std::string name;
@@ -103,12 +96,8 @@ public:
   using AbstractForce::AbstractForce;
   GravitationalAssistForce():AbstractForce("GravitationalAssistForce"){};
  
-  virtual ~GravitationalAssistForce() override = default ;
-  /*!
-    The area is positive if vertices are given in
-    counterclockwise order
-  */
-  virtual
+  virtual ~GravitationalAssistForce(){};
+  
   void force_application(particle& p,const particle& neighbor) const override;
 
 protected:
@@ -122,12 +111,8 @@ public:
   using AbstractForce::AbstractForce;
   ProtonForce():AbstractForce("ProtonForce"){};
  
-  virtual ~ProtonForce() override = default ;
-  /*!
-    The area is positive if vertices are given in
-    counterclockwise order
-  */
-  virtual
+  virtual ~ProtonForce(){};
+  
   void force_application(particle& p,const particle& neighbor) const override;
 
 protected:
@@ -142,12 +127,8 @@ class CoulombForce final : public AbstractForce
 public:
   using AbstractForce::AbstractForce;
   CoulombForce():AbstractForce("CoulombForce"){};
-  virtual ~CoulombForce() override = default ;
-  /*!
-    The area is positive if vertices are given in
-    counterclockwise order
-  */
- virtual
+  virtual ~CoulombForce(){};
+ 
   void force_application(particle& p,const particle& neighbor) const override;
 
 protected:

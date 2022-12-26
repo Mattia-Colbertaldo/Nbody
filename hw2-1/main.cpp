@@ -93,7 +93,7 @@ void init_particles(std::vector<particle>& parts, const double size, const int p
 }
 
 
-void simulate_one_step(std::vector<particle>& parts, const std::shared_ptr<AbstractForce> force,const int num_parts,const double size) {
+void simulate_one_step(std::vector<particle>& parts, const AbstractForce& force,const int num_parts,const double size) {
     // Compute Forces
     //int num_parts = parts.size();
     #ifdef _OPENMP
@@ -102,7 +102,7 @@ void simulate_one_step(std::vector<particle>& parts, const std::shared_ptr<Abstr
     for (int i = 0; i < num_parts; ++i) {
         parts[i].ax = parts[i].ay = parts[i].az = 0.;
         for (int j = 0; j < num_parts; ++j) {
-            force->force_application(parts[i], parts[j]);
+            force.force_application(parts[i], parts[j]);
         }
     }
     #ifdef _OPENMP
@@ -164,6 +164,8 @@ char* find_force_option(int argc, char** argv, const char* option, char* default
 // Main Function
 // ==============
 
+std::vector<AbstractForce> forces;
+
 int main(int argc, char** argv) {
     // Parse Args
     if (find_arg_idx(argc, argv, "-h") >= 0) {
@@ -191,7 +193,40 @@ int main(int argc, char** argv) {
         forcename= &def[0];
         std::cout << "Choosing default force ";
     }
+    AbstractForce* force;
 
+    if(strcmp(forcename, "default")){
+        RepulsiveForce f;
+        force = &f;
+    }
+    
+    else if(strcmp(forcename, "repulsive")){
+        RepulsiveForce f;
+        force = &f;
+    }
+    
+    else if(strcmp(forcename, "gravitational")){
+        GravitationalForce f;
+        force = &f;
+    }
+    
+    else if(strcmp(forcename, "assist")){
+        GravitationalAssistForce f;
+        force = &f;
+    }
+    
+    else if(strcmp(forcename, "proton")){
+        ProtonForce f;
+        force = &f;
+    }
+    
+    else if(std::strcmp(forcename, "coulomb")){
+        CoulombForce f;
+        force = &f;
+    }
+    
+    
+    /*
     const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
     {
         {"default", std::make_shared<RepulsiveForce>() },
@@ -201,8 +236,7 @@ int main(int argc, char** argv) {
         {"proton", std::make_shared<ProtonForce>() },
         {"coulomb", std::make_shared<CoulombForce>() },
     };
-    std::shared_ptr<AbstractForce> force; 
-
+    std::shared_ptr<AbstractForce> force;
 
     try {
         force = fmap.at(forcename);      // vector::at throws an out-of-range
@@ -211,6 +245,12 @@ int main(int argc, char** argv) {
         std::cerr << "Wrong Force chosen "<< '\n';
         force =  fmap.at("repulsive");
     }
+
+    */
+
+
+
+    
     
 
     // Initialize Particles
@@ -245,7 +285,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
         //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
             
-            simulate_one_step(parts, force, num_parts,size);
+            simulate_one_step(parts, *force, num_parts,size);
 
             // Save state if necessary
             #ifdef _OPENMP
