@@ -82,8 +82,7 @@ void init_particles(std::vector<particle>& parts, const double size, const int p
         const double vz = rand_real(gen);
 
         std::uniform_real_distribution<float> rand_charge(-1.0, 1.0);
-        const double pow= std::pow(10, -19);
-        const double charge=rand_charge(gen2) * pow;
+        const double charge=rand_charge(gen2) * 10e-19;
 
 
         //

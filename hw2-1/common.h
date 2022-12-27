@@ -17,9 +17,11 @@
 #define min_r    0.01 / 1000
 #define dt       0.0005
 
-#define G             6.67e-11 * 1000000000000
-#define K             8.98e9 * 1000000000000
-#define proton_charge 1.6e-19 * 10000000
+#define G             6.67e-11 * scale
+#define K             8.98e9 * scale
+#define proton_charge 1.6e-19 * scale
+
+#define scale 10e8
 
 // Particle Data Structure: used in OPENMP
 
@@ -136,12 +138,12 @@ public:
 
     // Very simple short-range repulsive force
     if(r2>0.0001){
-        coef =  - G * neighbor.mass / r2 ;
+        coef =  G * neighbor.mass / r2 ;
     }
     else
     //gravity-assist : repulsive force
     {
-        coef = ( G * neighbor.mass / r2 ) * 3 ;
+        coef = -( G * neighbor.mass / r2 ) * 3 ;
     }
 
     p.ax += coef * dx;
@@ -198,7 +200,7 @@ public:
 
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
-    double coef =  K * p.charge * neighbor.charge / r2  ;
+    double coef = scale * K * p.charge * neighbor.charge / r2  ;
     
 
     p.ax += coef * dx;
