@@ -53,13 +53,14 @@ void save(std::ofstream& fsave, const std::vector<particle_pos>& parts, const in
 
 
 void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
-                    std::vector<float>& masses,
+                    std::vector<float>& masses, std::vector<float>& charges,
                     const int num_parts, const double size,const int part_seed,
                     std::vector<particle_pos>&parts_pos, const int num_loc, 
                     const std::vector<int>& displs, const std::vector<int>& sizes) {
 
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
+    std::mt19937 gen2(part_seed ? part_seed : rd());
     
     int sx = (int)ceil(sqrt((double)num_parts));
     int sy = (num_parts + sx - 1) / sx;
@@ -139,6 +140,11 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
             float m = rand_mass(gen);
             masses[i]=m;
 
+            std::uniform_real_distribution<float> rand_charge(-1.0, 1.0);
+            const double pow= std::pow(10, -19);
+            const double charge=rand_charge(gen2) * pow;
+            charges[i]=charge;
+
         }
 
         //Saving my data (i'm rank 0)
@@ -152,6 +158,7 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
     MPI_Scatterv( &parts_vel_acc_temp[0] , &sizes[0] , &displs[0], mpi_part_vel_acc_type ,
                   &parts_vel_acc_loc[0] , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
     MPI_Bcast( &masses[0] , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
+    MPI_Bcast( &charges[0] , num_parts , MPI_FLOAT , 0 , MPI_COMM_WORLD);
     MPI_Bcast(&parts_pos[0] , num_parts, mpi_part_pos_type , 0 , MPI_COMM_WORLD);
 }
 
@@ -165,7 +172,7 @@ void init_particles(std::vector<particle_vel_acc>& parts_vel_acc_loc,
 
 
 void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particle_vel_acc>& parts_vel_acc_loc,
-                       std::vector<float>& masses, int num_parts, int num_loc, int displ_loc,  double size, int rank){
+                       const std::vector<float>& masses, const std::vector<float>& charges, int num_parts, int num_loc, int displ_loc,  double size, int rank, const AbstractForce& force ){
 
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
     // in this way we split the load in the most equilibrate way
@@ -177,7 +184,7 @@ void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particl
         parts_vel_acc_loc[i].ax = parts_vel_acc_loc[i].ay = parts_vel_acc_loc[i].az= 0.;
         for (int j = 0; j < num_parts; ++j) {
             //OK;
-            parts_vel_acc_loc[i].apply_force(parts_pos[i+displ_loc], parts_pos[j], masses[j]);
+            force.force_application(parts_vel_acc_loc[i], parts_pos[i+displ_loc], parts_pos[j], masses[j], charges[i], charges[j]);
             //OK;
         }
     }
@@ -191,6 +198,43 @@ void simulate_one_step(std::vector<particle_pos>& parts_pos, std::vector<particl
         
     }
      
+    
+}
+
+
+AbstractForce* Find_force(const char* forcename)
+{
+    AbstractForce* force;
+    if(strcmp(forcename, "gravitational")==0){
+        GravitationalForce* f = new GravitationalForce();
+        std::cout << "Gravitational force chosen." << std::endl;
+        force = f;
+    }
+    
+    else if(strcmp(forcename, "assist")==0){
+        GravitationalAssistForce* f = new GravitationalAssistForce();
+        std::cout << "Gravitational Assist force chosen." << std::endl;
+        force = f;
+    }
+    
+    else if(strcmp(forcename, "proton")==0){
+        ProtonForce* f = new ProtonForce();
+        std::cout << "Proton force chosen." << std::endl;
+        force = f;
+    }
+    
+    else if(strcmp(forcename, "coulomb")==0){
+        CoulombForce* f = new CoulombForce();
+        std::cout << "Coulomb force chosen." << std::endl;
+        force = f;
+    }
+
+    else {
+        RepulsiveForce* f = new RepulsiveForce();
+        std::cout << "Repulsive force chosen." << std::endl;
+        force = f;
+    }
+    return force;
     
 }
 
@@ -224,6 +268,17 @@ char* find_string_option(int argc, char** argv, const char* option, char* defaul
     return default_value;
 }
 
+char* find_force_option(int argc, char** argv, const char* option, char* default_value) {
+    int iplace = find_arg_idx(argc, argv, option);
+
+    if (iplace >= 0 && iplace < argc - 1) {
+        return argv[iplace + 1];
+    }
+
+    return default_value;
+}
+
+
 // ==============
 // Main Function
 // ==============
@@ -252,7 +307,7 @@ int main(int argc, char** argv) {
     std::vector<int> sizes(mpi_size);
     std::vector<int> displs(mpi_size+1);
     
-    
+    AbstractForce* force;
 
     if(rank==0){       
     
@@ -267,8 +322,27 @@ int main(int argc, char** argv) {
             std::cout << "-o <filename>: set the output file name" << std::endl;
             std::cout << "-s <int>: set particle initialization seed" << std::endl;
             std::cout << "-t <int>: set number of threads (working only in parallel mode) [default = 8]" << std::endl;
-            return 0;
-        }
+            std::cout << "-f <int>: set force: default, repulsive, gravitational, assist, proton, coulomb" << std::endl;
+        return 0;
+    }
+
+    // Open Output File
+    char* savename = find_string_option(argc, argv, "-o", nullptr);
+    if (savename != nullptr) std::cout << "Creating file " << savename << "..." << std::endl;
+    std::ofstream fsave(savename);
+    if (savename != nullptr) std::cout << "File created." << std::endl;
+
+    //Find force
+    char* forcename = find_force_option(argc, argv, "-f", nullptr);
+    if (forcename != nullptr) std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
+    else{
+        std::string def="default";
+        forcename= &def[0];
+        std::cout << "Choosing default force..." << std::endl;;
+    }
+
+    force= Find_force(forcename);
+
 
     
         // Initialize Particles
@@ -305,9 +379,10 @@ int main(int argc, char** argv) {
     std::vector<particle_pos> parts_pos(num_parts);
     
     std::vector<float> masses(num_parts);
+    std::vector<float> charges(num_parts);
     
     if (!rank) std::cout << "Trying to init particles..." << std::endl;
-    init_particles(parts_vel_acc_loc, masses, num_parts, size, part_seed, parts_pos, num_loc, displs, sizes); 
+    init_particles(parts_vel_acc_loc, masses, charges, num_parts, size, part_seed, parts_pos, num_loc, displs, sizes); 
     
     
     // Algorithm
@@ -325,7 +400,7 @@ int main(int argc, char** argv) {
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
         
-        simulate_one_step(parts_pos, parts_vel_acc_loc, masses, num_parts, num_loc, displ_loc, size, rank);
+        simulate_one_step(parts_pos, parts_vel_acc_loc, masses, charges, num_parts, num_loc, displ_loc, size, rank, *force);
         
         MPI_Barrier( MPI_COMM_WORLD);
 

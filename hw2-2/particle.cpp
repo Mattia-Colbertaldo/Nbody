@@ -8,26 +8,6 @@ int mpi_rank;
 #define OK std::cout << "At mpi:" << __LINE__ << " from process " << mpi_rank << std::endl
 
 
-// Apply the force from neighbor to particle
-void particle_vel_acc :: apply_force(particle_pos& me, particle_pos& neighbor, float mass_neigh) {
-    // Calculate Distance
-    double dx = neighbor.x - me.x;
-    double dy = neighbor.y - me.y;
-    double dz = neighbor.z - me.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
-
-    // Check if the two particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
-    r2 = fmax(r2, min_r * min_r);
-    double r = sqrt(r2);
-
-    // Very simple short-range repulsive force
-    double coef = mass_neigh* (1 - cutoff / r) / r2;
-    this->ax += coef * dx;
-    this->ay += coef * dy;
-    this->az += coef * dz; 
-}
 
 // Integrate the ODE
 void particle_vel_acc:: move(particle_pos& pos ,double size) {

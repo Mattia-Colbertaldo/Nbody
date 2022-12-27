@@ -1,7 +1,7 @@
 CMakeFiles/mpi.dir/particle.cpp.o: \
- /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/particle.cpp \
+ /home/jellyfish/shared-folder/nbody/hw2-2/particle.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/common.h \
+ /home/jellyfish/shared-folder/nbody/hw2-2/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -49,6 +49,7 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stddef.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/random \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/math.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/libc-header-start.h \
@@ -97,11 +98,10 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/struct_rwlock.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/alloca.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/stdlib-float.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ostream \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iosfwd \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdlib \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/string \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stringfwd.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/char_traits.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/postypes.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cwchar \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/wchar.h \
@@ -112,12 +112,6 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/__mbstate_t.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/__FILE.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/FILE.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/exception \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/exception_ptr.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_init_exception.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/typeinfo \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/nested_exception.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/char_traits.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdint \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stdint.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdint.h \
@@ -127,9 +121,14 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/clocale \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/locale.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/locale.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iosfwd \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cctype \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/ctype.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ios_base.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream_insert.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_forced.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_function.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/backward/binders.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_string.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/atomicity.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/gthr.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/gthr-default.h \
@@ -147,15 +146,7 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/struct___jmp_buf_tag.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/atomic_word.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/sys/single_threaded.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/locale_classes.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/string \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream_insert.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_forced.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_function.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/backward/binders.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_string.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/string_conversions.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdlib \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstdio \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdio.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/__fpos_t.h \
@@ -173,10 +164,54 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/error_t.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/charconv.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_string.tcc \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/limits \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uniform_int_dist.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/opt_random.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/random.tcc \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/numeric \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_numeric.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/memory \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_tempbuf.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_raw_storage_iter.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/align.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bit \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/uses_allocator.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/unique_ptr.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/utility \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_relops.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/tuple \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/array \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/invoke.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/shared_ptr.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/shared_ptr_base.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/typeinfo \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/allocated_ptr.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/refwrap.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/aligned_buffer.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ext/concurrence.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/exception \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/exception_ptr.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/cxxabi_init_exception.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/nested_exception.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/shared_ptr_atomic.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/atomic_base.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/atomic_lockfree_defines.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/backward/auto_ptr.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/unordered_map \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hashtable.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hashtable_policy.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/unordered_map.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/erase_if.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/stdexcept \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ostream \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ios_base.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/locale_classes.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/locale_classes.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/system_error \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/error_constants.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/stdexcept \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/streambuf \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/streambuf.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_ios.h \

@@ -94,6 +94,42 @@ void init_particles(std::vector<particle>& parts, const double size, const int p
 
 }
 
+AbstractForce* Find_force(const char* forcename)
+{
+    AbstractForce* force;
+    if(strcmp(forcename, "gravitational")==0){
+        GravitationalForce* f = new GravitationalForce();
+        std::cout << "Gravitational force chosen." << std::endl;
+        force = f;
+    }
+    
+    else if(strcmp(forcename, "assist")==0){
+        GravitationalAssistForce* f = new GravitationalAssistForce();
+        std::cout << "Gravitational Assist force chosen." << std::endl;
+        force = f;
+    }
+    
+    else if(strcmp(forcename, "proton")==0){
+        ProtonForce* f = new ProtonForce();
+        std::cout << "Proton force chosen." << std::endl;
+        force = f;
+    }
+    
+    else if(strcmp(forcename, "coulomb")==0){
+        CoulombForce* f = new CoulombForce();
+        std::cout << "Coulomb force chosen." << std::endl;
+        force = f;
+    }
+
+    else {
+        RepulsiveForce* f = new RepulsiveForce();
+        std::cout << "Repulsive force chosen." << std::endl;
+        force = f;
+    }
+    return force;
+    
+}
+
 
 void simulate_one_step(std::vector<particle>& parts, const AbstractForce& force,const int num_parts,const double size) {
     // Compute Forces
@@ -162,11 +198,13 @@ char* find_force_option(int argc, char** argv, const char* option, char* default
     return default_value;
 }
 
+
+
 // ==============
 // Main Function
 // ==============
 
-std::vector<AbstractForce> forces;
+
 
 int main(int argc, char** argv) {
     // Parse Args
@@ -196,39 +234,10 @@ int main(int argc, char** argv) {
         std::cout << "Choosing default force..." << std::endl;;
     }
 
-    AbstractForce* force;
+    AbstractForce* force= Find_force(forcename);
 
     
-    if(strcmp(forcename, "gravitational")==0){
-        GravitationalForce* f = new GravitationalForce();
-        std::cout << "Gravitational force chosen." << std::endl;
-        force = f;
-    }
-    
-    else if(strcmp(forcename, "assist")==0){
-        GravitationalAssistForce* f = new GravitationalAssistForce();
-        std::cout << "Gravitational Assist force chosen." << std::endl;
-        force = f;
-    }
-    
-    else if(strcmp(forcename, "proton")==0){
-        ProtonForce* f = new ProtonForce();
-        std::cout << "Proton force chosen." << std::endl;
-        force = f;
-    }
-    
-    else if(strcmp(forcename, "coulomb")==0){
-        CoulombForce* f = new CoulombForce();
-        std::cout << "Coulomb force chosen." << std::endl;
-        force = f;
-    }
 
-    else {
-        RepulsiveForce* f = new RepulsiveForce();
-        std::cout << "Repulsive force chosen." << std::endl;
-        force = f;
-    }
-    
     
     /*
     const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
