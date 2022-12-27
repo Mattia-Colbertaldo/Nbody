@@ -3,6 +3,7 @@
 #include <cmath>
 #include <vector>
 
+/*
 
 void
 RepulsiveForce :: force_application(particle& p,const particle& neighbor) const {
@@ -25,7 +26,7 @@ RepulsiveForce :: force_application(particle& p,const particle& neighbor) const 
     p.ay += coef * dy;
     p.az += coef * dz;
   
-}
+};
 
 
 
@@ -51,7 +52,7 @@ GravitationalForce :: force_application(particle& p,const particle& neighbor) co
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
-}
+};
 
 
 
@@ -84,7 +85,7 @@ GravitationalAssistForce :: force_application(particle& p,const particle& neighb
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
-}
+};
 
 
 void
@@ -106,7 +107,7 @@ ProtonForce :: force_application(particle& p,const particle& neighbor) const {
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
-}
+};
 
 
 
@@ -130,4 +131,7 @@ CoulombForce :: force_application(particle& p,const particle& neighbor) const {
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
-}
+};
+
+
+*/

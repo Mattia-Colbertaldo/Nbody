@@ -51,6 +51,7 @@ void init_particles(std::vector<particle>& parts, const double size, const int p
 
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
+    std::mt19937 gen2(part_seed ? part_seed : rd());
 
     int sx = (int)ceil(sqrt((double)num_parts));
     int sy = (num_parts + sx - 1) / sx;
@@ -80,8 +81,9 @@ void init_particles(std::vector<particle>& parts, const double size, const int p
         const double vy = rand_real(gen);
         const double vz = rand_real(gen);
 
+        std::uniform_real_distribution<float> rand_charge(-1.0, 1.0);
         const double pow= std::pow(10, -19);
-        const double charge=rand_real(gen) * pow;
+        const double charge=rand_charge(gen2) * pow;
 
 
         //
@@ -114,7 +116,7 @@ void simulate_one_step(std::vector<particle>& parts, const AbstractForce& force,
 	#pragma omp for schedule(dynamic)
     #endif
     for (int i = 0; i < num_parts; ++i) {
-        parts[i].move(size);
+         parts[i].move(size);
     }
 }
 
@@ -191,38 +193,40 @@ int main(int argc, char** argv) {
     else{
         std::string def="default";
         forcename= &def[0];
-        std::cout << "Choosing default force ";
+        std::cout << "Choosing default force..." << std::endl;;
     }
+
     AbstractForce* force;
 
-    if(strcmp(forcename, "default")){
-        RepulsiveForce f;
-        force = &f;
+    
+    if(strcmp(forcename, "gravitational")==0){
+        GravitationalForce* f = new GravitationalForce();
+        std::cout << "Gravitational force chosen." << std::endl;
+        force = f;
     }
     
-    else if(strcmp(forcename, "repulsive")){
-        RepulsiveForce f;
-        force = &f;
+    else if(strcmp(forcename, "assist")==0){
+        GravitationalAssistForce* f = new GravitationalAssistForce();
+        std::cout << "Gravitational Assist force chosen." << std::endl;
+        force = f;
     }
     
-    else if(strcmp(forcename, "gravitational")){
-        GravitationalForce f;
-        force = &f;
+    else if(strcmp(forcename, "proton")==0){
+        ProtonForce* f = new ProtonForce();
+        std::cout << "Proton force chosen." << std::endl;
+        force = f;
     }
     
-    else if(strcmp(forcename, "assist")){
-        GravitationalAssistForce f;
-        force = &f;
+    else if(strcmp(forcename, "coulomb")==0){
+        CoulombForce* f = new CoulombForce();
+        std::cout << "Coulomb force chosen." << std::endl;
+        force = f;
     }
-    
-    else if(strcmp(forcename, "proton")){
-        ProtonForce f;
-        force = &f;
-    }
-    
-    else if(std::strcmp(forcename, "coulomb")){
-        CoulombForce f;
-        force = &f;
+
+    else {
+        RepulsiveForce* f = new RepulsiveForce();
+        std::cout << "Repulsive force chosen." << std::endl;
+        force = f;
     }
     
     
