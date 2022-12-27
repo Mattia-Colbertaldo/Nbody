@@ -21,7 +21,7 @@
 #define K             8.98e9 * scale
 #define proton_charge 1.6e-19 * scale
 
-#define scale 10e8
+#define scale 10e10
 
 // Particle Data Structure: used in OPENMP
 
@@ -200,7 +200,7 @@ public:
 
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
-    double coef = scale * K * p.charge * neighbor.charge / r2  ;
+    double coef = std::pow(scale, 2) * K * p.charge * neighbor.charge / r2  ;
     
 
     p.ax += coef * dx;
