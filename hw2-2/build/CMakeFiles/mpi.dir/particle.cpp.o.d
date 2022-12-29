@@ -1,7 +1,7 @@
 CMakeFiles/mpi.dir/particle.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-2/particle.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/particle.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/hw2-2/common.h \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -46,9 +46,6 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/hash_bytes.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/range_access.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
- /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stddef.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/random \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/math.h \
@@ -70,6 +67,7 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/iscanonical.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/std_abs.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdlib.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/lib/gcc/x86_64-mk-linux/11.2.0/include/stddef.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/waitflags.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/waitstatus.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/locale_t.h \
@@ -226,4 +224,6 @@ CMakeFiles/mpi.dir/particle.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/basic_ios.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h

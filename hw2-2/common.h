@@ -1,7 +1,6 @@
 #ifndef __CS267_COMMON_H__
 #define __CS267_COMMON_H__
 #include <vector>
-#include <mpi.h>
 #include <random>
 #include <memory>
 #include <unordered_map>
@@ -18,11 +17,12 @@
 #define dt       0.0005
 
 
+#define scale 1e12
 
+#define G             6.67e-11 * scale
+#define K             8.98e9 * scale
+#define proton_charge 1.6e-19 * scale
 
-#define G             6.67e-11 * 1000000000000
-#define K             8.98e9 * 1000000000000
-#define proton_charge 1.6e-19 * 10000000
 
 // Particle Data Structure: used in OPENMP
 class particle_pos {
@@ -58,22 +58,23 @@ class AbstractForce
 {
 public:
   AbstractForce(){};
-  virtual void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const float& mass_neigh, const float& charge_me,const float& charge_n  ) const = 0;
+  virtual void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const double& mass_neigh, const double& charge_me,const double& charge_n  ) const = 0;
   
   virtual ~AbstractForce(){};
 };
-
 
 class RepulsiveForce : public AbstractForce
 {
 public:
     
-  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const float& mass_neigh, const float& charge_me,const float& charge_n ) const {
+  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const 
+                         particle_pos& neighbor, const double& mass_neigh,
+                         const double& charge_me,const double& charge_n )
+                         const {
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
     double r2 = dx * dx + dy * dy + dz * dz;
-
     // Check if the two particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -94,7 +95,7 @@ class GravitationalForce : public AbstractForce
 {
 public:
   
-  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const float& mass_neigh, const float& charge_me,const float& charge_n ) const {
+  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const double& mass_neigh, const double& charge_me,const double& charge_n ) const {
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
@@ -107,7 +108,7 @@ public:
     double r = sqrt(r2);
     
     // Very simple short-range repulsive force
-    double coef =  (G * mass_neigh / r2) ;
+    double coef = (G * mass_neigh / r2) ;
 
 
     particle_vel_acc_loc.ax += coef * dx;
@@ -123,7 +124,7 @@ class GravitationalAssistForce : public AbstractForce
 public:
   
   
-  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const float& mass_neigh, const float& charge_me,const float& charge_n ) const {
+  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const double& mass_neigh, const double& charge_me,const double& charge_n ) const {
 
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -139,12 +140,12 @@ public:
     double coef;
     // Very simple short-range repulsive force
     if(r2>0.0001){
-        coef =  - G * mass_neigh / r2 ;
+        coef =  G * mass_neigh / r2 ;
     }
     else
     //gravity-assist : repulsive force
     {
-        coef = ( G * mass_neigh / r2 ) * 3 ;
+        coef = -( G * mass_neigh / r2 ) * 3 ;
     }
 
 
@@ -160,7 +161,7 @@ class ProtonForce : public AbstractForce
     //equal charged particles : all are protons
 public:
      
-  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const float& mass_neigh, const float& charge_me,const float& charge_n ) const {
+  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const double& mass_neigh, const double& charge_me,const double& charge_n ) const {
 
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -174,7 +175,7 @@ public:
     double r = sqrt(r2);
 
 
-    double coef =  K * proton_charge * proton_charge / r2  ;
+    double coef = K * proton_charge * proton_charge / r2  ;
 
 
     particle_vel_acc_loc.ax += coef * dx;
@@ -192,7 +193,7 @@ class CoulombForce : public AbstractForce
     //equal charged particles : all are protons
 public:
    
-  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const float& mass_neigh, const float& charge_me,const float& charge_n ) const {
+  void force_application(particle_vel_acc& particle_vel_acc_loc, particle_pos& p,const particle_pos& neighbor, const double& mass_neigh, const double& charge_me,const double& charge_n ) const {
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
@@ -204,7 +205,7 @@ public:
     r2 = fmax(r2, min_r * min_r);
     double r = sqrt(r2);
     
-    double coef =  K * charge_n * charge_me / r2  ;
+    double coef = std::pow(scale, 2) * K * charge_n * charge_me / r2  ;
 
 
     particle_vel_acc_loc.ax += coef * dx;
