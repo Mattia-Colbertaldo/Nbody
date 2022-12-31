@@ -1,4 +1,5 @@
 #include "common.h"
+#include "Particle.hpp"
 
 #include <memory>
 #include <stdexcept>
@@ -7,7 +8,7 @@
 
     // Integrate the ODE
 
-    void particle:: move(const double size) {
+    void Particle:: move(const double size) {
         // Slightly simplified Velocity Verlet integration
         // Conserves energy better than explicit Euler method
         this->vx += this->ax * dt;
@@ -32,7 +33,6 @@
             this->z = this->z < 0 ? -this->z : 2 * size - this->z;
             this->vz = -this->vz;
         }
-    }
-
+    };
 
 

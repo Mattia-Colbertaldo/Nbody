@@ -10,10 +10,10 @@ find_package(OpenMP REQUIRED)
 set(GROUP_NAME "None" CACHE STRING "Your group name as it appears on bCourses (no spaces)")
 
 # Packaging system
-if (NOT ${GROUP_NAME} STREQUAL None)
+if (NOT ${GROUP_NAME} STREQUAL None) 
     set(CPACK_GENERATOR TGZ)
     set(CPACK_PACKAGE_FILE_NAME "cs267${GROUP_NAME}_hw2_1")
-    install(FILES main.cpp particle.cpp DESTINATION .)
+    install(FILES main.cpp Particle.cpp PhysicalForce.cpp Find_Arg.cpp Output.cpp Simulation.cpp DESTINATION .)
     install(FILES ${CPACK_PACKAGE_FILE_NAME}.pdf DESTINATION .)
     include(CPack)
 endif ()
@@ -27,9 +27,9 @@ if (NOT "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
             "module swap ${Prg-${CMAKE_C_COMPILER_ID}} PrgEnv-gnu")
 endif ()
 
-add_executable(serial main.cpp particle.cpp common.h)
+add_executable(serial main.cpp Particle.cpp PhysicalForce.cpp Find_Arg.cpp Output.cpp Simulation.cpp common.h)
 
-add_executable(openmp main.cpp particle.cpp common.h)
+add_executable(openmp main.cpp Particle.cpp PhysicalForce.cpp Find_Arg.cpp Output.cpp Simulation.cpp common.h)
 target_link_libraries(openmp PUBLIC OpenMP::OpenMP_CXX)
 
 # Copy the job scripts

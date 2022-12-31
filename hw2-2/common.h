@@ -8,20 +8,20 @@
 #include <iostream>
 
 
+
 // Program Constants
-#define nsteps   1000
-#define savefreq 1
-#define density  0.0005
-#define cutoff   0.01 * 100
-#define min_r    0.01 / 1000
-#define dt       0.0005
+constexpr unsigned int nsteps = 1000;
+constexpr unsigned int savefreq = 1;
+constexpr double density = 0.0005;
+constexpr double cutoff  = 0.01 * 100;
+constexpr double min_r   = 0.01 / 1000;
+constexpr double dt      = 0.0005;
 
+constexpr double scale = 1e11;
 
-#define scale 1e12
-
-#define G             6.67e-11 * scale
-#define K             8.98e9 * scale
-#define proton_charge 1.6e-19 * scale
+constexpr double G            = 6.67e-11 * scale;
+constexpr double K            = 8.98e9 * scale;
+constexpr double proton_charge= 1.6e-19 * scale;
 
 
 // Particle Data Structure: used in OPENMP
