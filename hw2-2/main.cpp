@@ -17,10 +17,11 @@
 #include <math.h>
 #include <mpi.h>
 
+
 int rank, mpi_size;
 bool first = true;
-MPI_Datatype mpi_part_vel_acc_type;
-MPI_Datatype mpi_part_pos_type;
+
+
 
 #define OK std::cout << "At main:" << __LINE__ << " from process " << rank << std::endl
 
@@ -87,6 +88,7 @@ int main(int argc, char** argv) {
 
         // Initialize Particles
         const int num_parts = finder.find_int_arg("-n", 1000);
+        
         const int part_seed = finder.find_int_arg("-s", 0);
         size = std::sqrt(density * num_parts);
         const int num_th = finder.find_int_arg("-t", 8);
@@ -109,17 +111,19 @@ int main(int argc, char** argv) {
     // in this way we split the load in the most equilibrate way
     int num_loc, displ_loc;
     MPI_Bcast( &num_parts , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
+    if (!rank) std::cout << num_parts << std::endl;
+    
     MPI_Bcast( &size , 1 , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &sizes[0] , mpi_size , MPI_INT , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &displs[0] , mpi_size+1 , MPI_INT , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &part_seed , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
     num_loc=sizes[rank];
     displ_loc=displs[rank];
-    
+   
     Simulation simulation = Simulation(num_parts, num_loc);
     
     if (!rank) std::cout << "Trying to init particles..." << std::endl;
-    simulation.init_particles(num_parts, size, part_seed, num_loc, displs, sizes); 
+    MPI_Datatype mpi_parts_pos_type=simulation.init_particles(num_parts, size, part_seed, num_loc, displs, sizes, rank); 
     
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
@@ -142,7 +146,7 @@ int main(int argc, char** argv) {
 
         // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori.
         // Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente.
-        MPI_Allgatherv( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL , &simulation.parts_pos[0] , &sizes[0] , &displs[0] , mpi_part_pos_type , MPI_COMM_WORLD);
+        MPI_Allgatherv( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL , &simulation.parts_pos[0] , &sizes[0] , &displs[0] , mpi_parts_pos_type , MPI_COMM_WORLD);
         
         // Save state if necessary
         if(rank==0)

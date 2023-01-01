@@ -1,13 +1,7 @@
 #ifndef HH__PARTICLE__HH
 #define HH__PARTICLE__HH
 
-// Particle Data Structure: used in OPENMP
-struct particle_pos {
-        double x;  // Position X
-        double y;  // Position Y
-        double z;
-};
-
+// Particle Data Structure
 struct particle_vel_acc {
         double vx; // Velocity X
         double vy; // Velocity Y
@@ -17,23 +11,13 @@ struct particle_vel_acc {
         double az;
 };
 
-
-struct Particle {
+struct particle_pos {
         public:
-        Particle(const double & x, const double & y, const double & z){
-           part_pos.x=x;   
-           part_pos.y=y;    
-           part_pos.z=z;     
-        } 
-        
-        void move(double size);
-        
-        particle_pos part_pos;
-        particle_vel_acc part_vel_acc;
+        double x;  // Position X
+        double y;  // Position Y
+        double z;
 
-        double mass;
-        double charge;
-
+        void move(double size, particle_vel_acc & parts_vel_acc );
 };
 
 

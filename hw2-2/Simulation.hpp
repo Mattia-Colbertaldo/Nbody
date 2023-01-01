@@ -5,6 +5,7 @@
 #include "Particle.hpp"
 #include <vector>
 #include <memory>
+#include <mpi.h>
 
 struct Simulation {
         public:
@@ -16,9 +17,9 @@ struct Simulation {
         
         void simulate_one_step(int num_parts, int num_loc, int displ_loc, double size, int rank, const std::shared_ptr<AbstractForce>& force);
 
-        void init_particles(const int num_parts, const double size,const int part_seed,
+        MPI_Datatype init_particles(const int num_parts, const double size,const int part_seed,
                     const int num_loc, 
-                    const std::vector<int>& displs, const std::vector<int>& sizes);
+                    const std::vector<int>& displs, const std::vector<int>& sizes, const int rank);
         
         // private:
         std::vector<particle_pos> parts_pos;

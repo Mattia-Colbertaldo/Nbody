@@ -1,5 +1,5 @@
-CMakeFiles/mpi.dir/particle.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-2/particle.cpp \
+CMakeFiles/mpi.dir/Particle.cpp.o: \
+ /home/jellyfish/shared-folder/nbody/hw2-2/Particle.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
  /home/jellyfish/shared-folder/nbody/hw2-2/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \

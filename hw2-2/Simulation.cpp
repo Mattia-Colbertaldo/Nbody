@@ -1,20 +1,25 @@
+#include "common.h"
 #include "Particle.hpp"
 #include "Simulation.hpp"
+#include "PhysicalForce.hpp"
 #include <memory>
 #include <stdexcept>
 #include <cmath>
 #include <random>
 #include <iostream>
+#include <mpi.h>
 
 
 /******         PARTICLE INITIALIZATION       *******/
+MPI_Datatype mpi_part_vel_acc_type;
+MPI_Datatype mpi_parts_pos_type;
 
 
-void Simulation :: init_particles(
+MPI_Datatype Simulation :: init_particles(
                     const int num_parts, const double size,const int part_seed,
                     const int num_loc, 
-                    const std::vector<int>& displs, const std::vector<int>& sizes) {
-
+                    const std::vector<int>& displs, const std::vector<int>& sizes, const int rank) {
+                        
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
     std::mt19937 gen2(part_seed ? part_seed : rd());
@@ -46,18 +51,19 @@ void Simulation :: init_particles(
 
     ////// MPI STRUCT /////////////
     
+    
     const int nitems1=3;
     int          blocklengths1[3] = {1,1,1};
     MPI_Datatype types1[3] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
-    //MPI_Datatype mpi_part_pos_type;
+    //MPI_Datatype mpi_parts_pos_type;
     MPI_Aint     offsets1[3];
 
-    offsets1[0] = offsetof(this->part_pos, x);
-    offsets1[1] = offsetof(this->part_pos, y);
-    offsets1[2] = offsetof(this->part_pos, z);
+    offsets1[0] = offsetof(particle_pos, x);
+    offsets1[1] = offsetof(particle_pos, y);
+    offsets1[2] = offsetof(particle_pos, z);
 
-    MPI_Type_create_struct(nitems1, blocklengths1, offsets1, types1, &mpi_part_pos_type);
-    MPI_Type_commit(&mpi_part_pos_type);
+    MPI_Type_create_struct(nitems1, blocklengths1, offsets1, types1, &mpi_parts_pos_type);
+    MPI_Type_commit(&mpi_parts_pos_type);
     
     ///////////////////////////////
 
@@ -67,14 +73,14 @@ void Simulation :: init_particles(
         shuffle[i] = i;
     }
     
-    std::vector<part_vel_acc> parts_vel_acc_temp(num_parts);
+    std::vector<particle_vel_acc> parts_vel_acc_temp(num_parts);
 
     if(rank==0){
 
 
-        // initialize local vector of positions and velocities (this->part_pos_vel_loc)
-        // also fill the local part of vector of positions (this->part_pos) and then allgather it
-        // --> result : all have local values of positions and velocities in this->part_pos_vel_loc and the positions of ALL particles in parts.this->part_pos
+        // initialize local vector of positions and velocities (this->parts_pos_vel_loc)
+        // also fill the local part of vector of positions (this->parts_pos) and then allgather it
+        // --> result : all have local values of positions and velocities in this->parts_pos_vel_loc and the positions of ALL particles in parts.this->parts_pos
         for (int i = 0; i < num_parts; ++i) {
             // Make sure particles are not spatially sorted
             std::uniform_int_distribution<int> rand_int(0, num_parts - i - 1);
@@ -83,9 +89,9 @@ void Simulation :: init_particles(
             shuffle[j] = shuffle[num_parts - i - 1];
             // Distribute particles evenly to ensure proper spacing
             
-            this->part_pos[i].x = size * (1. + (k % sx)) / (1 + sx);
-            this->part_pos[i].y = size * (1. + (k / sx)) / (1 + sy);
-            this->part_pos[i].z = this->part_pos[i].x * this->part_pos[i].y;
+            this->parts_pos[i].x = size * (1. + (k % sx)) / (1 + sx);
+            this->parts_pos[i].y = size * (1. + (k / sx)) / (1 + sy);
+            this->parts_pos[i].z = this->parts_pos[i].x * this->parts_pos[i].y;
             
             // Assign random velocities within a bound
             std::uniform_real_distribution<double> rand_real(-1.0, 1.0);
@@ -115,7 +121,7 @@ void Simulation :: init_particles(
                   &(this->parts_vel_acc_loc[0]) , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
     MPI_Bcast( &this->masses[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &this->charges[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
-    MPI_Bcast(&this->part_pos[0] , num_parts, mpi_part_pos_type , 0 , MPI_COMM_WORLD);
+    MPI_Bcast(&this->parts_pos[0] , num_parts, mpi_parts_pos_type , 0 , MPI_COMM_WORLD);
 };
 
 
@@ -137,13 +143,13 @@ void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc, 
     for (int i = 0; i < num_loc; ++i) {
         this->parts_vel_acc_loc[i].ax = this->parts_vel_acc_loc[i].ay = this->parts_vel_acc_loc[i].az= 0.;
         for (int j = 0; j < num_parts; ++j) {
-            if(i+displ_loc != j) force.force_application(this->parts_pos, this->parts_vel_acc_loc, this->masses[j], this->charges[i], this->charges[j], i, j);
+            if(i+displ_loc != j) force->force_application(this->parts_pos, this->parts_vel_acc_loc, this->masses[j], this->charges[i], this->charges[j], i, j);
         }
     }
 
     // Move Particles
     for (int i = 0; i < num_loc; ++i) {
-        this->parts_vel_acc_loc[i].move(this->parts_pos[i+displ_loc] , size);
+        this->parts_pos[i+displ_loc].move(size, this->parts_vel_acc_loc[i]);
         
     }
      

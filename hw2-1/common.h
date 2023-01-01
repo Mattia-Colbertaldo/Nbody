@@ -7,6 +7,11 @@
 #include <unordered_map>
 #include <stdexcept>
 #include <iostream>
+#include <mpi.h>
+
+#define  MPI_Datatype mpi_part_vel_acc_type;
+#define  MPI_Datatype mpi_parts_pos_type;
+int rank, mpi_size;
 
 
 // Program Constants
@@ -22,6 +27,7 @@ constexpr double scale = 1e11;
 constexpr double G            = 6.67e-11 * scale;
 constexpr double K            = 8.98e9 * scale;
 constexpr double proton_charge= 1.6e-19 * scale;
+
 
 
 #endif

@@ -208,4 +208,6 @@ CMakeFiles/mpi.dir/Output.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/atomic_base.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/atomic_lockfree_defines.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/backward/auto_ptr.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream
