@@ -13,6 +13,8 @@ struct Simulation {
         Simulation(const int num_parts, const int num_loc){
                 this->parts_pos.resize(num_parts);
                 this->parts_pos.resize(num_loc);
+                this->masses.resize(num_parts);
+                this->charges.resize(num_parts);
         };
         
         void simulate_one_step(int num_parts, int num_loc, int displ_loc, double size, int rank, const std::shared_ptr<AbstractForce>& force);
