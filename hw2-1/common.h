@@ -7,11 +7,7 @@
 #include <unordered_map>
 #include <stdexcept>
 #include <iostream>
-#include <mpi.h>
 
-#define  MPI_Datatype mpi_part_vel_acc_type;
-#define  MPI_Datatype mpi_parts_pos_type;
-int rank, mpi_size;
 
 
 // Program Constants

@@ -1,6 +1,3 @@
-
-
-
 #include "Output.hpp"
 #include <iostream>
 
@@ -21,6 +18,7 @@ void Output :: save(std::ofstream& fsave, const std::vector<particle_pos>& parts
     int num_parts = parts.size();
     
     static bool first = true;
+    
 
     if (first) {
         fsave << num_parts << " " << size << " " << nsteps << "\n";

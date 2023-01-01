@@ -104,16 +104,18 @@ MPI_Datatype Simulation :: init_particles(
             std::uniform_real_distribution<double> rand_mass(0.001, 0.1);
             
             double m = rand_mass(gen);
-            std::cout << num_parts << std::endl;
+           
             this->masses[i]=m;
             
-            std::cout << num_parts << std::endl;
+           
             std::uniform_real_distribution<double> rand_charge(-1.0, 1.0);
-            std::cout << num_parts << std::endl;
+           
             double charge=rand_charge(gen2) * 1e-19;
             this->charges[i]=charge;
+            
 
         }
+        
         
         //Saving my data (i'm rank 0)
         for(int i=0; i<num_loc; i++){

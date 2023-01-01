@@ -12,7 +12,7 @@ struct Simulation {
 
         Simulation(const int num_parts, const int num_loc){
                 this->parts_pos.resize(num_parts);
-                this->parts_pos.resize(num_loc);
+                this->parts_vel_acc_loc.resize(num_loc);
                 this->masses.resize(num_parts);
                 this->charges.resize(num_parts);
         };

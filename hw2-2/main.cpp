@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
     
     if (!rank) std::cout << "Trying to init particles..." << std::endl;
     MPI_Datatype mpi_parts_pos_type=simulation.init_particles(num_parts, size, part_seed, num_loc, displs, sizes, rank); 
-    
+
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
@@ -136,6 +136,7 @@ int main(int argc, char** argv) {
     }
 
     Output output= Output();
+  
     if(!rank) output.save(fsave, simulation.parts_pos , size, nsteps);
 
     //for nel tempo: non parallelizzare
