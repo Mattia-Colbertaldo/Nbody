@@ -34,6 +34,7 @@ MPI_Datatype Simulation :: init_particles(
     const int nitems=6;
     int          blocklengths[6] = {1,1,1,1,1,1};
     MPI_Datatype types[6] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
+    
     //MPI_Datatype mpi_part_vel_acc_type;
     MPI_Aint     offsets[6];
 
@@ -47,6 +48,7 @@ MPI_Datatype Simulation :: init_particles(
     MPI_Type_create_struct(nitems, blocklengths, offsets, types, &mpi_part_vel_acc_type);
     MPI_Type_commit(&mpi_part_vel_acc_type);
     
+    
     ///////////////////////////////
 
     ////// MPI STRUCT /////////////
@@ -57,7 +59,7 @@ MPI_Datatype Simulation :: init_particles(
     MPI_Datatype types1[3] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
     //MPI_Datatype mpi_parts_pos_type;
     MPI_Aint     offsets1[3];
-
+    
     offsets1[0] = offsetof(particle_pos, x);
     offsets1[1] = offsetof(particle_pos, y);
     offsets1[2] = offsetof(particle_pos, z);
@@ -76,7 +78,7 @@ MPI_Datatype Simulation :: init_particles(
     std::vector<particle_vel_acc> parts_vel_acc_temp(num_parts);
 
     if(rank==0){
-
+        
 
         // initialize local vector of positions and velocities (this->parts_pos_vel_loc)
         // also fill the local part of vector of positions (this->parts_pos) and then allgather it
@@ -98,17 +100,21 @@ MPI_Datatype Simulation :: init_particles(
             parts_vel_acc_temp[i].vx = rand_real(gen);
             parts_vel_acc_temp[i].vy = rand_real(gen);
             parts_vel_acc_temp[i].vz = rand_real(gen);
-
+            
             std::uniform_real_distribution<double> rand_mass(0.001, 0.1);
+            
             double m = rand_mass(gen);
+            std::cout << num_parts << std::endl;
             this->masses[i]=m;
-
+            
+            std::cout << num_parts << std::endl;
             std::uniform_real_distribution<double> rand_charge(-1.0, 1.0);
+            std::cout << num_parts << std::endl;
             double charge=rand_charge(gen2) * 1e-19;
             this->charges[i]=charge;
 
         }
-
+        
         //Saving my data (i'm rank 0)
         for(int i=0; i<num_loc; i++){
             parts_vel_acc_loc[i].vx = parts_vel_acc_temp[i].vx;

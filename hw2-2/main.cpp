@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
     std::vector<int> displs(mpi_size+1);
     
     std::string forcename;
-
+    
     if(rank==0){       
     
     // Open Output File
@@ -83,12 +83,12 @@ int main(int argc, char** argv) {
         else{
             std::string def="default";
             forcename= &def[0];
-            std::cout << "Choosing default force..." << std::endl;;
+            std::cout << "Choosing default force..." << std::endl;
         }
 
         // Initialize Particles
-        const int num_parts = finder.find_int_arg("-n", 1000);
-        
+        num_parts = finder.find_int_arg("-n", 1000);
+    
         const int part_seed = finder.find_int_arg("-s", 0);
         size = std::sqrt(density * num_parts);
         const int num_th = finder.find_int_arg("-t", 8);
@@ -106,12 +106,12 @@ int main(int argc, char** argv) {
 
    
     std::shared_ptr<AbstractForce> force= finder.find_force(forcename);
-
+    
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
     // in this way we split the load in the most equilibrate way
     int num_loc, displ_loc;
     MPI_Bcast( &num_parts , 1 , MPI_INT , 0 , MPI_COMM_WORLD);
-    if (!rank) std::cout << num_parts << std::endl;
+   
     
     MPI_Bcast( &size , 1 , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &sizes[0] , mpi_size , MPI_INT , 0 , MPI_COMM_WORLD);
