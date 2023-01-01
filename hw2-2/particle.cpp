@@ -1,38 +1,38 @@
 #include "common.h"
+#include "Particle.hpp"
+
+#include <memory>
+#include <stdexcept>
 #include <cmath>
-#include <mpi.h>
-#include <iostream>
-int mpi_rank;
 
 
-#define OK std::cout << "At mpi:" << __LINE__ << " from process " << mpi_rank << std::endl
+    // Integrate the ODE
+
+    void Particle:: move(const double size) {
+        // Slightly simplified Velocity Verlet integration
+        // Conserves energy better than explicit Euler method
+        this->part_vel_acc.vx += this->part_vel_acc.ax * dt;
+        this->part_vel_acc.vy += this->part_vel_acc.ay * dt;
+        this->part_vel_acc.vz += this->part_vel_acc.az * dt;
+        this->part_pos.x += this->part_vel_acc.vx * dt;
+        this->part_pos.y += this->part_vel_acc.vy * dt;
+        this->part_pos.z += this->part_vel_acc.vz * dt;
+
+        // Bounce from walls
+        while (this->part_pos.x < 0 || this->part_pos.x > size) {
+            this->part_pos.x = this->part_pos.x < 0 ? -this->part_pos.x : 2 * size - this->part_pos.x;
+            this->part_vel_acc.vx = -this->part_vel_acc.vx;
+        }
+
+        while (this->part_pos.y < 0 || this->part_pos.y > size) {
+            this->part_pos.y = this->part_pos.y < 0 ? -this->part_pos.y : 2 * size - this->part_pos.y;
+            this->part_vel_acc.vy = -this->part_vel_acc.vy;
+        }
+
+        while (this->part_pos.z < 0 || this->part_pos.z > size) {
+            this->part_pos.z = this->part_pos.z < 0 ? -this->part_pos.z : 2 * size - this->part_pos.z;
+            this->part_vel_acc.vz = -this->part_vel_acc.vz;
+        }
+    };
 
 
-
-// Integrate the ODE
-void particle_vel_acc:: move(particle_pos& pos ,double size) {
-    // Slightly simplified Velocity Verlet integration
-    // Conserves energy better than explicit Euler method
-    this->vx += this->ax * dt;
-    this->vy += this->ay * dt;
-    this->vz += this->az * dt;
-    pos.x += this->vx * dt;
-    pos.y += this->vy * dt;
-    pos.z += this->vz * dt;
-    
-    // Bounce from walls
-    while (pos.x < 0 || pos.x > size) {
-        pos.x = pos.x < 0 ? -pos.x : 2 * size - pos.x;
-        this->vx = -this->vx;
-    }
-    
-    while (pos.y < 0 || pos.y > size) {
-        pos.y = pos.y < 0 ? -pos.y : 2 * size - pos.y;
-        this->vy = -this->vy;
-    }
-
-    while (pos.z < 0 || pos.z > size) {
-        pos.z = pos.z < 0 ? -pos.z : 2 * size - pos.z;
-        this->vz = -this->vz;
-    }
-}

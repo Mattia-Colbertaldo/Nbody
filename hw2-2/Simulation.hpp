@@ -1,0 +1,31 @@
+#ifndef HH__SIMULATION__HH
+#define HH__SIMULATION__HH
+
+#include "PhysicalForce.hpp"
+#include "Particle.hpp"
+#include <vector>
+#include <memory>
+
+struct Simulation {
+        public:
+
+        Simulation(const int num_parts, const int num_loc){
+                this->parts_pos.resize(num_parts);
+                this->parts_pos.resize(num_loc);
+        };
+        
+        void simulate_one_step(int num_parts, int num_loc, int displ_loc, double size, int rank, const std::shared_ptr<AbstractForce>& force);
+
+        void init_particles(const int num_parts, const double size,const int part_seed,
+                    const int num_loc, 
+                    const std::vector<int>& displs, const std::vector<int>& sizes);
+        
+        // private:
+        std::vector<particle_pos> parts_pos;
+        std::vector<particle_vel_acc> parts_vel_acc_loc;
+        std::vector<double> masses;
+        std::vector<double> charges;
+
+};
+
+#endif
