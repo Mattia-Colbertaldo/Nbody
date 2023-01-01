@@ -97,8 +97,8 @@ int main(int argc, char** argv) {
     std::cout << num_parts << " " << size << " " << nsteps << std::endl;
     const int num_th = finder.find_int_arg("-t", 8);
 
-    std::vector<Particle> parts(num_parts);
-    Simulation simulation = Simulation(parts);
+    
+    Simulation simulation = Simulation(num_parts);
     std::cout << "Trying to init particles..." << std::endl;
     simulation.init_particles(size, part_seed);
     
