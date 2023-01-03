@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\hw2_1"
+    "\\cuda",
+    "\\cuda\\build",
+    "\\cuda\\build\\Debug"
   ],
-  "SelectedNode": "\\hw2_1\\main.cpp",
+  "SelectedNode": "\\cuda\\build\\cuda_test.sln",
   "PreviewInSolutionExplorer": false
 }
