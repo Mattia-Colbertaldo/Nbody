@@ -44,6 +44,10 @@ void GravitationalForce :: force_application() const {
     // p.ax += coef * dx;
     // p.ay += coef * dy;
     // p.az += coef * dz;
+
+    // neighbor.ax += coef * dx;
+    // neighbor.ay += coef * dy;
+    // neighbor.az += coef * dz;
 };
 
 

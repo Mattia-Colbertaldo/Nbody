@@ -5,7 +5,7 @@
 #include <thrust/sequence.h>
 #include <thrust/reduce.h>
 #include <thrust/host_vector.h>
-#include <thrust/universal_vector.h>
+#include <thrust/device_vector.h>
 #include <thrust/universal_vector.h>
 #include <thrust/random.h>
 #include <fstream>
@@ -17,6 +17,14 @@
 #include "common.cuh"
 #include "PhysicalForce.cuh"
 
+#include <time.h>
+
+
+#include <thrust/zip_function.h>
+#include <thrust/iterator/zip_iterator.h>
+
+constexpr float MS_PER_SEC = 1000.0f;
+
 
 
 #include <cassert>
@@ -25,9 +33,8 @@
 double SIZE;
 
 
-void initialize(thrust::universal_vector<double>& keys)
+void initialize(thrust::device_vector<double>& keys, thrust::default_random_engine& rng, const double& size)
 {
-  thrust::default_random_engine rng;
   thrust::uniform_real_distribution<double> dist(0., SIZE);
 
   thrust::host_vector<double> h_keys(keys.size());
@@ -38,9 +45,8 @@ void initialize(thrust::universal_vector<double>& keys)
   keys = h_keys;
 }
 
-void initialize_1(thrust::universal_vector<double>& keys)
+void initialize_1(thrust::device_vector<double>& keys, thrust::default_random_engine& rng)
 {
-  thrust::default_random_engine rng;
   thrust::uniform_real_distribution<double> dist(-1.0, 1.0);
 
   thrust::host_vector<double> h_keys(keys.size());
@@ -51,9 +57,8 @@ void initialize_1(thrust::universal_vector<double>& keys)
   keys = h_keys;
 }
 
-void initialize_2(thrust::universal_vector<double>& keys)
+void initialize_2(thrust::device_vector<double>& keys, thrust::default_random_engine& rng)
 {
-  thrust::default_random_engine rng;
   thrust::uniform_real_distribution<double> dist(-1.0, 1.0);
 
   thrust::host_vector<double> h_keys(keys.size());
@@ -64,7 +69,7 @@ void initialize_2(thrust::universal_vector<double>& keys)
   keys = h_keys;
 }
 
-void save(std::ofstream& fsave, thrust::universal_vector<double>& x, thrust::universal_vector<double>& y, thrust::universal_vector<double>& z, int num_parts){
+void save(std::ofstream& fsave, thrust::device_vector<double>& x, thrust::device_vector<double>& y, thrust::device_vector<double>& z, int num_parts){
     
   static bool first = true;
 
@@ -78,7 +83,7 @@ void save(std::ofstream& fsave, thrust::universal_vector<double>& x, thrust::uni
   }
 }
 
-void save_output(std::ofstream& fsave, thrust::universal_vector<double>& x, thrust::universal_vector<double>& y, thrust::universal_vector<double>& z,
+void save_output(std::ofstream& fsave, thrust::device_vector<double>& x, thrust::device_vector<double>& y, thrust::device_vector<double>& z,
                  int step, int num_parts){
     save(fsave, x, y, z, num_parts);
     if(step > 0){
@@ -93,56 +98,128 @@ void save_output(std::ofstream& fsave, thrust::universal_vector<double>& x, thru
 
             struct saxpy_functor
             {
+                saxpy_functor(const double& size) : size(size){};
+                double size;
                 __host__ __device__
-                    double operator()(const double& v, const double& x) const {
-                        return dt * v + x;
+                    double operator()(double& v, const double& x) const {
+                        double result = dt * v + x;
+                        // Bounce from walls
+                        if(result < 0 || result > size){
+                          result = result < 0 ? -result : 2*size - result;
+                          v = -v;
+                        }
+                        return result;
+                    }
+            };
+
+            struct saxpy_functor2
+            {
+                saxpy_functor2(const double& size) : size(size){};
+                double size;
+                __host__ __device__
+                    double operator()(double& a, const double& v) const {
+                        return dt * a + v;
                     }
             };
 
 
-            void saxpy_fast(thrust::universal_vector<double>& vx, thrust::universal_vector<double>& x)
+            void saxpy_fast(thrust::device_vector<double>& vx, thrust::device_vector<double>& x, const double& size)
             {
               // x <- dt * vx + x
-              thrust::transform(thrust::device, vx.begin(), vx.end(), x.begin(), x.begin(), saxpy_functor());
+              thrust::transform(thrust::device, vx.begin(), vx.end(), x.begin(), x.begin(), saxpy_functor(size));
             }
 
-            void move(thrust::universal_vector<double>& x, thrust::universal_vector<double>& y, thrust::universal_vector<double>& z,
-                      thrust::universal_vector<double>& vx, thrust::universal_vector<double>& vy, thrust::universal_vector<double>& vz,
-                      thrust::universal_vector<double>& ax, thrust::universal_vector<double>& ay, thrust::universal_vector<double>& az){
-                    saxpy_fast(ax, vx);
-                    saxpy_fast(ay, vy);
-                    saxpy_fast(az, vz);
-                    saxpy_fast(vx, x);
-                    saxpy_fast(vy, y);
-                    saxpy_fast(vz, z);
+            void saxpy_fast2(thrust::device_vector<double>& ax, thrust::device_vector<double>& vx, const double& size)
+            {
+              // x <- dt * vx + x
+              thrust::transform(thrust::device, ax.begin(), ax.end(), vx.begin(), vx.begin(), saxpy_functor2(size));
+            }
+
+            void move(thrust::device_vector<double>& x, thrust::device_vector<double>& y, thrust::device_vector<double>& z,
+                      thrust::device_vector<double>& vx, thrust::device_vector<double>& vy, thrust::device_vector<double>& vz,
+                      thrust::device_vector<double>& ax, thrust::device_vector<double>& ay, thrust::device_vector<double>& az, const double& size){
+                    saxpy_fast2(ax, vx, size);
+                    saxpy_fast2(ay, vy, size);
+                    saxpy_fast2(az, vz, size);
+                    cudaDeviceSynchronize();
+                    saxpy_fast(vx, x, size);
+                    saxpy_fast(vy, y, size);
+                    saxpy_fast(vz, z, size);
                   }
 
               // **************************** APPLYING FORCE **************************** //
+            
+            struct arbitrary_functor
+            {
+                arbitrary_functor(double& x_i, double& y_i, double& z_i) : x_i(x_i), y_i(y_i), z_i(z_i){};
+                double x_i, y_i, z_i;
+                __host__ __device__
+                void operator()(const double& x_j, const double& y_j, const double& z_j, const double& m_j, double& ax_j, double& ay_j, double& az_j)
+                {   double dx = x_j - x_i;
+                    double dy = y_j - y_i;
+                    double dz = z_j - z_i;
+                    double r2_j = dx * dx + dy * dy + dz * dz;
+                    if (r2_j > cutoff * cutoff){
+                      ax_j = 0.;
+                      ay_j = 0.;
+                      az_j = 0.;
+                    }
+                    else{
+                      r2_j = fmax(r2_j, min_r * min_r);
+                      double coef = G * ( m_j / r2_j );
+                      ax_j = coef*dx;
+                      ay_j = coef*dx;
+                      az_j = coef*dx;
+                      // d += a + b * c;
+                    }
+                    
+                }
+            };
 
-            void apply_force(thrust::universal_vector<double>& x, thrust::universal_vector<double>& y, thrust::universal_vector<double>& z,
-                             thrust::universal_vector<double>& vx, thrust::universal_vector<double>& vy, thrust::universal_vector<double>& vz,
-                             thrust::universal_vector<double>& ax, thrust::universal_vector<double>& ay, thrust::universal_vector<double>& az){
 
-                    //TODO: MODIFY, JUST FOR TESTING
-                    initialize_1(ax);
-                    initialize_1(ay);
-                    initialize_1(az);
+            void apply_force(thrust::device_vector<double>& x, thrust::device_vector<double>& y, thrust::device_vector<double>& z,
+                             thrust::device_vector<double>& vx, thrust::device_vector<double>& vy, thrust::device_vector<double>& vz,
+                             thrust::device_vector<double>& ax, thrust::device_vector<double>& ay, thrust::device_vector<double>& az,
+                             thrust::device_vector<double>& masses, thrust::device_vector<double>& charges, const int& num_parts){
+                    
+                    thrust::device_vector<double> sum_ax(num_parts);
+                    thrust::device_vector<double> sum_ay(num_parts);
+                    thrust::device_vector<double> sum_az(num_parts);
+                    // std::cout << "   Apply_Force --> Starting for loop" << std::endl;
+                    for(int i=0; i<num_parts; i++){
+                      double x_i = x[i];
+                      double y_i = y[i];
+                      double z_i = z[i];
+                      thrust::for_each(thrust::device, thrust::make_zip_iterator(thrust::make_tuple(x.begin(), y.begin(), z.begin(), masses.begin(), sum_ax.begin(), sum_ay.begin(), sum_az.begin())),
+                                        thrust::make_zip_iterator(thrust::make_tuple(x.end(), y.end(), z.end(), masses.end(), sum_ax.end(), sum_ay.end(), sum_az.end())),
+                                        thrust::make_zip_function(arbitrary_functor(x_i, y_i, z_i)));
+                      cudaDeviceSynchronize();
+                      // std::cout << "   Apply_Force --> Reducing" << std::endl;
+                      ax[i] = thrust::reduce(thrust::device, sum_ax.begin(), sum_ax.end(), 0.);
+                      ay[i] = thrust::reduce(thrust::device, sum_ay.begin(), sum_ay.end(), 0.);
+                      az[i] = thrust::reduce(thrust::device, sum_az.begin(), sum_az.end(), 0.);
+                    }
+
+                    
             }
 
 
 
 
-void simulate_one_step(thrust::universal_vector<double>& x, thrust::universal_vector<double>& y, thrust::universal_vector<double>& z,
-                  thrust::universal_vector<double>& vx, thrust::universal_vector<double>& vy, thrust::universal_vector<double>& vz,
-                  thrust::universal_vector<double>& ax, thrust::universal_vector<double>& ay, thrust::universal_vector<double>& az,
-                  AbstractForce& force){
+void simulate_one_step(thrust::device_vector<double>& x, thrust::device_vector<double>& y, thrust::device_vector<double>& z,
+                  thrust::device_vector<double>& vx, thrust::device_vector<double>& vy, thrust::device_vector<double>& vz,
+                  thrust::device_vector<double>& ax, thrust::device_vector<double>& ay, thrust::device_vector<double>& az,
+                  thrust::device_vector<double>& masses, thrust::device_vector<double>& charges, AbstractForce& force, const int& num_parts, const double& size){
                   thrust::fill(ax.begin(), ax.end(), 0.);
                   thrust::fill(ay.begin(), ay.end(), 0.);
                   thrust::fill(az.begin(), az.end(), 0.);
+                  // std::cout << "Accelerations filled with 0s" << std::endl;
                   cudaDeviceSynchronize();
-                  apply_force(x, y, z, vx, vy, vz, ax, ay, az);
+                  apply_force(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+                  // std::cout << "Force applied" << std::endl;
                   cudaDeviceSynchronize();
-                  move(x, y, z, vx, vy, vz, ax, ay, az);
+                  move(x, y, z, vx, vy, vz, ax, ay, az, size);
+                  // std::cout << "Particles moved" << std::endl;
 }
 
 
@@ -186,48 +263,58 @@ int main(int argc, char** argv)
   std::cout << num_parts << " " << size << " " << nsteps << std::endl;
   const int num_th = finder.find_int_arg("-t", 8);
 
-  thrust::universal_vector<double> x(num_parts);
-  thrust::universal_vector<double> y(num_parts);
-  thrust::universal_vector<double> z(num_parts);
-  thrust::universal_vector<double> vx(num_parts);
-  thrust::universal_vector<double> vy(num_parts);
-  thrust::universal_vector<double> vz(num_parts);
-  thrust::universal_vector<double> ax(num_parts);
-  thrust::universal_vector<double> ay(num_parts);
-  thrust::universal_vector<double> az(num_parts);
-  thrust::universal_vector<double> masses(num_parts);
-  thrust::universal_vector<double> charges(num_parts);
-  initialize(x);
-  initialize(y);
-  initialize(z);
-  initialize_2(vx);
-  initialize_2(vy);
-  initialize_2(vz);
+  long t = clock();
+
+  thrust::device_vector<double> x_h(num_parts);
+  thrust::device_vector<double> y_h(num_parts);
+  thrust::device_vector<double> z_h(num_parts);
+
+  thrust::device_vector<double> x(num_parts);
+  thrust::device_vector<double> y(num_parts);
+  thrust::device_vector<double> z(num_parts);
+  thrust::device_vector<double> vx(num_parts);
+  thrust::device_vector<double> vy(num_parts);
+  thrust::device_vector<double> vz(num_parts);
+  thrust::device_vector<double> ax(num_parts);
+  thrust::device_vector<double> ay(num_parts);
+  thrust::device_vector<double> az(num_parts);
+  thrust::device_vector<double> masses(num_parts);
+  thrust::device_vector<double> charges(num_parts);
+  thrust::default_random_engine rng;
+  initialize(x, rng, size);
+  initialize(y, rng, size);
+  initialize(z, rng, size);
+  initialize_2(vx, rng);
+  initialize_2(vy, rng);
+  initialize_2(vz, rng);
   thrust::fill(ax.begin(), ax.end(), 0.);
   thrust::fill(ay.begin(), ay.end(), 0.);
   thrust::fill(az.begin(), az.end(), 0.);
-  initialize_1(masses);
-  initialize_2(charges);
+  initialize_1(masses, rng);
+  initialize_2(charges, rng);
+  cudaDeviceSynchronize();
 
-  double* px = thrust::raw_pointer_cast(x.data());
-  double* py = thrust::raw_pointer_cast(y.data());
-  double* pz = thrust::raw_pointer_cast(z.data());
-  double* pvx = thrust::raw_pointer_cast(vx.data());
-  double* pvy = thrust::raw_pointer_cast(vy.data());
-  double* pvz = thrust::raw_pointer_cast(vz.data());
-  double* pax = thrust::raw_pointer_cast(ax.data());
-  double* pay = thrust::raw_pointer_cast(ay.data());
-  double* paz = thrust::raw_pointer_cast(az.data());
-  double* pmasses = thrust::raw_pointer_cast(masses.data());
-  double* pcharges = thrust::raw_pointer_cast(charges.data());
-
-  save(fsave, x, y, z, num_parts);
+  std::cout << "Initialization: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+  
+  t = clock();
+  thrust::copy(x.begin(), x.end(), x_h.begin());
+  thrust::copy(y.begin(), y.end(), y_h.begin());
+  thrust::copy(z.begin(), z.end(), z_h.begin());
+  std::cout << "Moving data from GPU to CPU: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+  t = clock();
+  save(fsave, x_h, y_h, z_h, num_parts);
+  std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+  t = clock();
   for(int step=0; step<nsteps; step++){
-    simulate_one_step(x, y, z, vx, vy, vz, ax, ay, az, *force);
+    simulate_one_step(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, *force, num_parts, size);
+    if(step == 1) std::cout << "Simulating one step: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
-    
-    save_output(fsave, x, y, z, step, num_parts);
+    thrust::copy(x.begin(), x.end(), x_h.begin());
+    thrust::copy(y.begin(), y.end(), y_h.begin());
+    thrust::copy(z.begin(), z.end(), z_h.begin());
+    save_output(fsave, x_h, y_h, z_h, step, num_parts);
   }
+  std::cout << "Simulating all the steps: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   
 
 

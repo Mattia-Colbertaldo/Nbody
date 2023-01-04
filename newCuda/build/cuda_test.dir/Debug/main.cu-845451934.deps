@@ -324,6 +324,7 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\m
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\merge.inl
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\minmax.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\mismatch.inl
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\modern_gcc_required.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\mpl\math.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\numeric_traits.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\overlapped_copy.h
@@ -371,10 +372,12 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\u
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\use_default.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\vector_base.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\detail\vector_base.inl
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\device_allocator.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\device_free.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\device_malloc.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\device_ptr.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\device_reference.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\device_vector.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\distance.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\equal.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\execution_policy.h
@@ -424,6 +427,7 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\memory.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\merge.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\mismatch.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\mr\allocator.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\mr\device_memory_resource.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\mr\fancy_pointer_resource.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\mr\host_memory_resource.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\mr\memory_resource.h
@@ -720,6 +724,7 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\uninitia
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\universal_allocator.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\universal_vector.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\version.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\thrust\zip_function.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\vector_functions.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\vector_functions.hpp
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\vector_types.h
