@@ -100,7 +100,7 @@ void save_output(std::ofstream& fsave, thrust::device_vector<double>& x, thrust:
             {
                 saxpy_functor(const double& size) : size(size){};
                 double size;
-                __host__ __device__
+                __device__
                     double operator()(double& v, const double& x) const {
                         double result = dt * v + x;
                         // Bounce from walls
@@ -116,7 +116,7 @@ void save_output(std::ofstream& fsave, thrust::device_vector<double>& x, thrust:
             {
                 saxpy_functor2(const double& size) : size(size){};
                 double size;
-                __host__ __device__
+                __device__
                     double operator()(double& a, const double& v) const {
                         return dt * a + v;
                     }
@@ -153,7 +153,7 @@ void save_output(std::ofstream& fsave, thrust::device_vector<double>& x, thrust:
             {
                 arbitrary_functor(double& x_i, double& y_i, double& z_i) : x_i(x_i), y_i(y_i), z_i(z_i){};
                 double x_i, y_i, z_i;
-                __host__ __device__
+                __device__
                 void operator()(const double& x_j, const double& y_j, const double& z_j, const double& m_j, double& ax_j, double& ay_j, double& az_j)
                 {   double dx = x_j - x_i;
                     double dy = y_j - y_i;
@@ -190,14 +190,18 @@ void save_output(std::ofstream& fsave, thrust::device_vector<double>& x, thrust:
                       double x_i = x[i];
                       double y_i = y[i];
                       double z_i = z[i];
+                      // long t = clock();
                       thrust::for_each(thrust::device, thrust::make_zip_iterator(thrust::make_tuple(x.begin(), y.begin(), z.begin(), masses.begin(), sum_ax.begin(), sum_ay.begin(), sum_az.begin())),
                                         thrust::make_zip_iterator(thrust::make_tuple(x.end(), y.end(), z.end(), masses.end(), sum_ax.end(), sum_ay.end(), sum_az.end())),
                                         thrust::make_zip_function(arbitrary_functor(x_i, y_i, z_i)));
                       cudaDeviceSynchronize();
+                      // std::cout << "   Applying force -> foreach: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+                      // t = clock();
                       // std::cout << "   Apply_Force --> Reducing" << std::endl;
                       ax[i] = thrust::reduce(thrust::device, sum_ax.begin(), sum_ax.end(), 0.);
                       ay[i] = thrust::reduce(thrust::device, sum_ay.begin(), sum_ay.end(), 0.);
                       az[i] = thrust::reduce(thrust::device, sum_az.begin(), sum_az.end(), 0.);
+                      // std::cout << "   Applying force -> reduce: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
                     }
 
                     
@@ -215,10 +219,17 @@ void simulate_one_step(thrust::device_vector<double>& x, thrust::device_vector<d
                   thrust::fill(az.begin(), az.end(), 0.);
                   // std::cout << "Accelerations filled with 0s" << std::endl;
                   cudaDeviceSynchronize();
+                  // long t = clock();
+                  // 14 ms
                   apply_force(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
-                  // std::cout << "Force applied" << std::endl;
                   cudaDeviceSynchronize();
+                  // std::cout << "Force applied" << std::endl;
+                  // std::cout << "Applying force: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+                  // t = clock();
+                  // 0 ms
                   move(x, y, z, vx, vy, vz, ax, ay, az, size);
+                  cudaDeviceSynchronize();
+                  // std::cout << "Moving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
                   // std::cout << "Particles moved" << std::endl;
 }
 
