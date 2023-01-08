@@ -278,6 +278,56 @@ void Particles::save_output(std::ofstream& fsave, int step){
 
 
 
+            // **************************** MOVING **************************** //
+
+struct saxpy_functor
+{
+saxpy_functor(const double size) : size(size){};
+double size;
+__device__
+    double operator()(double& v, double& x) const {
+        double result = dt * v + x;
+        // Bounce from walls
+        if(result < 0 || result > size){
+          result = result < 0 ? -result : 2*size - result;
+          v = -v;
+        }
+        return result;
+    }
+};
+
+struct saxpy_functor2
+{
+saxpy_functor2(const double size) : size(size){};
+double size;
+__device__
+    double operator()(double& a, double& v) const {
+        return dt * a + v;
+    }
+};
+
+
+void saxpy_fast(thrust::device_vector<double>& vx, thrust::device_vector<double>& x, const double size)
+{
+// x <- dt * vx + x
+thrust::transform(thrust::device, vx.begin(), vx.end(), x.begin(), x.begin(), saxpy_functor(size));
+}
+
+void saxpy_fast2(thrust::device_vector<double>& ax, thrust::device_vector<double>& vx, const double size)
+{
+// vx <- dt * ax + vx
+thrust::transform(thrust::device, ax.begin(), ax.end(), vx.begin(), vx.begin(), saxpy_functor2(size));
+}
+
+void Particles::move(){
+    saxpy_fast2(ax, vx, size);
+    saxpy_fast2(ay, vy, size);
+    saxpy_fast2(az, vz, size);
+    cudaDeviceSynchronize();
+    saxpy_fast(vx, x, size);
+    saxpy_fast(vy, y, size);
+    saxpy_fast(vz, z, size);
+  }
 __global__ void move_kernel(double* dx, double* dy, double* dz,
                         double* dvx, double* dvy, double* dvz,
                         double* dax, double* day, double* daz, const double size, const int num_parts){
@@ -310,7 +360,35 @@ __global__ void move_kernel(double* dx, double* dy, double* dz,
     }
 }
 
+// **************************** APPLYING FORCE **************************** //
 
+struct arbitrary_functor
+{
+arbitrary_functor(double& x_i, double& y_i, double& z_i, double& ax_i, double& ay_i, double& az_i) :
+  x_i(x_i), y_i(y_i), z_i(z_i), ax_i(ax_i), ay_i(ay_i), az_i(az_i){};
+double x_i, y_i, z_i, ax_i, ay_i, az_i;
+__device__
+void operator()(const double& x_j, const double& y_j, const double& z_j, const double& m_j)
+{   double dx = x_j - x_i;
+    double dy = y_j - y_i;
+    double dz = z_j - z_i;
+    double r2_j = dx * dx + dy * dy + dz * dz;
+    if (r2_j > cutoff * cutoff){
+      ax_i = 0.0;
+      ay_i = 0.0;
+      az_i = 0.0;
+    }
+    else{
+      r2_j = fmax(r2_j, min_r * min_r);
+      double coef = G * ( m_j / r2_j );
+      ax_i = coef*dx;
+      ay_i = coef*dx;
+      az_i = coef*dx;
+      // d += a + b * c;
+    }
+    
+}
+};
 
 #if !defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600
 #else
@@ -403,83 +481,8 @@ __global__ void force_kernel(double* x, double* y, double* z,
 
 __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
-    
-    int thx = threadIdx.x;
-    int thy = threadIdx.y;
-    int Row = threadIdx.x + blockDim.x * blockIdx.x;
-    int Col = threadIdx.y + blockDim.y * blockIdx.y;
-    int tile_index = threadIdx.x ;
-
-    __shared__ double tilex[TILE_WIDTH];
-    __shared__ double tiley[TILE_WIDTH];
-    __shared__ double tilez[TILE_WIDTH];
-    __shared__ double tile_masses[TILE_WIDTH];
-    __shared__ double tile_charges[TILE_WIDTH];
-    
-    // I do calculations only if x index is a successor of y index
-
-    // Loop over all particles with tiles
-    for(unsigned int p=0; p< (num_parts-1)/(TILE_WIDTH)+1 ; p++){ 
-    {
-      if(Row < 0 || Row >= TILE_WIDTH) return;
-      if(Col < 0 || Col >= TILE_WIDTH) return;
-      for(unsigned int y_index = 0; y_index<num_parts; y_index++)
-      {
-      // Collaborative loading
-        if(Row < num_parts && p*TILE_WIDTH+tx < num_parts) {
-          // tilex[thx] = x[ i*TILE_WIDTH+thx ];
-          tilex[tile_index] = x[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tiley[tile_index] = y[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tilez[tile_index] = z[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tile_masses[tile_index] = masses[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tile_charges[tile_index] = charges[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-        }
-        else
-        {
-          tilex[tile_index] = 0.0;
-          tiley[tile_index] = 0.0;
-          tilez[tile_index] = 0.0;
-          tile_masses[tile_index] = 0.0;
-          tile_charges[tile_index] = 0.0;
-        }
-      }
-    }
-
-      __syncthreads();
-      // here every thread calculates the force between his particle and the particles in the tile
-      if(Row * blockDim.x + Col < num_parts){
-        // loop inside the tile
-        for(unsigned int i=0; i <TILE_WIDTH; i++){
-          for(unsigned int j=0; j <TILE_WIDTH; j++){
-            if(thx<thy)
-            {
-              double dx = x[ Row*blockDim.x + Col ] - tilex[i*TILE_WIDTH+j];
-              double dy = y[ Row*blockDim.x + Col ] - tiley[i*TILE_WIDTH+j];
-              double dz = z[ Row*blockDim.x + Col ] - tilez[i*TILE_WIDTH+j];
-              double r2 = dx * dx + dy * dy + dz * dz;
-              if (r2 > cutoff * cutoff) {return;}
-              else{
-                r2 = fmax(r2, min_r * min_r);
-                double coef = G * tile_masses[j] / r2;
-
-                // 1
-                atomicAdd((double*)(ax + index), (double)coef*dx);
-                // ax[index] += coef*dx;
-                atomicAdd((double*)(ay + index), (double)coef*dy);
-                // ay[index] += coef*dy;
-                ay[index]= ay[index] + coef*dy;
-                atomicAdd((double*)(az + index), (double)coef*dz);
-                // az[index] += coef*dz;
-                az[index]= az[index] + coef*dz;
-              }
-          
-            }
-          
-          }
-        }
-      }
-      __syncthreads();
-  }
+    int thx = threadIdx.x + blockDim.x * blockIdx.x;
+    int thy = threadIdx.y + blockDim.y * blockIdx.y;
     
 
     // printf("%d, %d\n", thx, thy);
