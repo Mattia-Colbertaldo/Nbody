@@ -34,7 +34,7 @@ constexpr unsigned int BLOCK_DIM = 10;
 #include <cassert>
 #include <iostream>
 
-double SIZE;
+#define BLOCK_SIZE = 32;
 
 
 
@@ -163,9 +163,7 @@ class Particles{
     charges.reserve(num_parts);
 
     // Copying to host vectors (Optional)
-    thrust::copy(x.begin(), x.end(), x_h.begin());
-    thrust::copy(y.begin(), y.end(), y_h.begin());
-    thrust::copy(z.begin(), z.end(), z_h.begin());
+    
     // Block and Grid dimensions
     th_per_block = 32;
     block_sizes.x = 32;
@@ -185,22 +183,24 @@ class Particles{
     thrust::default_random_engine rng;
     thrust::uniform_real_distribution<double> dist(0.0, size);
     thrust::uniform_real_distribution<double> dist1(-1.0, 1.0);
+    // TODO mettere inizializzazione di xh e poi copy al vettore trust
     for(int i=0; i<num_parts; i++){
       x[i] = dist(rng);
       y[i] = dist(rng);
       z[i] = dist(rng);
+      // thrust::copy(x.begin(), x.end(), x_h.begin());
+      // thrust::copy(y.begin(), y.end(), y_h.begin());
+      // thrust::copy(z.begin(), z.end(), z_h.begin());
       vx[i] = dist1(rng);
       vy[i] = dist1(rng);
       vz[i] = dist1(rng);
       //pos[i] = make_double3(dist(rng), dist(rng), dist(rng));
       //vel[i] = make_double3(dist1(rng), dist1(rng), dist1(rng));
       //masses[i] = (dist1(rng) + 1.0);
-      masses[i] = 1.;
+
+      masses[i] = dist1(rng)+2.0;
       charges[i] = dist1(rng)*1e-19;
     }
-    thrust::fill(ax.begin(), ax.end(), 0.0);
-    thrust::fill(ay.begin(), ay.end(), 0.0);
-    thrust::fill(az.begin(), az.end(), 0.0);
     thrust::fill(acc.begin(), acc.end(), make_double3(0.0, 0.0, 0.0));
     dx = thrust::raw_pointer_cast(x.data());
     dy = thrust::raw_pointer_cast(y.data());
@@ -257,11 +257,16 @@ void Particles::save(std::ofstream& fsave){
   // z_h = z;
   cudaDeviceSynchronize();
   for(size_t i = 0; i < num_parts; i++){
+    // TODO X_H
         fsave <<  x[i] << " " << y[i] << " " << z[i] << std::endl;
   }
 }
 
 void Particles::save_output(std::ofstream& fsave, int step){
+    // TODO FIX
+    // thrust::copy(x.begin(), x.end(), x_h.begin());
+    // thrust::copy(y.begin(), y.end(), y_h.begin());
+    // thrust::copy(z.begin(), z.end(), z_h.begin());
     save(fsave);
     if(step > 0){
         if (step%10 == 0){
@@ -475,7 +480,9 @@ __global__ void force_kernel(double* x, double* y, double* z,
 __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
-    int thy = threadIdx.y + blockDim.y * blockIdx.x;
+    int thy = threadIdx.y + blockDim.y * blockIdx.y;
+    
+
     // printf("%d, %d\n", thx, thy);
     // se io sono il thread (3,4) applico la forza a 3 e a 4
     // lo faccio solo per i thread la cui x < y
@@ -501,6 +508,7 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
 
         double mx = masses[thx];
         double my = masses[thy];
+        // TODO ARGUMENT
         if(1){
           // URTO ANELASTICO:
           vx[thx] = (double)(mx*vx[thx] + my*vx[thy])/(double)(mx+my);
@@ -544,33 +552,6 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
   
 }
 
-
-void Particles::apply_force(){
-  // std::cout << "   Apply_Force --> Starting for loop" << std::endl;
-  for(int i=0; i<num_parts; i++){
-    // Per ogni particella aggiungo alla mia accelerazione e all'accelerazione di ogni mio successivo 
-    // il coefficiente * la distanza (separatamente sulle tre dimensioni, però per calcolare il coef ho bisogno di r2,
-    // che a sua volta ha bisogno di tutte e tre le distanze)
-    double x_i = x[i];
-    double y_i = y[i];
-    double z_i = z[i];
-    // long t = clock();
-    // thrust::for_each(thrust::device, thrust::make_zip_iterator(thrust::make_tuple(x.begin(), y.begin(), z.begin(), masses.begin())),
-    //                   thrust::make_zip_iterator(thrust::make_tuple(x.end(), y.end(), z.end(), masses.end()),
-    //                   thrust::make_zip_function(arbitrary_functor(x_i, y_i, z_i, ax[i], ay[i], az[i]))));
-    cudaDeviceSynchronize();
-    // std::cout << "   Applying force -> foreach: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-    // t = clock();
-    // std::cout << "   Apply_Force --> Reducing" << std::endl;
-    // ax[i] = thrust::reduce(thrust::device, sum_ax.begin(), sum_ax.end(), 0.);
-    // ay[i] = thrust::reduce(thrust::device, sum_ay.begin(), sum_ay.end(), 0.);
-    // az[i] = thrust::reduce(thrust::device, sum_az.begin(), sum_az.end(), 0.);
-    // std::cout << "   Applying force -> reduce: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-  }
-
-        
-}
-
 void Particles::simulate_one_step(){
   static bool first = 1;
   long t;
@@ -584,7 +565,8 @@ void Particles::simulate_one_step(){
   block_sizes.x = block_sizes.y = 32;
   block_sizes.z = 1;
   grid_sizes.x = ceil(((double)num_parts)/((double)(block_sizes.x)));
-  grid_sizes.y = grid_sizes.z = 1;
+  grid_sizes.y = ceil(((double)num_parts)/((double)(block_sizes.y)));
+  grid_sizes.z = 1;
   if(first) std::cout << "GRID SIZE: " << grid_sizes.x << std::endl;
   ResetAcc<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dax, day, daz, num_parts);
   kernel_test_force<<<grid_sizes, block_sizes>>>(dx, dy, dz, dvx, dvy, dvz, dax, day, daz, dmasses, dcharges, num_parts);
@@ -675,6 +657,9 @@ int main(int argc, char** argv)
   std::cout << "Initialization: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   // std::cout << "Moving data from GPU to CPU: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   t = clock();
+  // thrust::copy(x.begin(), x.end(), x_h.begin());
+  // thrust::copy(y.begin(), y.end(), y_h.begin());
+  // thrust::copy(z.begin(), z.end(), z_h.begin());
   p.save(fsave);
   std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   std::cout << "Now entering the for loop." << std::endl;
