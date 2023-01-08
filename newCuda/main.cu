@@ -27,8 +27,8 @@
 constexpr float MS_PER_SEC = 1000.0f;
 // constexpr int grid_size = num_parts / block_size + 1;
 
-constexpr unsigned int TILE_WIDTH = 10;
-constexpr unsigned int BLOCK_DIM = 10;
+constexpr unsigned int TILE_WIDTH = 32;
+constexpr unsigned int BLOCK_DIM = 32;
 
 
 #include <cassert>
@@ -400,7 +400,8 @@ __global__ void force_kernel(double* x, double* y, double* z,
 
     
 }
-
+// TODO: SPOSTARE LE FORZE DENTRO PHYSICALFORCE.CU E POI CHIAMARE FORCE.APPLY_FORCE()
+// (NON E' DETTO CHE FUNZIONI, DOBBIAMO VEDERE SE LE CHIAMATE A FUNZIONI GLOBAL VANNO, FACCIAMOLO INSIEME CHE CI AVEVO GIA' PROVATO)
 __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
     
@@ -486,9 +487,9 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
     // se io sono il thread (3,4) applico la forza a 3 e a 4
     // lo faccio solo per i thread la cui x < y
     if(thx < thy && thy < num_parts){
-      double dx = x[thy] - x[thx];
-      double dy = y[thy] - y[thx];
-      double dz = z[thy] - z[thx];
+      double dx = tilex[thy] - tilex[thx];
+      double dy = tiley[thy] - tiley[thx];
+      double dz = tilez[thy] - tilez[thx];
       double r2 = dx * dx + dy * dy + dz * dz;
       if (r2 > cutoff * cutoff) return;
       // *** EXPERIMENTAL *** //
@@ -504,6 +505,8 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
 
         // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
         // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
+
+        // TODO: CHANGE LOADING X[] INTO TILEX[]
 
         double mx = masses[thx];
         double my = masses[thy];
