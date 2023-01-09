@@ -27,14 +27,13 @@
 constexpr float MS_PER_SEC = 1000.0f;
 // constexpr int grid_size = num_parts / block_size + 1;
 
-constexpr unsigned int TILE_WIDTH = 32;
 constexpr unsigned int BLOCK_DIM = 32;
-
+constexpr unsigned int TILE_WIDTH = BLOCK_DIM;
 
 #include <cassert>
 #include <iostream>
 
-#define BLOCK_SIZE = 32;
+
 
 
 
@@ -227,13 +226,10 @@ class Particles{
     }
   }
 
-  void apply_force();
   
   void save_output(std::ofstream& fsave, int step);
   void save(std::ofstream& fsave);
   void simulate_one_step();
-  void move();
-
 };
 
 void Particles::save(std::ofstream& fsave){
@@ -329,165 +325,7 @@ __device__ double atomicAdd(double* address, double val)
 }
 #endif
 
-// TILE NOT WORKING
-/*
-__global__ void force_kernel(double* x, double* y, double* z,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
-    // __shared__ double tile[250];
-    int thx = threadIdx.x;
-    int bx = blockIdx.x;
-    int index = bx * blockDim.x + thx;
-    __shared__ double tilex[TILE_WIDTH];
-    __shared__ double tiley[TILE_WIDTH];
-    __shared__ double tilez[TILE_WIDTH];
-    __shared__ double tile_masses[TILE_WIDTH];
-    __shared__ double tile_charges[TILE_WIDTH];
-    
-    // int index = blockIdx.x * 250 + thx;
 
-    // unsigned int i = blockDim.y * blockIdx.y + threadIdx.y;
-    
-    // I do calculations only if x index is a successor of y index
-
-    // Loop over all particles with tiles
-    for(unsigned int i=0; i< (num_parts-1)/(TILE_WIDTH)+1 ; i++){ 
-      // Collaborative loading
-      if(thx < 0 || thx >= TILE_WIDTH) return;
-      if(index < num_parts &&  (i* TILE_WIDTH+thx) < num_parts) {
-        // tilex[thx] = x[ i*TILE_WIDTH+thx ];
-        tilex[thx] = x[ index ];
-        tiley[thx] = y[ index ];
-        tilez[thx] = z[ index ];
-        tile_masses[thx] = masses[ index ];
-        tile_charges[thx] = charges[ index ];
-      }
-      else
-      {
-        tilex[thx] = 0.0;
-        tiley[thx] = 0.0;
-        tilez[thx] = 0.0;
-        tile_masses[thx] = 0.0;
-        tile_charges[thx] = 0.0;
-      }
-
-      __syncthreads();
-      // here every thread calculates the force between his particle and the particles in the tile
-      if(index < num_parts){
-        // loop inside the tile
-        for(unsigned int j=0; j <TILE_WIDTH; j++){
-          double dx = x[index] - tilex[j];
-          double dy = y[index] - tiley[j];
-          double dz = z[index] - tilez[j];
-          double r2 = dx * dx + dy * dy + dz * dz;
-          if (r2 > cutoff * cutoff) {return;}
-          else{
-            r2 = fmax(r2, min_r * min_r);
-            double coef = G * tile_masses[j] / r2;
-
-            // 1
-            atomicAdd((double*)(ax + index), (double)coef*dx);
-            // ax[index] += coef*dx;
-            atomicAdd((double*)(ay + index), (double)coef*dy);
-            // ay[index] += coef*dy;
-            ay[index]= ay[index] + coef*dy;
-            atomicAdd((double*)(az + index), (double)coef*dz);
-            // az[index] += coef*dz;
-            az[index]= az[index] + coef*dz;
-          
-          }
-        }
-      }
-      __syncthreads();
-  }   
-}
-*/
-
-// TODO: SPOSTARE LE FORZE DENTRO PHYSICALFORCE.CU E POI CHIAMARE FORCE.APPLY_FORCE()
-// (NON E' DETTO CHE FUNZIONI, DOBBIAMO VEDERE SE LE CHIAMATE A FUNZIONI GLOBAL VANNO, FACCIAMOLO INSIEME CHE CI AVEVO GIA' PROVATO)
-
-/*
-__global__ void kernel_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
-    
-    int thx = threadIdx.x;
-    int thy = threadIdx.y;
-    int Row = threadIdx.x + blockDim.x * blockIdx.x;
-    int Col = threadIdx.y + blockDim.y * blockIdx.y;
-    int tile_index = threadIdx.x ;
-
-    __shared__ double tilex[TILE_WIDTH];
-    __shared__ double tiley[TILE_WIDTH];
-    __shared__ double tilez[TILE_WIDTH];
-    __shared__ double tile_masses[TILE_WIDTH];
-    __shared__ double tile_charges[TILE_WIDTH];
-    
-    // I do calculations only if x index is a successor of y index
-
-    // Loop over all particles with tiles
-    for(unsigned int p=0; p< (num_parts-1)/(TILE_WIDTH)+1 ; p++){ 
-    {
-      if(Row < 0 || Row >= TILE_WIDTH) return;
-      if(Col < 0 || Col >= TILE_WIDTH) return;
-      for(unsigned int y_index = 0; y_index<num_parts; y_index++)
-      {
-      // Collaborative loading
-        if(Row < num_parts && p*TILE_WIDTH+tx < num_parts) {
-          // tilex[thx] = x[ i*TILE_WIDTH+thx ];
-          tilex[tile_index] = x[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tiley[tile_index] = y[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tilez[tile_index] = z[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tile_masses[tile_index] = masses[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-          tile_charges[tile_index] = charges[ p*TILE_WIDTH+tx + y_index * blockDim.x];
-        }
-        else
-        {
-          tilex[tile_index] = 0.0;
-          tiley[tile_index] = 0.0;
-          tilez[tile_index] = 0.0;
-          tile_masses[tile_index] = 0.0;
-          tile_charges[tile_index] = 0.0;
-        }
-      }
-    }
-
-      __syncthreads();
-      // here every thread calculates the force between his particle and the particles in the tile
-      if(Row * blockDim.x + Col < num_parts){
-        // loop inside the tile
-        for(unsigned int i=0; i <TILE_WIDTH; i++){
-          for(unsigned int j=0; j <TILE_WIDTH; j++){
-            if(thx<thy)
-            {
-              double dx = x[ Row*blockDim.x + Col ] - tilex[i*TILE_WIDTH+j];
-              double dy = y[ Row*blockDim.x + Col ] - tiley[i*TILE_WIDTH+j];
-              double dz = z[ Row*blockDim.x + Col ] - tilez[i*TILE_WIDTH+j];
-              double r2 = dx * dx + dy * dy + dz * dz;
-              if (r2 > cutoff * cutoff) {return;}
-              else{
-                r2 = fmax(r2, min_r * min_r);
-                double coef = G * tile_masses[j] / r2;
-
-                // 1
-                atomicAdd((double*)(ax + index), (double)coef*dx);
-                // ax[index] += coef*dx;
-                atomicAdd((double*)(ay + index), (double)coef*dy);
-                // ay[index] += coef*dy;
-                ay[index]= ay[index] + coef*dy;
-                atomicAdd((double*)(az + index), (double)coef*dz);
-                // az[index] += coef*dz;
-                az[index]= az[index] + coef*dz;
-              }
-          
-            }
-          
-          }
-        }
-      }
-      __syncthreads();
-  }
-
-  */
-    
     // TODO: SPOSTARE LE FORZE DENTRO PHYSICALFORCE.CU E POI CHIAMARE FORCE.APPLY_FORCE()
 // (NON E' DETTO CHE FUNZIONI, DOBBIAMO VEDERE SE LE CHIAMATE A FUNZIONI GLOBAL VANNO, FACCIAMOLO INSIEME CHE CI AVEVO GIA' PROVATO)
 __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
@@ -602,80 +440,6 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
     __syncthreads();
 }
 
-__global__ void kernel_no_tiling_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
-    int thx = threadIdx.x + blockDim.x * blockIdx.x;
-    int thy = threadIdx.y + blockDim.y * blockIdx.y;
-    
-
-    // printf("%d, %d\n", thx, thy);
-    // se io sono il thread (3,4) applico la forza a 3 e a 4
-    // lo faccio solo per i thread la cui x < y
-    if(thx < thy && thy < num_parts){
-      double dx = x[thy] - x[thx];
-      double dy = y[thy] - y[thx];
-      double dz = z[thy] - z[thx];
-      double r2 = dx * dx + dy * dy + dz * dz;
-      if (r2 > cutoff * cutoff) return;
-      // *** EXPERIMENTAL *** //
-      if(r2 < min_r*min_r){
-        
-        // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-        // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-        // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        double mx = masses[thx];
-        double my = masses[thy];
-        // TODO ARGUMENT
-        if(1){
-          // URTO ANELASTICO:
-          vx[thx] = (double)(mx*vx[thx] + my*vx[thy])/(double)(mx+my);
-          vx[thy] = (double)(my*vx[thy] + mx*vx[thx])/(double)(my+mx);
-
-          vy[thx] = (double)(mx*vy[thx] + my*vy[thy])/(double)(mx+my);
-          vy[thy] = (double)(my*vy[thy] + mx*vy[thx])/(double)(my+mx);
-
-          vz[thx] = (double)(mx*vz[thx] + my*vz[thy])/(double)(mx+my);
-          vz[thy] = (double)(my*vz[thy] + mx*vz[thx])/(double)(my+mx);
-        }
-        else{
-          // URTO ELASTICO
-          vx[thx] = (double)vx[thx]*(mx-my)/(mx + my) + 2*vx[thy]*my/(mx+my);
-          vx[thy] = (double)vx[thy]*(my-mx)/(mx + my) + 2*vx[thx]*mx/(mx+my);
-
-          vy[thx] = (double)vy[thx]*(mx-my)/(mx + my) + 2*vy[thy]*my/(mx+my);
-          vy[thy] = (double)vy[thy]*(my-mx)/(mx + my) + 2*vy[thx]*mx/(mx+my);
-
-          vz[thx] = (double)vz[thx]*(mx-my)/(mx + my) + 2*vz[thy]*my/(mx+my);
-          vz[thy] = (double)vz[thy]*(my-mx)/(mx + my) + 2*vz[thx]*mx/(mx+my);
-        }
-        return;
-      }
-      // ******************** //
-      r2 = fmax(r2, min_r * min_r);
-      double coef = G / r2;
-
-      atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
-      atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);
-      // ax[index] += coef*dx;
-      atomicAdd((double*)(ay + thx), (double)coef*dy*masses[thy]);
-      atomicAdd((double*)(ay + thy), (double)-coef*dy*masses[thx]);
-      // ay[index] += coef*dy;
-      atomicAdd((double*)(az + thx), (double)coef*dz*masses[thy]);
-      atomicAdd((double*)(az + thy), (double)-coef*dz*masses[thx]);
-      // az[index] += coef*dz;
-
-    }
-    __syncthreads();
-  
-}
   
 
 void Particles::simulate_one_step(){
@@ -688,7 +452,7 @@ void Particles::simulate_one_step(){
   long t1;
   if(first) t1 = clock();
   th_per_block = fmin(32, num_parts);
-  block_sizes.x = block_sizes.y = 32;
+  block_sizes.x = block_sizes.y = BLOCK_DIM;
   block_sizes.z = 1;
   grid_sizes.x = ceil(((double)num_parts)/((double)(block_sizes.x)));
   grid_sizes.y = ceil(((double)num_parts)/((double)(block_sizes.y)));
@@ -716,13 +480,8 @@ void Particles::simulate_one_step(){
     fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
     return;
   }
-  // move();
-  // cudaDeviceSynchronize();
-  // error = cudaGetLastError();
-  // if (error != cudaSuccess) {
-  //   fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
-  //   return;
-  // }
+  
+  
   if(first) std::cout << "Moving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   if(first) first = 0;
 }

@@ -16,11 +16,13 @@ public:
 class RepulsiveForce : public AbstractForce
 {
 public:
-    
-  void force_application() const override;
+        
+__global__ void  
+kernel_no_tiling_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts) const override;
   
 };
-  
+  /*
 
 
 class GravitationalForce : public AbstractForce
@@ -60,6 +62,6 @@ public:
 };
 
 
-
+*/
 
 #endif
