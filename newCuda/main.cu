@@ -518,95 +518,91 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
     if(Row < 0 || Row >= num_parts) return;
     if(Col < 0 || Col >= num_parts) return;
     if(thx>TILE_WIDTH || thy>TILE_WIDTH) return;
-    for(unsigned int p_row=0; p_row< (num_parts-1)/(TILE_WIDTH)+1 ; p_row++)
-    {
-      tilex_1[thx] = x[ p_row*TILE_WIDTH+thx ];
-      tiley_1[thx] = y[ p_row*TILE_WIDTH+thx ];
-      tilez_1[thx] = z[ p_row*TILE_WIDTH+thx ];
-      tile_masses_1[thx] = masses[ p_row*TILE_WIDTH+thx ];
-      tile_charges_1[thx] = charges[ p_row*TILE_WIDTH+thx ];
-      for(unsigned int p_col=0; p_col< (num_parts-1)/(TILE_WIDTH)+1 ; p_col++)
-      {
-        tilex_2[thy] = x[ p_col*TILE_WIDTH+thy ];
-        tiley_2[thy] = y[ p_col*TILE_WIDTH+thy ];
-        tilez_2[thy] = z[ p_col*TILE_WIDTH+thy ];
-        tile_masses_2[thy] = masses[ p_col*TILE_WIDTH+thy ];
-        tile_charges_2[thy] = charges[ p_col*TILE_WIDTH+thy ];
-
-        __syncthreads();
-
-        if(Row<Col && thx<TILE_WIDTH && thy<TILE_WIDTH){
-          double dx = tilex_1[ thx ] - tilex_2[ thy ];
-          double dy = tiley_1[ thx ] - tiley_2[ thy ];
-          double dz = tilez_1[ thx ] - tilez_2[ thy ];
-          double r2 = dx * dx + dy * dy + dz * dz;
     
-        if (r2 > cutoff * cutoff) return;
-        // *** EXPERIMENTAL *** //
-        if(r2 < min_r*min_r){
-          
-          // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-          // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-          // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-          // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-          // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-          // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-          // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-          // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-          // TODO: CHANGE LOADING X[] INTO TILEX[]
-
-          double mx = tile_masses_1[thx];
-          double my = tile_masses_2[thy];
-          // TODO ARGUMENT
-          if(1){
-            // URTO ANELASTICO:
-            vx[thx] = (double)(mx*vx[thx] + my*vx[thy])/(double)(mx+my);
-            vx[thy] = (double)(my*vx[thy] + mx*vx[thx])/(double)(my+mx);
-
-            vy[thx] = (double)(mx*vy[thx] + my*vy[thy])/(double)(mx+my);
-            vy[thy] = (double)(my*vy[thy] + mx*vy[thx])/(double)(my+mx);
-
-            vz[thx] = (double)(mx*vz[thx] + my*vz[thy])/(double)(mx+my);
-            vz[thy] = (double)(my*vz[thy] + mx*vz[thx])/(double)(my+mx);
-          }
-          else{
-            // URTO ELASTICO
-            vx[thx] = (double)vx[thx]*(mx-my)/(mx + my) + 2*vx[thy]*my/(mx+my);
-            vx[thy] = (double)vx[thy]*(my-mx)/(mx + my) + 2*vx[thx]*mx/(mx+my);
-
-            vy[thx] = (double)vy[thx]*(mx-my)/(mx + my) + 2*vy[thy]*my/(mx+my);
-            vy[thy] = (double)vy[thy]*(my-mx)/(mx + my) + 2*vy[thx]*mx/(mx+my);
-
-            vz[thx] = (double)vz[thx]*(mx-my)/(mx + my) + 2*vz[thy]*my/(mx+my);
-            vz[thy] = (double)vz[thy]*(my-mx)/(mx + my) + 2*vz[thx]*mx/(mx+my);
-          }
-          return;
-        }
-        // ******************** //
-        r2 = fmax(r2, min_r * min_r);
-        double coef = G / r2;
-        double mx = tile_masses_1[thx];
-        double my = tile_masses_2[thy];
-
-        atomicAdd((double*)(ax + Row), (double)coef*dx*my);
-        atomicAdd((double*)(ax + Col), (double)-coef*dx*mx);
-        // ax[index] += coef*dx;
-        atomicAdd((double*)(ay + Row), (double)coef*dy*my);
-        atomicAdd((double*)(ay + Col), (double)-coef*dy*mx);
-        // ay[index] += coef*dy;
-        atomicAdd((double*)(az + Row), (double)coef*dz*my);
-        atomicAdd((double*)(az + Col), (double)-coef*dz*mx);
-        // az[index] += coef*dz;
-
-      }
-      __syncthreads();
-    }
-  }
+    tilex_1[thx] = x[ Row ];
+    tiley_1[thx] = y[ Row ];
+    tilez_1[thx] = z[ Row ];
+    tile_masses_1[thx] = masses[ Row ];
+    tile_charges_1[thx] = charges[ Row ];
   
+    tilex_2[thy] = x[ Col ];
+    tiley_2[thy] = y[ Col ];
+    tilez_2[thy] = z[ Col ];
+    tile_masses_2[thy] = masses[ Col ];
+    tile_charges_2[thy] = charges[ Col ];
+
+    __syncthreads();
+
+    if(Row<Col && thx<TILE_WIDTH && thy<TILE_WIDTH){
+      double dx = tilex_1[ thx ] - tilex_2[ thy ];
+      double dy = tiley_1[ thx ] - tiley_2[ thy ];
+      double dz = tilez_1[ thx ] - tilez_2[ thy ];
+      double r2 = dx * dx + dy * dy + dz * dz;
+
+    if (r2 > cutoff * cutoff) return;
+    // *** EXPERIMENTAL *** //
+    if(r2 < min_r*min_r){
+      
+      // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
+      // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
+      // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
+      // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
+
+      // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
+      // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
+
+      // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
+      // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
+
+      // TODO: CHANGE LOADING X[] INTO TILEX[]
+
+      double mx = tile_masses_1[thx];
+      double my = tile_masses_2[thy];
+      // TODO ARGUMENT
+      if(1){
+        // URTO ANELASTICO:
+        vx[thx] = (double)(mx*vx[thx] + my*vx[thy])/(double)(mx+my);
+        vx[thy] = (double)(my*vx[thy] + mx*vx[thx])/(double)(my+mx);
+
+        vy[thx] = (double)(mx*vy[thx] + my*vy[thy])/(double)(mx+my);
+        vy[thy] = (double)(my*vy[thy] + mx*vy[thx])/(double)(my+mx);
+
+        vz[thx] = (double)(mx*vz[thx] + my*vz[thy])/(double)(mx+my);
+        vz[thy] = (double)(my*vz[thy] + mx*vz[thx])/(double)(my+mx);
+      }
+      else{
+        // URTO ELASTICO
+        vx[thx] = (double)vx[thx]*(mx-my)/(mx + my) + 2*vx[thy]*my/(mx+my);
+        vx[thy] = (double)vx[thy]*(my-mx)/(mx + my) + 2*vx[thx]*mx/(mx+my);
+
+        vy[thx] = (double)vy[thx]*(mx-my)/(mx + my) + 2*vy[thy]*my/(mx+my);
+        vy[thy] = (double)vy[thy]*(my-mx)/(mx + my) + 2*vy[thx]*mx/(mx+my);
+
+        vz[thx] = (double)vz[thx]*(mx-my)/(mx + my) + 2*vz[thy]*my/(mx+my);
+        vz[thy] = (double)vz[thy]*(my-mx)/(mx + my) + 2*vz[thx]*mx/(mx+my);
+      }
+      return;
+    }
+    // ******************** //
+    r2 = fmax(r2, min_r * min_r);
+    double coef = G / r2;
+    double mx = tile_masses_1[thx];
+    double my = tile_masses_2[thy];
+
+    atomicAdd((double*)(ax + Row), (double)coef*dx*my);
+    atomicAdd((double*)(ax + Col), (double)-coef*dx*mx);
+    // ax[index] += coef*dx;
+    atomicAdd((double*)(ay + Row), (double)coef*dy*my);
+    atomicAdd((double*)(ay + Col), (double)-coef*dy*mx);
+    // ay[index] += coef*dy;
+    atomicAdd((double*)(az + Row), (double)coef*dz*my);
+    atomicAdd((double*)(az + Col), (double)-coef*dz*mx);
+    // az[index] += coef*dz;
+
+  }
+  __syncthreads();
 }
+  
 
 void Particles::simulate_one_step(){
   static bool first = 1;
