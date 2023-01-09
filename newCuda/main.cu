@@ -308,23 +308,8 @@ __global__ void move_kernel(double* dx, double* dy, double* dz,
 
 
 
-#if !defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600
-#else
-__device__ double atomicAdd(double* address, double val)
-{
-    unsigned long long int* address_as_ull =
-                              (unsigned long long int*)address;
-    unsigned long long int old = *address_as_ull, assumed;
-    do {
-        assumed = old;
-        old = atomicCAS(address_as_ull, assumed,
-                        __double_as_longlong(val +
-                               __longlong_as_double(assumed)));
-    } while (assumed != old);
-    return __longlong_as_double(old);
-}
-#endif
 
+/*
 
     // TODO: SPOSTARE LE FORZE DENTRO PHYSICALFORCE.CU E POI CHIAMARE FORCE.APPLY_FORCE()
 // (NON E' DETTO CHE FUNZIONI, DOBBIAMO VEDERE SE LE CHIAMATE A FUNZIONI GLOBAL VANNO, FACCIAMOLO INSIEME CHE CI AVEVO GIA' PROVATO)
@@ -440,6 +425,8 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
     __syncthreads();
 }
 
+*/
+
   
 
 void Particles::simulate_one_step(){
@@ -459,7 +446,7 @@ void Particles::simulate_one_step(){
   grid_sizes.z = 1;
   if(first) std::cout << "GRID SIZE: " << grid_sizes.x << std::endl;
   ResetAcc<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dax, day, daz, num_parts);
-  kernel_no_tiling_force<<<grid_sizes, block_sizes>>>(dx, dy, dz, dvx, dvy, dvz, dax, day, daz, dmasses, dcharges, num_parts);
+  force->force_application(dx, dy, dz, dvx, dvy, dvz, dax, day, daz, dmasses, dcharges, num_parts, grid_sizes, block_sizes);
   // force_kernel<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dx, dy, dz, dax, day, daz, dmasses, dcharges, num_parts);
   if(first) std::cout << "Applying force: Kernel Loop: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   

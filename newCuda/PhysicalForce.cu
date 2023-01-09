@@ -1,10 +1,26 @@
 #include "common.cuh"
 #include "PhysicalForce.cuh"
 #include <cuda.h>
-
     
-__global__ void RepulsiveForce :: 
-kernel_no_tiling_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+#if !defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600
+#else
+__device__ double atomicAdd(double* address, double val)
+{
+    unsigned long long int* address_as_ull =
+                              (unsigned long long int*)address;
+    unsigned long long int old = *address_as_ull, assumed;
+    do {
+        assumed = old;
+        old = atomicCAS(address_as_ull, assumed,
+                        __double_as_longlong(val +
+                               __longlong_as_double(assumed)));
+    } while (assumed != old);
+    return __longlong_as_double(old);
+}
+#endif
+
+__global__ void
+kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
@@ -78,6 +94,31 @@ kernel_no_tiling_force(double* x, double* y, double* z, double* vx, double* vy, 
     __syncthreads();
   
 }
+
+void RepulsiveForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    
+    kernel_no_tiling_force_repulsive<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+}
+
+void GravitationalForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    
+    kernel_no_tiling_force_gravitational<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+}
+
+void ProtonForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    
+    kernel_no_tiling_force_proton<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+}
+
+void CoulombForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    
+    kernel_no_tiling_force_coulomb<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+}
+
 
  /* 
 void GravitationalForce :: force_application() const {
