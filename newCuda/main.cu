@@ -406,7 +406,7 @@ __global__ void force_kernel(double* x, double* y, double* z,
 // (NON E' DETTO CHE FUNZIONI, DOBBIAMO VEDERE SE LE CHIAMATE A FUNZIONI GLOBAL VANNO, FACCIAMOLO INSIEME CHE CI AVEVO GIA' PROVATO)
 
 /*
-__global__ void kernel_test_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+__global__ void kernel_force(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
     
     int thx = threadIdx.x;
@@ -503,7 +503,7 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
     __shared__ double tiley_1[TILE_WIDTH];
     __shared__ double tilez_1[TILE_WIDTH];
     __shared__ double tile_masses_1[TILE_WIDTH];
-    __shared__ double tile_charges_1[TILE_WIDTH]
+    __shared__ double tile_charges_1[TILE_WIDTH];
     
 
     __shared__ double tilex_2[TILE_WIDTH];
@@ -588,6 +588,8 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
         // ******************** //
         r2 = fmax(r2, min_r * min_r);
         double coef = G / r2;
+        double mx = tile_masses_1[thx];
+        double my = tile_masses_2[thy];
 
         atomicAdd((double*)(ax + Row), (double)coef*dx*my);
         atomicAdd((double*)(ax + Col), (double)-coef*dx*mx);
@@ -601,6 +603,8 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
 
       }
       __syncthreads();
+    }
+  }
   
 }
 
@@ -630,7 +634,7 @@ void Particles::simulate_one_step(){
   if (error != cudaSuccess) {
     fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
     return;
-  }
+  };
   
   if(first) std::cout << "Applying force: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   if(first) t = clock();
