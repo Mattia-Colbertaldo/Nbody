@@ -78,7 +78,7 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
       }
       // ******************** //
       r2 = fmax(r2, min_r * min_r);
-      double coef = G / r2;
+      double coef = (1 - cutoff / r) / r2 ;
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);
@@ -96,7 +96,7 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
 }
 
 __global__ void
-kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+kernel_no_tiling_force_gravitational(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
@@ -154,7 +154,7 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
       }
       // ******************** //
       r2 = fmax(r2, min_r * min_r);
-      double coef = G / r2;
+      double coef =  (G / r2) ;
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);
@@ -172,7 +172,7 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
 }
 
 __global__ void
-kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+kernel_no_tiling_force_gravitational_assist(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
@@ -230,7 +230,17 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
       }
       // ******************** //
       r2 = fmax(r2, min_r * min_r);
-      double coef = G / r2;
+      double coef;
+
+        // Very simple short-range repulsive force
+        if(r2>0.0001){
+            coef =  G  / r2 ;
+        }
+        else
+        //gravity-assist : repulsive force
+        {
+            coef = -( G  / r2 ) * 3 ;
+        }
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);
@@ -248,7 +258,7 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
 }
 
 __global__ void
-kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, double* vy, double* vz,
+kernel_no_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double* vy, double* vz,
                         double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
@@ -306,16 +316,16 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
       }
       // ******************** //
       r2 = fmax(r2, min_r * min_r);
-      double coef = G / r2;
-
-      atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
-      atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);
+      double coef = std::pow(scale, 2) * K  / r2  ;
+      double charge_product = charges[thy]*charges[thx] ;
+      atomicAdd((double*)(ax + thx), (double)coef*dx*+charge_product);
+      atomicAdd((double*)(ax + thy), (double)-coef*dx*+charge_product);
       // ax[index] += coef*dx;
-      atomicAdd((double*)(ay + thx), (double)coef*dy*masses[thy]);
-      atomicAdd((double*)(ay + thy), (double)-coef*dy*masses[thx]);
+      atomicAdd((double*)(ay + thx), (double)coef*dy*+charge_product);
+      atomicAdd((double*)(ay + thy), (double)-coef*dy*+charge_product);
       // ay[index] += coef*dy;
-      atomicAdd((double*)(az + thx), (double)coef*dz*masses[thy]);
-      atomicAdd((double*)(az + thy), (double)-coef*dz*masses[thx]);
+      atomicAdd((double*)(az + thx), (double)coef*dz*+charge_product);
+      atomicAdd((double*)(az + thy), (double)-coef*dz*+charge_product);
       // az[index] += coef*dz;
 
     }
@@ -338,7 +348,7 @@ void GravitationalForce :: force_application(double* x, double* y, double* z, do
 void ProtonForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
     double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
     
-    kernel_no_tiling_force_proton<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+    kernel_no_tiling_force_gravitational_assist<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
 }
 
 void CoulombForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
