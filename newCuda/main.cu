@@ -1,3 +1,7 @@
+// Tenere Force.cu
+// Vedere se funziona all_particles e Simulatioin
+// Aggiungere Arg e Output (che adesso sono in particles)
+
 #include <thrust/device_ptr.h>
 #include <thrust/device_malloc.h>
 #include <thrust/device_free.h>
@@ -77,159 +81,9 @@ __global__ void ResetAcc(double* ax, double* ay, double* az, const int num_parts
 }
 
 class Particles{
-
-  public:
-  // Option 1
-  thrust::device_vector<double3> pos;
-  thrust::device_vector<double3> vel;
-  thrust::device_vector<double3> acc;
-  double3* dpos;
-  double3* dvel;
-  double3* dacc;
-  // Option 2
-  thrust::host_vector<double> x_h;
-  thrust::host_vector<double> y_h;
-  thrust::host_vector<double> z_h;
-  thrust::device_vector<double> x;
-  thrust::device_vector<double> y;
-  thrust::device_vector<double> z;
-  thrust::device_vector<double> vx;
-  thrust::device_vector<double> vy;
-  thrust::device_vector<double> vz;
-  thrust::device_vector<double> ax;
-  thrust::device_vector<double> ay;
-  thrust::device_vector<double> az;
-  thrust::device_vector<double> masses;
-  thrust::device_vector<double> charges;
-  double* dx;
-  double* dy;
-  double* dz;
-  double* hx;
-  double* hy;
-  double* hz;
-  double* dvx;
-  double* dvy;
-  double* dvz;
-  double* dax;
-  double* day;
-  double* daz;
-  double* dmasses;
-  double* dcharges;
-  const int num_parts;
-  double size;
-  AbstractForce* force;
-
-  int th_per_block = 10;
-  dim3 block_sizes;
-  // block_sizes.x;
-  // block_sizes.y;
-  // block_sizes.z;
-  // dim3 grid_sizes;
-  dim3 grid_sizes;
-  // grid_sizes.x;
-  // grid_sizes.y;
-  // grid_sizes.z;
-  
-  Particles(const int num_parts, AbstractForce* force) : num_parts(num_parts), force(force){
-    this->size = std::sqrt(density * num_parts);
-    
-    thrust::default_random_engine rng;
-
-    //Option 1
-    pos.reserve(num_parts);
-    vel.reserve(num_parts);
-    acc.reserve(num_parts);
-    // initialize_0_size(pos, rng, size);
-    // initialize_11(vel, rng);
-    thrust::fill(acc.begin(), acc.end(), make_double3(0.0, 0.0, 0.0));
-    dpos = thrust::raw_pointer_cast(pos.data());
-    dvel = thrust::raw_pointer_cast(vel.data());
-    dacc = thrust::raw_pointer_cast(acc.data());
-    // Option 2
-    x_h.reserve(num_parts);
-    y_h.reserve(num_parts);
-    z_h.reserve(num_parts);
-    x.reserve(num_parts);
-    y.reserve(num_parts);
-    z.reserve(num_parts);
-    vx.reserve(num_parts);
-    vy.reserve(num_parts);
-    vz.reserve(num_parts);
-    ax.reserve(num_parts);
-    ay.reserve(num_parts);
-    az.reserve(num_parts);
-    masses.reserve(num_parts);
-    charges.reserve(num_parts);
-
-    // Copying to host vectors (Optional)
-    
-    // Block and Grid dimensions
-    th_per_block = 32;
-    block_sizes.x = 32;
-    block_sizes.y = 32;
-    // block_sizes.x = 1024;
-    // block_sizes.y = 1024;
-    // block_sizes.z = 0;
-    // grid_sizes(ceil(num_parts/th_per_block), ceil(num_parts/th_per_block));
-    grid_sizes.x = 1;
-    grid_sizes.y = 1;
-    // grid_sizes.x = 2147483647/1024;
-    // grid_sizes.y = 65535/1024;
-    // grid_sizes.z = 0;
-  };
-
-  void init(){
-    thrust::default_random_engine rng;
-    thrust::uniform_real_distribution<double> dist(0.0, size);
-    thrust::uniform_real_distribution<double> dist1(-1.0, 1.0);
-    // TODO mettere inizializzazione di xh e poi copy al vettore trust
-    for(int i=0; i<num_parts; i++){
-      x[i] = dist(rng);
-      y[i] = dist(rng);
-      z[i] = dist(rng);
-      // thrust::copy(x.begin(), x.end(), x_h.begin());
-      // thrust::copy(y.begin(), y.end(), y_h.begin());
-      // thrust::copy(z.begin(), z.end(), z_h.begin());
-      vx[i] = dist1(rng);
-      vy[i] = dist1(rng);
-      vz[i] = dist1(rng);
-      //pos[i] = make_double3(dist(rng), dist(rng), dist(rng));
-      //vel[i] = make_double3(dist1(rng), dist1(rng), dist1(rng));
-      //masses[i] = (dist1(rng) + 1.0);
-
-      masses[i] = dist1(rng)+2.0;
-      charges[i] = dist1(rng)*1e-19;
-    }
-    thrust::fill(acc.begin(), acc.end(), make_double3(0.0, 0.0, 0.0));
-    dx = thrust::raw_pointer_cast(x.data());
-    dy = thrust::raw_pointer_cast(y.data());
-    dz = thrust::raw_pointer_cast(z.data());
-    hx = thrust::raw_pointer_cast(x.data());
-    hy = thrust::raw_pointer_cast(y.data());
-    hz = thrust::raw_pointer_cast(z.data());
-    dvx = thrust::raw_pointer_cast(vx.data());
-    dvy = thrust::raw_pointer_cast(vy.data());
-    dvz = thrust::raw_pointer_cast(vz.data());
-    dax = thrust::raw_pointer_cast(ax.data());
-    day = thrust::raw_pointer_cast(ay.data());
-    daz = thrust::raw_pointer_cast(az.data());
-    dmasses = thrust::raw_pointer_cast(masses.data());
-    dcharges = thrust::raw_pointer_cast(charges.data());
-
-    cudaDeviceSynchronize();
-    ResetAcc<<<ceil(num_parts/th_per_block), th_per_block>>>(dax, day, daz, num_parts);
-    cudaDeviceSynchronize();
-    cudaError_t error = cudaGetLastError();
-    if (error != cudaSuccess) {
-      fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
-      return;
-    }
-  }
-
-  
   void save_output(std::ofstream& fsave, int step);
   void save(std::ofstream& fsave);
-  void simulate_one_step();
+  
 };
 
 void Particles::save(std::ofstream& fsave){
@@ -271,41 +125,6 @@ void Particles::save_output(std::ofstream& fsave, int step){
         }
     }
 }
-
-
-
-__global__ void move_kernel(double* dx, double* dy, double* dz,
-                        double* dvx, double* dvy, double* dvz,
-                        double* dax, double* day, double* daz, const double size, const int num_parts){
-    // double size = dsize[0];
-    // int num_parts = dnum_parts[0];
-    
-    unsigned int i = blockDim.x * blockIdx.x + threadIdx.x;
-    if (i>=num_parts) return;
-    dvx[i] += dax[i] * dt;
-    dvy[i] += day[i] * dt;
-    dvz[i] += daz[i] * dt;
-    dx[i] += dvx[i] * dt;
-    dy[i] += dvy[i] * dt;
-    dz[i] += dvz[i] * dt;
-
-    // Bounce from walls
-    while (dx[i] < 0 || dx[i] > size) {
-        dx[i] = (dx[i] < 0 ? -dx[i] : 2 * size - dx[i]);
-        dvx[i] = -dvx[i];
-    }
-
-    while (dy[i] < 0 || dy[i] > size) {
-        dy[i] = (dy[i] < 0 ? -dy[i] : 2 * size - dy[i]);
-        dvy[i] = -dvy[i];
-    }
-
-    while (dz[i] < 0 || dz[i] > size) {
-        dz[i] = (dz[i] < 0 ? -dz[i] : 2 * size - dz[i]);
-        dvz[i] = -dvz[i];
-    }
-}
-
 
 
 
@@ -429,49 +248,6 @@ __global__ void kernel_test_force(double* x, double* y, double* z, double* vx, d
 
   
 
-void Particles::simulate_one_step(){
-  static bool first = 1;
-  long t;
-  if(first) t = clock();
-  
-  // long t = clock();
-  // apply_force(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, sum_ax, sum_ay, sum_az);
-  long t1;
-  if(first) t1 = clock();
-  th_per_block = fmin(32, num_parts);
-  block_sizes.x = block_sizes.y = BLOCK_DIM;
-  block_sizes.z = 1;
-  grid_sizes.x = ceil(((double)num_parts)/((double)(block_sizes.x)));
-  grid_sizes.y = ceil(((double)num_parts)/((double)(block_sizes.y)));
-  grid_sizes.z = 1;
-  if(first) std::cout << "GRID SIZE: " << grid_sizes.x << std::endl;
-  ResetAcc<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dax, day, daz, num_parts);
-  force->force_application(dx, dy, dz, dvx, dvy, dvz, dax, day, daz, dmasses, dcharges, num_parts, grid_sizes, block_sizes);
-  // force_kernel<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dx, dy, dz, dax, day, daz, dmasses, dcharges, num_parts);
-  if(first) std::cout << "Applying force: Kernel Loop: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-  
-  cudaDeviceSynchronize();
-  cudaError_t error = cudaGetLastError();
-  if (error != cudaSuccess) {
-    fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
-    return;
-  };
-  
-  if(first) std::cout << "Applying force: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-  if(first) t = clock();
-  // <<<grid_dim, block_size>>>
-  move_kernel<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dx, dy, dz, dvx, dvy, dvz, dax, day, daz, size, num_parts);
-  cudaDeviceSynchronize();
-  error = cudaGetLastError();
-  if (error != cudaSuccess) {
-    fprintf(stderr, "ERROR: %s \n", cudaGetErrorString(error));
-    return;
-  }
-  
-  
-  if(first) std::cout << "Moving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-  if(first) first = 0;
-}
 
 
 
@@ -507,7 +283,7 @@ int main(int argc, char** argv)
       forcename= &def[0];
       std::cout << "Choosing default force..." << std::endl;;
   }
-
+  AllParticles all_particles = AllParticles(num_parts, force);
   AbstractForce* force= finder.find_force(forcename);
 
   const int num_parts = finder.find_int_arg("-n", 1000);
@@ -520,9 +296,8 @@ int main(int argc, char** argv)
   const int num_th = finder.find_int_arg("-t", 8);
 
   long t = clock();
-
-  Particles p = Particles(num_parts, force);
-  p.init();
+  Simulation s = Simulation(&all_particles);
+  s->init_particles(size, part_seed);
   
   cudaDeviceSynchronize();
 
@@ -539,7 +314,7 @@ int main(int argc, char** argv)
   long t1;
   for(int step=0; step<nsteps; step++){
     if(step == 0) t1 = clock();
-    p.simulate_one_step();
+    s->simulate_one_step(force, num_parts, size);
     if(step == 0) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
     if(step == 0) t1 = clock();
