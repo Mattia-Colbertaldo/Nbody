@@ -2,7 +2,7 @@
 #define HH__OUTPUT__HH
 #include <fstream>
 #include <vector>
-#include "Particle.hpp"
+#include "AllParticles.cuh"
 // =================
 // Helper Functions
 // =================
@@ -20,8 +20,8 @@ class Output
 public:
     Output(){};
     // I/O routines
-    void save(std::ofstream& fsave, const std::vector<Particle>& parts, const double size, const int& nsteps);
+    void save(std::ofstream& fsave, const AllParticles& parts, const double size, const int& nsteps);
 
-    void save_output(std::ofstream& fsave, const int savefreq, const std::vector<Particle>& parts , const int& step,  const int& nsteps, const double & size);
+    void save_output(std::ofstream& fsave, const int savefreq, const AllParticles& parts , const int& step,  const int& nsteps, const double & size);
 };
 #endif

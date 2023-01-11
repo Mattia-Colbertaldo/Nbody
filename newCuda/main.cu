@@ -18,6 +18,7 @@
 #include <thrust/transform.h>
 #include <thrust/execution_policy.h>
 
+#include "Output.cuh"
 #include "Find_Arg.cuh"
 #include "common.cuh"
 #include "PhysicalForce.cuh"
@@ -257,7 +258,8 @@ int main(int argc, char** argv)
   // thrust::copy(x.begin(), x.end(), x_h.begin());
   // thrust::copy(y.begin(), y.end(), y_h.begin());
   // thrust::copy(z.begin(), z.end(), z_h.begin());
-  s.save(fsave);
+  Output output= Output();
+  output.save(fsave, parts, size, nsteps);
   std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   std::cout << "Now entering the for loop." << std::endl;
   t = clock();
@@ -268,7 +270,7 @@ int main(int argc, char** argv)
     if(step == 0) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
     if(step == 0) t1 = clock();
-    s.save_output(fsave, step);
+    output.save_output(fsave, savefreq, parts , step, nsteps, size);
     if(step == 0) std::cout << "Saving: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     if(step == 0) std::cout << "One loop iteration: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   }

@@ -83,10 +83,6 @@ struct AllParticles {
         void init();
         void move();
         void ResetAccelerations();
-
-        //TODO
-        void save_output(std::ofstream& fsave, int step);
-        void save(std::ofstream& fsave);
         
         // Option 2
         thrust::host_vector<double> x_h;
