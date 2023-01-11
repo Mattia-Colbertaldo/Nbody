@@ -8,7 +8,7 @@ class AbstractForce
 public:
   AbstractForce(){};
   virtual void force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const dim3 grid_sizes, const dim3 block_sizes) const = 0;
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const std::string collision , const dim3 grid_sizes, const dim3 block_sizes) const = 0;
   
   virtual ~AbstractForce(){};
 };
@@ -20,7 +20,7 @@ public:
         
 void  
 force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const dim3 grid_sizes, const dim3 block_sizes) const override;
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const std::string collision , const dim3 grid_sizes, const dim3 block_sizes) const override;
   
 };
   
@@ -31,7 +31,7 @@ class GravitationalForce : public AbstractForce
 public:
   
   void force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const dim3 grid_sizes, const dim3 block_sizes) const override;
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const std::string collision , const dim3 grid_sizes, const dim3 block_sizes) const override;
 };
 
 
@@ -41,7 +41,7 @@ public:
   
   
   void force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const dim3 grid_sizes, const dim3 block_sizes) const override;
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const std::string collision , const dim3 grid_sizes, const dim3 block_sizes) const override;
 
 };
 
@@ -51,7 +51,7 @@ class ProtonForce : public AbstractForce
 public:
      
   void force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const dim3 grid_sizes, const dim3 block_sizes) const override;
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const std::string collision , const dim3 grid_sizes, const dim3 block_sizes) const override;
 
 };
 
@@ -63,7 +63,7 @@ class CoulombForce : public AbstractForce
 public:
    
   void force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const dim3 grid_sizes, const dim3 block_sizes) const override;
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, const std::string collision , const dim3 grid_sizes, const dim3 block_sizes) const override;
 };
 
 

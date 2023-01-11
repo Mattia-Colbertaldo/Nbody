@@ -235,7 +235,12 @@ int main(int argc, char** argv)
       std::cout << "Choosing default force..." << std::endl;;
   }
   std::shared_ptr<AbstractForce> force= finder.find_force(forcename);
-  
+
+  //find collision type
+  std::string collision = finder.find_collision_arg("-c", "no-collision");
+  std::cout << "Choosing " <<  collision << " collision type..." << std::endl;
+
+
   const int num_parts = finder.find_int_arg("-n", 1000);
   std::cout << "Starting simulation with " << num_parts << " particles." <<std::endl;
   const int part_seed = finder.find_int_arg("-s", 0);
@@ -245,7 +250,7 @@ int main(int argc, char** argv)
   const double size = std::sqrt(density * num_parts);
   const int num_th = finder.find_int_arg("-t", 8);
   long t = clock();
-  Simulation s = Simulation(all_particles);
+  Simulation s = Simulation(all_particles, collision );
   std::cout << "Initialization started." << std::endl;
   s.init_particles(size, part_seed);
   cudaDeviceSynchronize();

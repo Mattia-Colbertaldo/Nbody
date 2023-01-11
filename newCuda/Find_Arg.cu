@@ -35,6 +35,16 @@ std::string find_force_option(int argc, char** argv, const std::string option, s
     return default_value;
 };
 
+std::string find_collision_option(int argc, char** argv, const std::string option, std::string default_value) {
+    int iplace = find_arg_idx(argc, argv, option);
+
+    if (iplace >= 0 && iplace < argc - 1) {
+        return argv[iplace + 1];
+    }
+
+    return default_value;
+};
+
 std::string Find_Arg :: find_string_arg(const std::string type_of_find, const std::string option){
     if ("-o" == type_of_find)
     {
@@ -43,6 +53,10 @@ std::string Find_Arg :: find_string_arg(const std::string type_of_find, const st
     else if ("-f" == type_of_find)
     {
         return find_force_option(this->argc, this->argv, type_of_find, option);
+    }
+    else if ("-c" == type_of_find)
+    {
+        return find_collision_option(this->argc, this->argv, type_of_find, option);
     }
     else return "error";
 };

@@ -21,7 +21,8 @@ __device__ double atomicAdd(double* address, double val)
 
 __global__ void
 kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+                        const std::string collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
     
@@ -98,7 +99,8 @@ kernel_no_tiling_force_repulsive(double* x, double* y, double* z, double* vx, do
 
 __global__ void
 kernel_no_tiling_force_gravitational(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+                        const std::string collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
     
@@ -176,7 +178,8 @@ kernel_no_tiling_force_gravitational(double* x, double* y, double* z, double* vx
 
 __global__ void
 kernel_no_tiling_force_gravitational_assist(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+                        const std::string collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
     
@@ -263,7 +266,8 @@ kernel_no_tiling_force_gravitational_assist(double* x, double* y, double* z, dou
 
 __global__ void
 kernel_no_tiling_force_proton(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+                        const std::string collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
     
@@ -348,7 +352,8 @@ kernel_no_tiling_force_proton(double* x, double* y, double* z, double* vx, doubl
 
 __global__ void
 kernel_no_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts){
+                        double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+                        const std::string collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
     
@@ -379,7 +384,7 @@ kernel_no_tiling_force_coulomb(double* x, double* y, double* z, double* vx, doub
         double mx = masses[thx];
         double my = masses[thy];
         // TODO ARGUMENT
-        if(1){
+        if(collision.compare("elastic")==0){
           // URTO ANELASTICO:
           vx[thx] = (double)(mx*vx[thx] + my*vx[thy])/(double)(mx+my);
           vx[thy] = (double)(my*vx[thy] + mx*vx[thx])/(double)(my+mx);
@@ -390,7 +395,7 @@ kernel_no_tiling_force_coulomb(double* x, double* y, double* z, double* vx, doub
           vz[thx] = (double)(mx*vz[thx] + my*vz[thy])/(double)(mx+my);
           vz[thy] = (double)(my*vz[thy] + mx*vz[thx])/(double)(my+mx);
         }
-        else{
+        else if(collision.compare("unelastic")==0){
           // URTO ELASTICO
           vx[thx] = (double)vx[thx]*(mx-my)/(mx + my) + 2*vx[thy]*my/(mx+my);
           vx[thy] = (double)vx[thy]*(my-mx)/(mx + my) + 2*vx[thx]*mx/(mx+my);
@@ -423,35 +428,40 @@ kernel_no_tiling_force_coulomb(double* x, double* y, double* z, double* vx, doub
 }
 
 void RepulsiveForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+    const std::string collision , dim3 grid_sizes, const dim3 block_sizes ) const {
     
-    kernel_no_tiling_force_repulsive<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+    kernel_no_tiling_force_repulsive<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, collision);
 }
 
 void GravitationalForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+    const std::string collision , dim3 grid_sizes, const dim3 block_sizes ) const {
     
-    kernel_no_tiling_force_gravitational<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+    kernel_no_tiling_force_gravitational<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, collision);
 }
 
 
 void GravitationalAssistForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+    const std::string collision , dim3 grid_sizes, const dim3 block_sizes ) const {
     
-    kernel_no_tiling_force_gravitational_assist<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+    kernel_no_tiling_force_gravitational_assist<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, collision);
 }
 
 
 void ProtonForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+    const std::string collision , dim3 grid_sizes, const dim3 block_sizes ) const {
     
-    kernel_no_tiling_force_proton<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+    kernel_no_tiling_force_proton<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, collision);
 }
 
 void CoulombForce :: force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,
-    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, dim3 grid_sizes, const dim3 block_sizes ) const {
+    double* ax, double* ay, double* az, const double* masses, const double* charges, const int num_parts, 
+    const std::string collision , dim3 grid_sizes, const dim3 block_sizes ) const {
     
-    kernel_no_tiling_force_coulomb<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts);
+    kernel_no_tiling_force_coulomb<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, collision);
 }
 
 
