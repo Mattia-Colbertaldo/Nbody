@@ -1,4 +1,4 @@
-#include "Output.hpp"
+#include "Output.cuh"
 #include <iostream>
 
 
@@ -13,31 +13,39 @@
     se a questo step va effettuato l’output e se la risposta è affermativa solo il rank 0 scrive su file. 
 */
 
-// I/O routines
-void Output :: save(std::ofstream& fsave, const std::vector<Particle>& parts, const double size, const int& nsteps) {
-    int num_parts = parts.size();
+void Output::save(std::ofstream& fsave, const AllParticles& parts, const double size, const int& nsteps){
     
-    static bool first = true;
+  static bool first = true;
 
-    if (first) {
-        fsave << num_parts << " " << size << " " << nsteps << "\n";
-        first = false;
-    }
+  if (first) {
+      fsave << num_parts << " " << size << " " << nsteps << "\n";
+      first = false;
+  }
+  //dovrei scrivere x_h[i] per risparmiare tempo ma non funziona. Ci penserò più tardi
 
-    for (int i = 0; i < num_parts; ++i) {
-        fsave << parts[i].x << " " << parts[i].y << " " << parts[i].z << "\n";
-    }
-
-    // fsave << std::endl;
+  // Opzione 1:
+  thrust::copy(parts.x.begin(), parts.x.end(), parts.x_h.begin());
+  thrust::copy(parts.y.begin(), parts.y.end(), y_parts.h.begin());
+  thrust::copy(parts.z.begin(), parts.z.end(), z_parts.h.begin());
+  // Opzione 2:
+  // x_h = x;
+  // y_h = y;
+  // z_h = z;
+  cudaDeviceSynchronize();
+  for(size_t i = 0; i < num_parts; i++){
+    // TODO X_H
+        fsave <<  x_h[i] << " " << y_h[i] << " " << z_h[i] << std::endl;
+  }
+  cudaDeviceSynchronize();
 };
 
-
-void Output :: save_output(std::ofstream& fsave, const int savefreq, const std::vector<Particle>& parts , const int& step, const int& nsteps, const double & size)
-{
-    if (fsave.good() && (step % savefreq) == 0)
-    {
-        save(fsave, parts, size, nsteps);
-    }
+void Output::save_output(std::ofstream& fsave, const int savefreq, const AllParticles& parts , const int& step,  const int& nsteps, const double & size){
+    // TODO FIX
+    // thrust::copy(x.begin(), x.end(), x_h.begin());
+    // thrust::copy(y.begin(), y.end(), y_h.begin());
+    // thrust::copy(z.begin(), z.end(), z_h.begin());
+    save(fsave);
+    cudaDeviceSynchronize();
     if(step > 0){
         if (step%10 == 0){
         fflush(stdout);
