@@ -1,3 +1,0 @@
-Saving first output...
-Saved.
-Simulating step 0

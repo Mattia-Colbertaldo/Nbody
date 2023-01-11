@@ -1,9 +1,0 @@
-# ninja log v5
-0	2805	6942099714795430	CMakeFiles/cuda_test.dir/particle.cu.obj	37e17b8c2aabea21
-8	3010	6945341257544915	CMakeFiles/cuda_test.dir/Find_Arg.cu.obj	1ae911cfce13a398
-4	12	0	cuda_test.exe	678e96ce8104811f
-10	3184	6945341259295062	CMakeFiles/cuda_test.dir/PhysicalForce.cu.obj	1c7f82109bca8987
-12	6077	6945341288195821	CMakeFiles/cuda_test.dir/Output.cu.obj	3422203eab8aa429
-6	5979	6945341287235967	CMakeFiles/cuda_test.dir/Particles.cu.obj	1a39c3c42da937e
-4	4819	6944409823046200	CMakeFiles/cuda_test.dir/test.cu.obj	bffd43dac24b4888
-4820	5868	6944409833606077	CMakeFiles/cuda_test.dir/cmake_device_link.obj	eabc4efeacf86bb4
