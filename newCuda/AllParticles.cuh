@@ -1,39 +1,52 @@
 #ifndef HH__ALLPARTICLES__HH
 #define HH__ALLPARTICLES__HH
 
+
+
+#include "common.cuh"
+#include "PhysicalForce.cuh"
+
+#include <thrust/device_ptr.h>
+#include <thrust/device_malloc.h>
+#include <thrust/device_free.h>
+#include <sm_60_atomic_functions.h>
+#include <fstream>
+#include <thrust/sequence.h>
+#include <thrust/reduce.h>
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+#include <thrust/universal_vector.h>
+#include <thrust/random.h>
+#include <thrust/transform.h>
+#include <thrust/execution_policy.h>
+
+#include <thrust/zip_function.h>
+#include <thrust/iterator/zip_iterator.h>
+
 struct AllParticles {
-        AllParticles(){};
-        
-        AllParticles(const int num_parts, AbstractForce* force) : num_parts(num_parts), force(force){
+    
+        public:
+
+        AllParticles(const int num_parts, std::shared_ptr<AbstractForce>  force) : num_parts(num_parts), force(force){
             this->size = std::sqrt(density * num_parts);
             
             thrust::default_random_engine rng;
 
-            //Option 1
-            pos.reserve(num_parts);
-            vel.reserve(num_parts);
-            acc.reserve(num_parts);
-            // initialize_0_size(pos, rng, size);
-            // initialize_11(vel, rng);
-            thrust::fill(acc.begin(), acc.end(), make_double3(0.0, 0.0, 0.0));
-            dpos = thrust::raw_pointer_cast(pos.data());
-            dvel = thrust::raw_pointer_cast(vel.data());
-            dacc = thrust::raw_pointer_cast(acc.data());
             // Option 2
-            x_h.reserve(num_parts);
-            y_h.reserve(num_parts);
-            z_h.reserve(num_parts);
-            x.reserve(num_parts);
-            y.reserve(num_parts);
-            z.reserve(num_parts);
-            vx.reserve(num_parts);
-            vy.reserve(num_parts);
-            vz.reserve(num_parts);
-            ax.reserve(num_parts);
-            ay.reserve(num_parts);
-            az.reserve(num_parts);
-            masses.reserve(num_parts);
-            charges.reserve(num_parts);
+            x_h.resize(num_parts);
+            y_h.resize(num_parts);
+            z_h.resize(num_parts);
+            x.resize(num_parts);
+            y.resize(num_parts);
+            z.resize(num_parts);
+            vx.resize(num_parts);
+            vy.resize(num_parts);
+            vz.resize(num_parts);
+            ax.resize(num_parts);
+            ay.resize(num_parts);
+            az.resize(num_parts);
+            masses.resize(num_parts);
+            charges.resize(num_parts);
 
             // Copying to host vectors (Optional)
             
@@ -50,22 +63,31 @@ struct AllParticles {
             // grid_sizes.x = 2147483647/1024;
             // grid_sizes.y = 65535/1024;
             // grid_sizes.z = 0;
+
+            dx = thrust::raw_pointer_cast(x.data());
+            dy = thrust::raw_pointer_cast(y.data());
+            dz = thrust::raw_pointer_cast(z.data());
+            hx = thrust::raw_pointer_cast(x.data());
+            hy = thrust::raw_pointer_cast(y.data());
+            hz = thrust::raw_pointer_cast(z.data());
+            dvx = thrust::raw_pointer_cast(vx.data());
+            dvy = thrust::raw_pointer_cast(vy.data());
+            dvz = thrust::raw_pointer_cast(vz.data());
+            dax = thrust::raw_pointer_cast(ax.data());
+            day = thrust::raw_pointer_cast(ay.data());
+            daz = thrust::raw_pointer_cast(az.data());
+            dmasses = thrust::raw_pointer_cast(masses.data());
+            dcharges = thrust::raw_pointer_cast(charges.data());
         };
         
-        void move(const double size, double* dx, double* dy, double* dz,
-                    double* dvx, double* dvy, double* dvz,
-                    double* dax, double* day, double* daz, const double size, const int num_parts , 
-                    dim3 grid_sizes, const dim3 block_sizes);
+        void init();
+        void move();
+        void ResetAccelerations();
+
+        //TODO
+        void save_output(std::ofstream& fsave, int step);
+        void save(std::ofstream& fsave);
         
-        
-        public:
-        // Option 1
-        thrust::device_vector<double3> pos;
-        thrust::device_vector<double3> vel;
-        thrust::device_vector<double3> acc;
-        double3* dpos;
-        double3* dvel;
-        double3* dacc;
         // Option 2
         thrust::host_vector<double> x_h;
         thrust::host_vector<double> y_h;
@@ -97,7 +119,7 @@ struct AllParticles {
         double* dcharges;
         const int num_parts;
         double size;
-        AbstractForce* force;
+        std::shared_ptr<AbstractForce> force;
 
         int th_per_block = 10;
         dim3 block_sizes;
@@ -113,5 +135,8 @@ struct AllParticles {
         
 
 };
+
+
+
 
 #endif

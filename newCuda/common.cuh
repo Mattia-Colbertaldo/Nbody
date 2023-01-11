@@ -9,6 +9,10 @@
 #include <iostream>
 #include <cuda.h>
 
+constexpr float MS_PER_SEC = 1000.0f;
+// constexpr int grid_size = num_parts / block_size + 1;
+
+constexpr unsigned int BLOCK_DIM = 32;
 
 // Program Constants
 constexpr unsigned int nsteps = 1000;

@@ -21,6 +21,8 @@
 #include "Find_Arg.cuh"
 #include "common.cuh"
 #include "PhysicalForce.cuh"
+#include "AllParticles.cuh"
+#include "Simulation.cuh"
 
 #include <time.h>
 
@@ -28,11 +30,7 @@
 #include <thrust/zip_function.h>
 #include <thrust/iterator/zip_iterator.h>
 
-constexpr float MS_PER_SEC = 1000.0f;
-// constexpr int grid_size = num_parts / block_size + 1;
 
-constexpr unsigned int BLOCK_DIM = 32;
-constexpr unsigned int TILE_WIDTH = BLOCK_DIM;
 
 #include <cassert>
 #include <iostream>
@@ -72,59 +70,11 @@ void DisplayHeader()
     }
 }
 
-__global__ void ResetAcc(double* ax, double* ay, double* az, const int num_parts){
-  unsigned int i = blockDim.x * blockIdx.x + threadIdx.x;
-  if(i>=num_parts) return;
-  ax[i] = 0.0;
-  ay[i] = 0.0;
-  az[i] = 0.0;
-}
 
-class Particles{
-  void save_output(std::ofstream& fsave, int step);
-  void save(std::ofstream& fsave);
-  
-};
 
-void Particles::save(std::ofstream& fsave){
-    
-  static bool first = true;
 
-  if (first) {
-      fsave << num_parts << " " << size << " " << nsteps << "\n";
-      first = false;
-  }
-  //dovrei scrivere x_h[i] per risparmiare tempo ma non funziona. Ci penserò più tardi
 
-  // Opzione 1:
-  // thrust::copy(x.begin(), x.end(), x_h.begin());
-  // thrust::copy(y.begin(), y.end(), y_h.begin());
 
-  // thrust::copy(z.begin(), z.end(), z_h.begin());
-  // Opzione 2:
-  // x_h = x;
-  // y_h = y;
-  // z_h = z;
-  cudaDeviceSynchronize();
-  for(size_t i = 0; i < num_parts; i++){
-    // TODO X_H
-        fsave <<  x[i] << " " << y[i] << " " << z[i] << std::endl;
-  }
-}
-
-void Particles::save_output(std::ofstream& fsave, int step){
-    // TODO FIX
-    // thrust::copy(x.begin(), x.end(), x_h.begin());
-    // thrust::copy(y.begin(), y.end(), y_h.begin());
-    // thrust::copy(z.begin(), z.end(), z_h.begin());
-    save(fsave);
-    if(step > 0){
-        if (step%10 == 0){
-        fflush(stdout);
-        printf("[ %d% ]\r", (int)(step*100/nsteps));
-        }
-    }
-}
 
 
 
@@ -283,23 +233,23 @@ int main(int argc, char** argv)
       forcename= &def[0];
       std::cout << "Choosing default force..." << std::endl;;
   }
-  AllParticles all_particles = AllParticles(num_parts, force);
-  AbstractForce* force= finder.find_force(forcename);
-
+  std::shared_ptr<AbstractForce> force= finder.find_force(forcename);
+  
   const int num_parts = finder.find_int_arg("-n", 1000);
   std::cout << "Starting simulation with " << num_parts << " particles." <<std::endl;
   const int part_seed = finder.find_int_arg("-s", 0);
   
-  // const double size = std::sqrt(density * num_parts);
-  // SIZE = size;
-  // std::cout << num_parts << " " << size << " " << nsteps << std::endl;
-  const int num_th = finder.find_int_arg("-t", 8);
-
-  long t = clock();
-  Simulation s = Simulation(&all_particles);
-  s->init_particles(size, part_seed);
+  AllParticles all_particles = AllParticles(num_parts, force);
   
+  const double size = std::sqrt(density * num_parts);
+  const int num_th = finder.find_int_arg("-t", 8);
+  long t = clock();
+  Simulation s = Simulation(all_particles);
+  std::cout << "Initialization started." << std::endl;
+  s.init_particles(size, part_seed);
   cudaDeviceSynchronize();
+  std::cout << "Initialization completed." << std::endl;
+  
 
   std::cout << "Initialization: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   // std::cout << "Moving data from GPU to CPU: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
@@ -307,18 +257,18 @@ int main(int argc, char** argv)
   // thrust::copy(x.begin(), x.end(), x_h.begin());
   // thrust::copy(y.begin(), y.end(), y_h.begin());
   // thrust::copy(z.begin(), z.end(), z_h.begin());
-  p.save(fsave);
+  s.save(fsave);
   std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   std::cout << "Now entering the for loop." << std::endl;
   t = clock();
   long t1;
   for(int step=0; step<nsteps; step++){
     if(step == 0) t1 = clock();
-    s->simulate_one_step(force, num_parts, size);
+    s.simulate_one_step(force, num_parts, size);
     if(step == 0) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
     if(step == 0) t1 = clock();
-    p.save_output(fsave, step);
+    s.save_output(fsave, step);
     if(step == 0) std::cout << "Saving: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     if(step == 0) std::cout << "One loop iteration: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   }

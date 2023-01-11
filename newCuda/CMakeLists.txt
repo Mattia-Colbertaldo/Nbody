@@ -8,7 +8,7 @@ set(
 
 set(DCUDA_NVCC_FLAGS "-arch=sm_60" CACHE STRING "nvcc flags" FORCE)
 
-add_executable(cuda_test main.cu Find_Arg.cu PhysicalForce.cu common.cuh)
+add_executable(cuda_test main.cu Find_Arg.cu PhysicalForce.cu common.cuh Simulation.cu AllParticles.cu)
 
 set_target_properties(
         cuda_test

@@ -58,36 +58,38 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
 };
 
 
-AbstractForce* Find_Arg::find_force(const std::string forcename)
+
+std::shared_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename)
 {
-    AbstractForce* force;   
+    std::shared_ptr<AbstractForce> force;   
     if(forcename.compare("gravitational")==0){
         std::cout << "Gravitational force chosen." << std::endl;
-        force = new GravitationalForce();
+        force = std::make_shared<GravitationalForce>();
     }
     
     else if(forcename.compare("assist")==0){
         std::cout << "Gravitational Assist force chosen." << std::endl;
-        force = new GravitationalAssistForce();
+        force = std::make_shared<GravitationalAssistForce>();
     }
     
     else if(forcename.compare("proton")==0){
         
         std::cout << "Proton force chosen." << std::endl;
-        force = new ProtonForce();
+        force = std::make_shared<ProtonForce>();
     }
     
     else if(forcename.compare("coulomb")==0){
         std::cout << "Coulomb force chosen." << std::endl;
-        force = new CoulombForce();
+        force = std::make_shared<CoulombForce>();
     }
 
     else {
         std::cout << "Repulsive force chosen." << std::endl;
-        force = new RepulsiveForce();
+        force = std::make_shared<RepulsiveForce>();
     }
     return force;
     
 };
+
 
 
