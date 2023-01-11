@@ -239,7 +239,7 @@ int main(int argc, char** argv)
   std::cout << "Starting simulation with " << num_parts << " particles." <<std::endl;
   const int part_seed = finder.find_int_arg("-s", 0);
   
-  AllParticles all_particles = AllParticles(num_parts, force);
+  std::shared_ptr<AllParticles> all_particles = std::make_shared<AllParticles>(num_parts, force);
   
   const double size = std::sqrt(density * num_parts);
   const int num_th = finder.find_int_arg("-t", 8);

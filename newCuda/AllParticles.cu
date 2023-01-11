@@ -25,7 +25,6 @@ __global__ void move_kernel(double* dx, double* dy, double* dz,
                         double* dax, double* day, double* daz, const double size, const int num_parts){
     // double size = dsize[0];
     // int num_parts = dnum_parts[0];
-    
     unsigned int i = blockDim.x * blockIdx.x + threadIdx.x;
     if (i>=num_parts) return;
     dvx[i] += dax[i] * dt;
@@ -78,11 +77,10 @@ void AllParticles::init(){
             thrust::uniform_real_distribution<double> dist(0.0, size);
             thrust::uniform_real_distribution<double> dist1(-1.0, 1.0);
 
-            for(int i=0; i<1; i++){
+            for(int i=0; i<num_parts; i++){
               x_h[i] = dist(rng);
               y_h[i] = dist(rng);
               z_h[i] = dist(rng);
-              std::cout << "velocities..." << std::endl;
               vx[i] = dist1(rng);
               vy[i] = dist1(rng);
               vz[i] = dist1(rng);
@@ -102,6 +100,7 @@ void AllParticles::init(){
 
             cudaDeviceSynchronize();
             ResetAccelerations();
+            
 
 
 
@@ -120,9 +119,9 @@ void AllParticles::save(std::ofstream& fsave){
   //dovrei scrivere x_h[i] per risparmiare tempo ma non funziona. Ci penserò più tardi
 
   // Opzione 1:
-  thrust::copy(x.begin(), x.end(), x_h.begin());
-  thrust::copy(y.begin(), y.end(), y_h.begin());
-  thrust::copy(z.begin(), z.end(), z_h.begin());
+  // thrust::copy(x.begin(), x.end(), x_h.begin());
+  // thrust::copy(y.begin(), y.end(), y_h.begin());
+  // thrust::copy(z.begin(), z.end(), z_h.begin());
   // Opzione 2:
   // x_h = x;
   // y_h = y;
@@ -137,9 +136,9 @@ void AllParticles::save(std::ofstream& fsave){
 
 void AllParticles::save_output(std::ofstream& fsave, int step){
     // TODO FIX
-    // thrust::copy(x.begin(), x.end(), x_h.begin());
-    // thrust::copy(y.begin(), y.end(), y_h.begin());
-    // thrust::copy(z.begin(), z.end(), z_h.begin());
+    thrust::copy(x.begin(), x.end(), x_h.begin());
+    thrust::copy(y.begin(), y.end(), y_h.begin());
+    thrust::copy(z.begin(), z.end(), z_h.begin());
     save(fsave);
     cudaDeviceSynchronize();
     if(step > 0){
@@ -153,7 +152,8 @@ void AllParticles::save_output(std::ofstream& fsave, int step){
     // Integrate the ODE
 
     void AllParticles:: move() {
-        move_kernel<<<grid_sizes, block_sizes>>> ( dx, dy, dz,
+      move_kernel<<<grid_sizes, block_sizes>>> ( dx, dy, dz,
                                                  dvx, dvy, dvz,
                                                  dax, day, daz, size, num_parts);
+                                                 
     };

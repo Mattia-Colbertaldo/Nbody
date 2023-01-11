@@ -2,13 +2,14 @@
 #define HH__SIMULATION__HH
 
 #include "PhysicalForce.cuh"
+#include "AllParticles.cuh"
 #include <vector>
 #include <memory>
 
 class Simulation {
         public:
 
-        Simulation(AllParticles parts): parts(parts){};
+        Simulation(std::shared_ptr<AllParticles>& parts): parts(parts){};
         
         void simulate_one_step(const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size);
 
@@ -18,7 +19,7 @@ class Simulation {
         void save(std::ofstream& fsave);
         
         // private:
-        AllParticles parts;
+        std::shared_ptr<AllParticles> parts;
 
 
 };
