@@ -35,14 +35,15 @@ std::string find_force_option(int argc, char** argv, const std::string option, s
     return default_value;
 };
 
-std::string find_collision_option(int argc, char** argv, const std::string option, std::string default_value) {
-    int iplace = find_arg_idx(argc, argv, option);
+int find_collision_option(int argc, char** argv, const int option, int default_value) {
+    int iplace = find_arg_idx(argc, argv, default_value);
 
     if (iplace >= 0 && iplace < argc - 1) {
-        return argv[iplace + 1];
+        if( argv[iplace + 1] == "elastic" ) return 1;
+        if( argv[iplace + 1] == "elastic" ) return 2;
     }
 
-    return default_value;
+    return 0;
 };
 
 std::string Find_Arg :: find_string_arg(const std::string type_of_find, const std::string option){
@@ -54,10 +55,7 @@ std::string Find_Arg :: find_string_arg(const std::string type_of_find, const st
     {
         return find_force_option(this->argc, this->argv, type_of_find, option);
     }
-    else if ("-c" == type_of_find)
-    {
-        return find_collision_option(this->argc, this->argv, type_of_find, option);
-    }
+    
     else return "error";
 };
 
@@ -67,7 +65,10 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
     else if(iplace >= 0 && iplace < this->argc - 1) {
         return std::atoi(this->argv[iplace + 1]);
     }
-
+    else if ("-c" == type_of_find)
+    {
+        return find_collision_option(this->argc, this->argv, default_value);
+    }
     return default_value;
 };
 

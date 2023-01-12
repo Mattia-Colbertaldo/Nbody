@@ -40,14 +40,6 @@ void Simulation::init_particles( const double size, const int part_seed) {
     
 };
 
-
-void Simulation::save_output(std::ofstream& fsave, int step){
-  parts->save_output(fsave, step);
-}
-void Simulation::save(std::ofstream& fsave){
-  parts->save(fsave);
-};
-
     
 
 
@@ -70,8 +62,10 @@ void Simulation::simulate_one_step( const std::shared_ptr<AbstractForce>& force,
   parts->grid_sizes.z = 1;
   if(first) std::cout << "GRID SIZE: " << parts->grid_sizes.x << std::endl;
   parts->ResetAccelerations();
+  int collision_int;
+  
   force->force_application(parts->dx, parts->dy, parts->dz, parts->dvx, parts->dvy, parts->dvz, parts->dax, parts->day, 
-                            parts->daz, parts->dmasses, parts->dcharges, num_parts, collision, parts->grid_sizes, parts->block_sizes);
+                            parts->daz, parts->dmasses, parts->dcharges, num_parts, , parts->grid_sizes, parts->block_sizes);
   // force_kernel<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dx, dy, dz, dax, day, daz, dmasses, dcharges, num_parts);
   if(first) std::cout << "Applying force: Kernel Loop: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   

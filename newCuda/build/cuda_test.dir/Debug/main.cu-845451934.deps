@@ -732,5 +732,6 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\vector_types.h
 C:\Users\matti\shared-folder\nbody\Nbody\newCuda\AllParticles.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\newCuda\common.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\newCuda\Find_Arg.cuh
+C:\Users\matti\shared-folder\nbody\Nbody\newCuda\Output.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\newCuda\PhysicalForce.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\newCuda\Simulation.cuh

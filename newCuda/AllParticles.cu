@@ -107,48 +107,6 @@ void AllParticles::init(){
         }
 }
 
-
-void AllParticles::save(std::ofstream& fsave){
-    
-  static bool first = true;
-
-  if (first) {
-      fsave << num_parts << " " << size << " " << nsteps << "\n";
-      first = false;
-  }
-  //dovrei scrivere x_h[i] per risparmiare tempo ma non funziona. Ci penserò più tardi
-
-  // Opzione 1:
-  // thrust::copy(x.begin(), x.end(), x_h.begin());
-  // thrust::copy(y.begin(), y.end(), y_h.begin());
-  // thrust::copy(z.begin(), z.end(), z_h.begin());
-  // Opzione 2:
-  // x_h = x;
-  // y_h = y;
-  // z_h = z;
-  cudaDeviceSynchronize();
-  for(size_t i = 0; i < num_parts; i++){
-    // TODO X_H
-        fsave <<  x_h[i] << " " << y_h[i] << " " << z_h[i] << std::endl;
-  }
-  cudaDeviceSynchronize();
-};
-
-void AllParticles::save_output(std::ofstream& fsave, int step){
-    // TODO FIX
-    thrust::copy(x.begin(), x.end(), x_h.begin());
-    thrust::copy(y.begin(), y.end(), y_h.begin());
-    thrust::copy(z.begin(), z.end(), z_h.begin());
-    save(fsave);
-    cudaDeviceSynchronize();
-    if(step > 0){
-        if (step%10 == 0){
-        fflush(stdout);
-        printf("[ %d% ]\r", (int)(step*100/nsteps));
-        }
-    }
-};
-
     // Integrate the ODE
 
     void AllParticles:: move() {

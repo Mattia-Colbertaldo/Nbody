@@ -384,7 +384,7 @@ kernel_no_tiling_force_coulomb(double* x, double* y, double* z, double* vx, doub
         double mx = masses[thx];
         double my = masses[thy];
         // TODO ARGUMENT
-        if(collision.compare("elastic")==0){
+        if(collision=="elastic"){
           // URTO ANELASTICO:
           vx[thx] = (double)(mx*vx[thx] + my*vx[thy])/(double)(mx+my);
           vx[thy] = (double)(my*vx[thy] + mx*vx[thx])/(double)(my+mx);
@@ -395,7 +395,7 @@ kernel_no_tiling_force_coulomb(double* x, double* y, double* z, double* vx, doub
           vz[thx] = (double)(mx*vz[thx] + my*vz[thy])/(double)(mx+my);
           vz[thy] = (double)(my*vz[thy] + mx*vz[thx])/(double)(my+mx);
         }
-        else if(collision.compare("unelastic")==0){
+        else if(collision=="unelastic"){
           // URTO ELASTICO
           vx[thx] = (double)vx[thx]*(mx-my)/(mx + my) + 2*vx[thy]*my/(mx+my);
           vx[thy] = (double)vx[thy]*(my-mx)/(mx + my) + 2*vx[thx]*mx/(mx+my);

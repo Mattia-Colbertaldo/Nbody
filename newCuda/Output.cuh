@@ -20,8 +20,8 @@ class Output
 public:
     Output(){};
     // I/O routines
-    void save(std::ofstream& fsave, const AllParticles& parts, const double size, const int& nsteps);
+    void save(std::ofstream& fsave, const std::shared_ptr<AllParticles> & parts, const double size, const int& nsteps);
 
-    void save_output(std::ofstream& fsave, const int savefreq, const AllParticles& parts , const int& step,  const int& nsteps, const double & size);
+    void save_output(std::ofstream& fsave, const int savefreq, const std::shared_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size);
 };
 #endif

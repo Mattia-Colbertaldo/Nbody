@@ -367,6 +367,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </None>
     <CudaCompile Include="..\Simulation.cu" />
     <CudaCompile Include="..\AllParticles.cu" />
+    <CudaCompile Include="..\Output.cu" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\matti\shared-folder\nbody\Nbody\newCuda\build\ZERO_CHECK.vcxproj">

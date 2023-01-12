@@ -237,7 +237,7 @@ int main(int argc, char** argv)
   std::shared_ptr<AbstractForce> force= finder.find_force(forcename);
 
   //find collision type
-  std::string collision = finder.find_collision_arg("-c", "no-collision");
+  int collision = finder.find_int_arg("-c", 0);
   std::cout << "Choosing " <<  collision << " collision type..." << std::endl;
 
 
@@ -264,18 +264,18 @@ int main(int argc, char** argv)
   // thrust::copy(y.begin(), y.end(), y_h.begin());
   // thrust::copy(z.begin(), z.end(), z_h.begin());
   Output output= Output();
-  output.save(fsave, parts, size, nsteps);
+  output.save(fsave, s.parts, size, nsteps);
   std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   std::cout << "Now entering the for loop." << std::endl;
   t = clock();
   long t1;
   for(int step=0; step<nsteps; step++){
     if(step == 0) t1 = clock();
-    s.simulate_one_step(force, num_parts, size);
+    s.simulate_one_step(force, num_parts, size, collision);
     if(step == 0) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
     if(step == 0) t1 = clock();
-    output.save_output(fsave, savefreq, parts , step, nsteps, size);
+    output.save_output(fsave, savefreq, s.parts , step, nsteps, size);
     if(step == 0) std::cout << "Saving: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     if(step == 0) std::cout << "One loop iteration: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   }

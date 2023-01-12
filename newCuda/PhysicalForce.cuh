@@ -2,6 +2,8 @@
 #define HH__PHYSICALFORCE__HH
 
 #include <cuda.h>
+#include <string>
+
 
 class AbstractForce
 {

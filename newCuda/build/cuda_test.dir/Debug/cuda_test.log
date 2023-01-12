@@ -1,30 +1,14 @@
-﻿  Compiling CUDA source file ..\main.cu...
-  Compiling CUDA source file ..\PhysicalForce.cu...
-  Compiling CUDA source file ..\AllParticles.cu...
-  Compiling CUDA source file ..\Simulation.cu...
-  
-  C:\Users\matti\shared-folder\nbody\Nbody\newCuda\build>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe"  --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\bin\HostX64\x64" -x cu -rdc=true   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include"     --keep-dir x64\Debug  -maxrregcount=0  --machine 64 --compile -cudart static -std=c++14 -Xcompiler="/EHsc -Zi -Ob0" -g  -D_WINDOWS -D"CMAKE_INTDIR=\"Debug\"" -D_MBCS -D"CMAKE_INTDIR=\"Debug\"" -Xcompiler "/EHsc /W1 /nologo /Od /Fdcuda_test.dir\Debug\vc143.pdb /FS /Zi /RTC1 /MDd /GR" -o cuda_test.dir\Debug\main.obj "C:\Users\matti\shared-folder\nbody\Nbody\newCuda\main.cu" 
+﻿  Compiling CUDA source file ..\PhysicalForce.cu...
   
   C:\Users\matti\shared-folder\nbody\Nbody\newCuda\build>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe"  --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\bin\HostX64\x64" -x cu -rdc=true   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include"     --keep-dir x64\Debug  -maxrregcount=0  --machine 64 --compile -cudart static -std=c++14 -Xcompiler="/EHsc -Zi -Ob0" -g  -D_WINDOWS -D"CMAKE_INTDIR=\"Debug\"" -D_MBCS -D"CMAKE_INTDIR=\"Debug\"" -Xcompiler "/EHsc /W1 /nologo /Od /Fdcuda_test.dir\Debug\vc143.pdb /FS /Zi /RTC1 /MDd /GR" -o cuda_test.dir\Debug\PhysicalForce.obj "C:\Users\matti\shared-folder\nbody\Nbody\newCuda\PhysicalForce.cu" 
+C:\Users\matti\shared-folder\nbody\Nbody\newCuda\PhysicalForce.cu(387): error : calling a __host__ function("bool  ::std::operator ==<char,     ::std::char_traits<char> , ::std::allocator<char> > (const ::std::basic_string<T1, T2, T3> &, const T1 *)") from a __global__ function("kernel_no_tiling_force_coulomb") is not allowed
   
+C:\Users\matti\shared-folder\nbody\Nbody\newCuda\PhysicalForce.cu(387): error : identifier "std::operator ==<char,     ::std::char_traits<char> , ::std::allocator<char> > " is undefined in device code
   
-  C:\Users\matti\shared-folder\nbody\Nbody\newCuda\build>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe"  --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\bin\HostX64\x64" -x cu -rdc=true   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include"     --keep-dir x64\Debug  -maxrregcount=0  --machine 64 --compile -cudart static -std=c++14 -Xcompiler="/EHsc -Zi -Ob0" -g  -D_WINDOWS -D"CMAKE_INTDIR=\"Debug\"" -D_MBCS -D"CMAKE_INTDIR=\"Debug\"" -Xcompiler "/EHsc /W1 /nologo /Od /Fdcuda_test.dir\Debug\vc143.pdb /FS /Zi /RTC1 /MDd /GR" -o cuda_test.dir\Debug\AllParticles.obj "C:\Users\matti\shared-folder\nbody\Nbody\newCuda\AllParticles.cu" 
-  C:\Users\matti\shared-folder\nbody\Nbody\newCuda\build>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe"  --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\bin\HostX64\x64" -x cu -rdc=true   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include"     --keep-dir x64\Debug  -maxrregcount=0  --machine 64 --compile -cudart static -std=c++14 -Xcompiler="/EHsc -Zi -Ob0" -g  -D_WINDOWS -D"CMAKE_INTDIR=\"Debug\"" -D_MBCS -D"CMAKE_INTDIR=\"Debug\"" -Xcompiler "/EHsc /W1 /nologo /Od /Fdcuda_test.dir\Debug\vc143.pdb /FS /Zi /RTC1 /MDd /GR" -o cuda_test.dir\Debug\Simulation.obj "C:\Users\matti\shared-folder\nbody\Nbody\newCuda\Simulation.cu" 
+C:\Users\matti\shared-folder\nbody\Nbody\newCuda\PhysicalForce.cu(398): error : calling a __host__ function("bool  ::std::operator ==<char,     ::std::char_traits<char> , ::std::allocator<char> > (const ::std::basic_string<T1, T2, T3> &, const T1 *)") from a __global__ function("kernel_no_tiling_force_coulomb") is not allowed
+  
+C:\Users\matti\shared-folder\nbody\Nbody\newCuda\PhysicalForce.cu(398): error : identifier "std::operator ==<char,     ::std::char_traits<char> , ::std::allocator<char> > " is undefined in device code
+  
+  4 errors detected in the compilation of "C:/Users/matti/shared-folder/nbody/Nbody/newCuda/PhysicalForce.cu".
   PhysicalForce.cu
-  tmpxft_00001eac_00000000-7_PhysicalForce.cudafe1.cpp
-  Simulation.cu
-  AllParticles.cu
-  main.cu
-  tmpxft_000043f4_00000000-7_Simulation.cudafe1.cpp
-  tmpxft_00001820_00000000-7_AllParticles.cudafe1.cpp
-  tmpxft_00004530_00000000-7_main.cudafe1.cpp
-  
-  C:\Users\matti\shared-folder\nbody\Nbody\newCuda\build>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe" -dlink  -o cuda_test.dir\Debug\cuda_test.device-link.obj -Xcompiler "/EHsc /W1 /nologo /Od /Fdcuda_test.dir\Debug\vc143.pdb /Zi /RTC1 /MDd /GR" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin/crt" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\lib\x64" cudadevrt.lib cudart_static.lib -forward-unknown-to-host-compiler -Wno-deprecated-gpu-targets -D_WINDOWS -Xcompiler=" /GR /EHsc" -Xcompiler=" -Zi -Ob0 -Od /RTC1" -Xcompiler=-MDd    cuda_test.dir\Debug\main.obj cuda_test.dir\Debug\Find_Arg.obj cuda_test.dir\Debug\PhysicalForce.obj cuda_test.dir\Debug\Simulation.obj cuda_test.dir\Debug\AllParticles.obj 
-  cudadevrt.lib
-  cudart_static.lib
-  main.obj
-  Find_Arg.obj
-  PhysicalForce.obj
-  Simulation.obj
-  AllParticles.obj
-  cuda_test.vcxproj -> C:\Users\matti\shared-folder\nbody\Nbody\newCuda\build\Debug\cuda_test.exe
+C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Microsoft\VC\v170\BuildCustomizations\CUDA 12.0.targets(794,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe"  --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\bin\HostX64\x64" -x cu -rdc=true   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include"     --keep-dir x64\Debug  -maxrregcount=0  --machine 64 --compile -cudart static -std=c++14 -Xcompiler="/EHsc -Zi -Ob0" -g  -D_WINDOWS -D"CMAKE_INTDIR=\"Debug\"" -D_MBCS -D"CMAKE_INTDIR=\"Debug\"" -Xcompiler "/EHsc /W1 /nologo /Od /Fdcuda_test.dir\Debug\vc143.pdb /FS /Zi /RTC1 /MDd /GR" -o cuda_test.dir\Debug\PhysicalForce.obj "C:\Users\matti\shared-folder\nbody\Nbody\newCuda\PhysicalForce.cu"" exited with code 1.
