@@ -9,9 +9,9 @@
 class Simulation {
         public:
 
-        Simulation(std::shared_ptr<AllParticles>& parts,  const std::string collision ): parts(parts), collision(collision){};
+        Simulation(std::shared_ptr<AllParticles>& parts,  const int collision ): parts(parts), collision(collision){};
         
-        void simulate_one_step(const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size,  const std::string collision);
+        void simulate_one_step(const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size,  const int collision);
 
         void init_particles(const double size, const int part_seed);
 
@@ -20,7 +20,7 @@ class Simulation {
         
         // private:
         std::shared_ptr<AllParticles> parts;
-        std::string collision;
+        int collision;
 
 
 };

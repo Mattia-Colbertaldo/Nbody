@@ -40,7 +40,7 @@ int find_collision_option(int argc, char** argv, const int option, int default_v
 
     if (iplace >= 0 && iplace < argc - 1) {
         if( argv[iplace + 1] == "elastic" ) return 1;
-        if( argv[iplace + 1] == "elastic" ) return 2;
+        if( argv[iplace + 1] == "unelastic" ) return 2;
     }
 
     return 0;
