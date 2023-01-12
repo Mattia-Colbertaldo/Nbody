@@ -99,8 +99,7 @@ int main(int argc, char** argv) {
             //std::cout << "Size of process " << i << " = " << sizes[i] << std::endl;
             displs[i+1]= displs[i]+sizes[i];
             //std::cout << "Displ of process " << i << " = " << displs[i] << std::endl;
-            MPI_Send( &sizes[i] , 1 , MPI_INT , i , i+mpi_size , MPI_COMM_WORLD);
-            MPI_Send( &displs[i] , 1 , MPI_INT , i , i , MPI_COMM_WORLD);
+            
         }
    }
 
@@ -147,7 +146,8 @@ int main(int argc, char** argv) {
 
         // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori.
         // Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente.
-        MPI_Allgatherv( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL , &simulation.parts_pos[0] , &sizes[0] , &displs[0] , mpi_parts_pos_type , MPI_COMM_WORLD);
+        MPI_Allgatherv( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL , &simulation.parts_pos[0] , &sizes[0] , &displs[0] , mpi_parts_pos_type ,
+                        MPI_COMM_WORLD);
         
         // Save state if necessary
         if(rank==0)
