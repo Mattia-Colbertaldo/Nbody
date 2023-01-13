@@ -125,6 +125,7 @@ MPI_Datatype Simulation :: init_particles(
         }
          
     }
+
     MPI_Scatterv( &parts_vel_acc_temp[0] , &sizes[0] , &displs[0], mpi_part_vel_acc_type ,
                   &(this->parts_vel_acc_loc[0]) , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
     MPI_Bcast( &this->masses[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
@@ -140,7 +141,8 @@ MPI_Datatype Simulation :: init_particles(
 /******         ONE STEP SIMULATION       *******/
 
 
-void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc,  double size, int rank, const std::shared_ptr<AbstractForce>& force ){
+void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc,  double size, int rank, 
+                                        const std::shared_ptr<AbstractForce>& force ){
 
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
     // in this way we split the load in the most equilibrate way
@@ -151,7 +153,8 @@ void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc, 
     for (int i = 0; i < num_loc; ++i) {
         this->parts_vel_acc_loc[i].ax = this->parts_vel_acc_loc[i].ay = this->parts_vel_acc_loc[i].az= 0.;
         for (int j = 0; j < num_parts; ++j) {
-            if(i+displ_loc != j) force->force_application(this->parts_pos, this->parts_vel_acc_loc, this->masses[j], this->charges[i], this->charges[j], i, j);
+            if(i+displ_loc != j) force->force_application(this->parts_pos, this->parts_vel_acc_loc, this->masses[j], 
+            this->charges[i], this->charges[j], i, j);
         }
     }
 

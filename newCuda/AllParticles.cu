@@ -100,10 +100,6 @@ void AllParticles::init(){
 
             cudaDeviceSynchronize();
             ResetAccelerations();
-            
-
-
-
         }
 }
 

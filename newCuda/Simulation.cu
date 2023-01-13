@@ -26,7 +26,8 @@
 #include <fstream>
 
 
-// Particle Initialization
+// Particle Initialization, 
+// we call the method of AllParticles class so that it can initialize elements that are part of the class itself
 void Simulation::init_particles( const double size, const int part_seed) {
     /*
         input :  1. parts     : vettore di particelle
