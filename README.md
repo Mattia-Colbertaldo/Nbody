@@ -61,3 +61,6 @@ This will create a serial.parts.out file with the particle positions after each 
     * Example:
         
             python3 .\3drender.py save.txt
+            
+ Quoting of the sources:
+ the part of the code in the "omp" directory was written on the guidance of https://sites.google.com/lbl.gov/cs267-spr2022/hw-2-1?authuser=0!!br0ken
