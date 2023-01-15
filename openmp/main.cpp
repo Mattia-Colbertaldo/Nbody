@@ -45,8 +45,7 @@ int main(int argc, char** argv) {
     // Open Output File
     std::string savename = finder.find_string_arg("-o", "out.txt");
     if (savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
-    std::ofstream fsave(savename);
-    if (savename != "") std::cout << "File created." << std::endl;
+    
 
     //Find force
     std::string forcename = finder.find_string_arg("-f", "repulsive");
@@ -118,7 +117,7 @@ int main(int argc, char** argv) {
     double seconds_1 = diff_1.count();
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
-Output output = Output();
+Output output = Output(savename);
 output.save(fsave, simulation.parts , size, nsteps);
 #ifdef _OPENMP
 std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\nRunning "

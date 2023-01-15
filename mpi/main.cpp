@@ -49,9 +49,8 @@ int main(int argc, char** argv) {
     Find_Arg finder= Find_Arg(argc, argv);
     std::string savename = finder.find_string_arg("-o", "out.txt");
     if(rank==0 && savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
-    std::ofstream fsave(savename);
-    if (rank == 0 && savename != "") std::cout << "File created." << std::endl;
-    if(rank != 0) fsave.close();
+    
+   
 
     std::vector<int> sizes(mpi_size);
     std::vector<int> displs(mpi_size+1);
@@ -134,7 +133,7 @@ int main(int argc, char** argv) {
         std::cout << "initialization Time = " << seconds_1 << " seconds\n";
     }
 
-    Output output= Output();
+    Output output= Output(savename, rank);
   
     if(!rank) output.save(fsave, simulation.parts_pos , size, nsteps);
 

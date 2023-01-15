@@ -20,7 +20,7 @@
 class Output
 {
 public:
-    Output(const int num_parts) : num_parts(num_parts){
+    Output(const int num_parts, const std::string filename) : num_parts(num_parts){
         bufferx.resize(num_parts*nsteps);
         buffery.resize(num_parts*nsteps);
         bufferz.resize(num_parts*nsteps);
@@ -29,6 +29,8 @@ public:
         host_buffery.resize(num_parts*nsteps);
         host_bufferz.resize(num_parts*nsteps);
 
+        std::ofstream fsave(savename);
+
         // xbuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
         // ybuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
         // zbuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
@@ -36,9 +38,9 @@ public:
 
     };
     // I/O routines
-    void save(std::ofstream& fsave, const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps);
+    void save( const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps);
 
-    void save_output(std::ofstream& fsave, const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size);
+    void save_output( const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size);
 
     // thrust::device_ptr<double> xbuf;
     // thrust::device_ptr<double> ybuf;
@@ -52,6 +54,11 @@ public:
     thrust::host_vector<double> host_buffery;
     thrust::host_vector<double> host_bufferz;
 
-    int num_parts;
+   
+
+    private:
+     int num_parts;
+     std::ofstream& fsave
+
 };
 #endif
