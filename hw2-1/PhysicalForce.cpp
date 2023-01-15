@@ -8,6 +8,8 @@ void RepulsiveForce :: force_application(Particle& p,const Particle& neighbor, c
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
     double r2 = dx * dx + dy * dy + dz * dz;
+    float m_p = p.mass;
+    float m_neigh = neighbor.mass;
 
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
@@ -19,21 +21,21 @@ void RepulsiveForce :: force_application(Particle& p,const Particle& neighbor, c
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
             
-            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             
-            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
            
-            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
             
-            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
             }
         }
         return;
@@ -56,6 +58,8 @@ void GravitationalForce :: force_application(Particle& p,const Particle& neighbo
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
     double r2 = dx * dx + dy * dy + dz * dz;
+    float m_p = p.mass;
+    float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -66,21 +70,21 @@ void GravitationalForce :: force_application(Particle& p,const Particle& neighbo
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
             
-            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             
-            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
            
-            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
             
-            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
             }
         }
         return;
@@ -104,6 +108,9 @@ void GravitationalAssistForce:: force_application(Particle& p,const Particle& ne
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
     double r2 = dx * dx + dy * dy + dz * dz;
+    float m_p = p.mass;
+    float m_neigh = neighbor.mass;
+
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -114,21 +121,21 @@ void GravitationalAssistForce:: force_application(Particle& p,const Particle& ne
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
             
-            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             
-            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
            
-            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
             
-            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
             }
         }
         return;
@@ -162,6 +169,8 @@ void ProtonForce :: force_application(Particle& p,const Particle& neighbor, cons
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
     double r2 = dx * dx + dy * dy + dz * dz;
+    float m_p = p.mass;
+    float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -172,21 +181,21 @@ void ProtonForce :: force_application(Particle& p,const Particle& neighbor, cons
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
             
-            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             
-            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
            
-            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
             
-            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
             }
         }
         return;
@@ -211,6 +220,8 @@ void CoulombForce :: force_application(Particle& p,const Particle& neighbor, con
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
     double r2 = dx * dx + dy * dy + dz * dz;
+    float m_p = p.mass;
+    float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -221,21 +232,21 @@ void CoulombForce :: force_application(Particle& p,const Particle& neighbor, con
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
             
-            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             
-            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
            
-            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
             
-            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
             }
         }
         return;
