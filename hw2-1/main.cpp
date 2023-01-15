@@ -59,6 +59,11 @@ int main(int argc, char** argv) {
 
     std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
 
+    //find collision type
+    int collision = finder.find_int_arg("-c", 0);
+    std::cout << "Choosing " <<  collision << " collision type..." << std::endl;
+
+
     
 
     
@@ -98,7 +103,7 @@ int main(int argc, char** argv) {
     const int num_th = finder.find_int_arg("-t", 8);
 
     
-    Simulation simulation = Simulation(num_parts);
+    Simulation simulation = Simulation(num_parts, collision);
     std::cout << "Trying to init particles..." << std::endl;
     simulation.init_particles(size, part_seed);
     

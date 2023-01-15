@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
 
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
-        simulation.simulate_one_step(num_parts, num_loc, displ_loc, size, rank, force, collision);
+        simulation.simulate_one_step(num_parts, num_loc, displ_loc, size, rank, force);
         
         MPI_Barrier( MPI_COMM_WORLD);
 
