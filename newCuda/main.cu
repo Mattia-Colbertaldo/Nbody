@@ -271,7 +271,7 @@ int main(int argc, char** argv)
   long t1;
   for(int step=0; step<nsteps; step++){
     if(step == nsteps/2) t1 = clock();
-    s.simulate_one_step(force, num_parts, size, collision);
+    s.simulate_one_step(force, num_parts, size);
     if(step == nsteps/2) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
     if(step == nsteps/2) t1 = clock();

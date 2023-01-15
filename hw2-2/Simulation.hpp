@@ -10,14 +10,14 @@
 struct Simulation {
         public:
 
-        Simulation(const int num_parts, const int num_loc){
+        Simulation(const int num_parts, const int num_loc, const int collision): collision(collision){
                 this->parts_pos.resize(num_parts);
                 this->parts_vel_acc_loc.resize(num_loc);
                 this->masses.resize(num_parts);
                 this->charges.resize(num_parts);
         };
         
-        void simulate_one_step(int num_parts, int num_loc, int displ_loc, double size, int rank, const std::unique_ptr<AbstractForce>& force);
+        void simulate_one_step(int num_parts, int num_loc, int displ_loc, double size, int rank, const std::unique_ptr<AbstractForce>& force );
 
         MPI_Datatype init_particles(const int num_parts, const double size,const int part_seed,
                     const int num_loc, 
@@ -28,6 +28,8 @@ struct Simulation {
         std::vector<particle_vel_acc> parts_vel_acc_loc;
         std::vector<double> masses;
         std::vector<double> charges;
+        int collision;
+
 
 };
 

@@ -2,7 +2,7 @@
 #include "PhysicalForce.hpp"
 #include <memory>
     
-void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
+void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -12,6 +12,37 @@ void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, st
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
+
+    if(r2 < min_r*min_r){
+        if(collision > 0){
+            
+            // TODO ARGUMENT
+            if(collision== 1){
+            // URTO ANELASTICO:
+            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
+
+            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
+
+            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            }
+            // "unelastic" collision
+            else if(collision== 2){
+            // URTO ELASTICO
+            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
+            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
+
+            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
+            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
+
+            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
+            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            }
+        }
+        return;
+    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -24,7 +55,7 @@ void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, st
   
 };
   
-void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
+void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -33,6 +64,37 @@ void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
+
+    if(r2 < min_r*min_r){
+        if(collision > 0){
+            
+            // TODO ARGUMENT
+            if(collision== 1){
+            // URTO ANELASTICO:
+            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
+
+            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
+
+            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            }
+            // "unelastic" collision
+            else if(collision== 2){
+            // URTO ELASTICO
+            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
+            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
+
+            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
+            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
+
+            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
+            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            }
+        }
+        return;
+    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -46,7 +108,7 @@ void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos
 };
 
 
-void GravitationalAssistForce:: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
+void GravitationalAssistForce:: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -55,6 +117,37 @@ void GravitationalAssistForce:: force_application(std::vector<particle_pos> part
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
+    
+    if(r2 < min_r*min_r){
+        if(collision > 0){
+            
+            // TODO ARGUMENT
+            if(collision== 1){
+            // URTO ANELASTICO:
+            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
+
+            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
+
+            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            }
+            // "unelastic" collision
+            else if(collision== 2){
+            // URTO ELASTICO
+            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
+            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
+
+            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
+            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
+
+            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
+            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            }
+        }
+        return;
+    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -78,7 +171,7 @@ void GravitationalAssistForce:: force_application(std::vector<particle_pos> part
 
 
      
-void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
+void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -87,6 +180,37 @@ void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
+    
+    if(r2 < min_r*min_r){
+        if(collision > 0){
+            
+            // TODO ARGUMENT
+            if(collision== 1){
+            // URTO ANELASTICO:
+            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
+
+            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
+
+            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            }
+            // "unelastic" collision
+            else if(collision== 2){
+            // URTO ELASTICO
+            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
+            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
+
+            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
+            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
+
+            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
+            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            }
+        }
+        return;
+    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -100,7 +224,7 @@ void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::
 
 
    
-void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
+void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
     
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
@@ -110,6 +234,37 @@ void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std:
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
+
+    if(r2 < min_r*min_r){
+        if(collision > 0){
+            
+            // TODO ARGUMENT
+            if(collision== 1){
+            // URTO ANELASTICO:
+            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
+
+            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
+
+            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            }
+            // "unelastic" collision
+            else if(collision== 2){
+            // URTO ELASTICO
+            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
+            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
+
+            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
+            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
+
+            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
+            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            }
+        }
+        return;
+    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);

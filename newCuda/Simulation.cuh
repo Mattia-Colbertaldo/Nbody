@@ -14,7 +14,7 @@ class Simulation {
         };
 
         
-        void simulate_one_step(const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size,  const int collision);
+        void simulate_one_step(const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size);
 
         void init_particles(const double size, const int part_seed);
         
