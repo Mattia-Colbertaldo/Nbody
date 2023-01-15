@@ -513,7 +513,7 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
 
           vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
           vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
-        }
+          }
         }
         return;
       }

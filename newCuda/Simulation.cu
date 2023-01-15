@@ -45,7 +45,7 @@ void Simulation::init_particles( const double size, const int part_seed) {
 
 
 
-void Simulation::simulate_one_step( const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size, const int collision) 
+void Simulation::simulate_one_step( const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size) 
 {
   static bool first = 1;
   long t;

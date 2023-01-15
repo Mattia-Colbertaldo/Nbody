@@ -40,6 +40,19 @@ std::string find_force_option(int argc, char** argv, const std::string option, s
     return default_value;
 };
 
+int find_collision_option(int argc, char** argv, const std::string type_of_find) {
+    int iplace = find_arg_idx(argc, argv, type_of_find);
+
+    if (iplace >= 0 && iplace < argc - 1) {
+        std::cout << "Selecting " << argv[iplace + 1] << " collision type" << std::endl;
+        std::string input = argv[iplace + 1];
+        if( input == "elastic" ) return 1;
+        if( input == "unelastic" ) return 2;
+    }
+
+    return 0;
+};
+
 std::string Find_Arg :: find_string_arg(const std::string type_of_find, const std::string option){
     if("-o"==type_of_find)
     {
@@ -54,6 +67,10 @@ std::string Find_Arg :: find_string_arg(const std::string type_of_find, const st
 int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_value){
     int iplace = find_arg_idx(this->argc, this->argv, type_of_find);
     if("-h"==type_of_find) return iplace;
+    if ("-c" == type_of_find)
+    {
+        return find_collision_option(this->argc, this->argv, type_of_find);
+    }
     else if(iplace >= 0 && iplace < this->argc - 1) {
         return std::atoi(this->argv[iplace + 1]);
     }

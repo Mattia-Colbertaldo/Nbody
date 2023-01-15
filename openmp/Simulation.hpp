@@ -8,7 +8,7 @@
 class Simulation {
         public:
 
-        Simulation(const int & num_parts){
+        Simulation(const int & num_parts, const int collision): collision(collision){
                 this->parts.resize(num_parts);
         };
         
@@ -18,6 +18,7 @@ class Simulation {
         
         // private:
         std::vector<Particle> parts;
+        int collision;
 
 
 };
