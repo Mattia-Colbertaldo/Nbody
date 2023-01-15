@@ -269,17 +269,27 @@ int main(int argc, char** argv)
   std::cout << "Now entering the for loop." << std::endl;
   t = clock();
   long t1;
+  long savetime = 0.;
   for(int step=0; step<nsteps; step++){
     if(step == nsteps/2) t1 = clock();
     s.simulate_one_step(force, num_parts, size);
-    if(step == nsteps/2) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
+    if(step == nsteps/2) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     if(step == nsteps/2) t1 = clock();
     output.save_output(fsave, savefreq, s.parts , step, nsteps, size);
-    if(step == nsteps/2) std::cout << "Saving: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-    if(step == nsteps/2) std::cout << "One loop iteration: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+    if(step == nsteps/2) std::cout << "Saving to device buffer: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+    else if(step == nsteps - 1){
+      savetime = ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC;
+      std::cout << "Final Saving: " << savetime << std::endl;
+    }
+    if(step == nsteps/2) std::cout << "One loop iteration: " << savetime << " ms" << std::endl;
   }
-  std::cout << "Simulating all the steps: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+  long all_steps = ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC;
+  std::cout << std::endl << "***************************************" << std::endl;
+  std::cout << " + Calculations: " << all_steps-savetime << " ms [ " << ((all_steps-savetime)*100/all_steps) << " % ]" << std::endl;
+  std::cout << " + Saving: " << savetime << " ms [ " << (savetime*100/all_steps) << " % ]" << std::endl;
+  std::cout << " = Simulating all the steps: " << all_steps << " ms" << std::endl;
+  std::cout << "***************************************" << std::endl << std::endl;;
   
 
 

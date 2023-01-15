@@ -110,8 +110,8 @@ void AllParticles::init(){
             cudaDeviceSynchronize();
             ResetAccelerations();
 
-            th_per_block = min(32, num_parts);
-            block_sizes.x = block_sizes.y = BLOCK_DIM;
+            th_per_block = min(common_block_size, num_parts);
+            block_sizes.x = block_sizes.y = common_block_size;
             block_sizes.z = 1;
             grid_sizes.x = ceil(((double)num_parts)/((double)(block_sizes.x)));
             grid_sizes.y = ceil(((double)num_parts)/((double)(block_sizes.y)));

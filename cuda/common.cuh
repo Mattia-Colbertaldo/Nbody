@@ -22,6 +22,7 @@ constexpr double cutoff  = 0.01 * 100;
 constexpr double min_r   = 0.01;
 constexpr double dt      = 0.0005 * 0.8;
 constexpr double max_velocity = 1;
+constexpr int common_block_size = 32;
 
 constexpr double scale = 1e8;
 

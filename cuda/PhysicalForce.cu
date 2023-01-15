@@ -25,8 +25,8 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
                         const int collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
-    if(thx > thy) return;
-    const int tile_size = 32;
+    if(thx >= thy) return;
+    const int tile_size = common_block_size;
     __shared__ double tile1x[tile_size];
     __shared__ double tile1y[tile_size];
     __shared__ double tile1z[tile_size];
@@ -152,10 +152,10 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
 
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
-    if(thx > thy) return;
+    if(thx >= thy) return;
     
 
-    const int tile_size = 32;
+    const int tile_size = common_block_size;
     __shared__ double tile1x[tile_size];
     __shared__ double tile1y[tile_size];
     __shared__ double tile1z[tile_size];
@@ -281,8 +281,8 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
                         const int collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
-    if(thx > thy) return;
-    const int tile_size = 32;
+    if(thx >= thy) return;
+    const int tile_size = common_block_size;
     __shared__ double tile1x[tile_size];
     __shared__ double tile1y[tile_size];
     __shared__ double tile1z[tile_size];
@@ -417,8 +417,8 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
                         const int collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
-    if(thx > thy) return;
-    const int tile_size = 32;
+    if(thx >= thy) return;
+    const int tile_size = common_block_size;
     __shared__ double tile1x[tile_size];
     __shared__ double tile1y[tile_size];
     __shared__ double tile1z[tile_size];
@@ -551,8 +551,8 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
                         const int collision ){
     int thx = threadIdx.x + blockDim.x * blockIdx.x;
     int thy = threadIdx.y + blockDim.y * blockIdx.y;
-    if(thx > thy) return;
-    const int tile_size = 32;
+    if(thx >= thy) return;
+    const int tile_size = common_block_size;
     __shared__ double tile1x[tile_size];
     __shared__ double tile1y[tile_size];
     __shared__ double tile1z[tile_size];
