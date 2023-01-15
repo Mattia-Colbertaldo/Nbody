@@ -19,21 +19,21 @@ void RepulsiveForce :: force_application(Particle& p,const Particle& neighbor, c
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
             
-            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
             
-            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
            
-            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
             
-            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
@@ -66,21 +66,21 @@ void GravitationalForce :: force_application(Particle& p,const Particle& neighbo
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
             
-            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
             
-            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
            
-            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
             
-            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
@@ -114,21 +114,21 @@ void GravitationalAssistForce:: force_application(Particle& p,const Particle& ne
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
             
-            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
             
-            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
            
-            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
             
-            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
@@ -172,21 +172,21 @@ void ProtonForce :: force_application(Particle& p,const Particle& neighbor, cons
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
             
-            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
             
-            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
            
-            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
             
-            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
@@ -221,21 +221,21 @@ void CoulombForce :: force_application(Particle& p,const Particle& neighbor, con
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
             
-            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
             
-            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
            
-            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
             
-            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;

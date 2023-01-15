@@ -1,7 +1,7 @@
 CMakeFiles/openmp.dir/PhysicalForce.cpp.o: \
- /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/PhysicalForce.cpp \
+ /home/jellyfish/shared-folder/Nbody/hw2-1/PhysicalForce.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/common.h \
+ /home/jellyfish/shared-folder/Nbody/hw2-1/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -225,5 +225,5 @@ CMakeFiles/openmp.dir/PhysicalForce.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
- /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/PhysicalForce.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Particle.hpp
+ /home/jellyfish/shared-folder/Nbody/hw2-1/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/Nbody/hw2-1/Particle.hpp

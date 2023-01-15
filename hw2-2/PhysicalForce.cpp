@@ -19,26 +19,26 @@ void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, st
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
             
-            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
             
-            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
            
-            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
             
-            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
     }
-    
+
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
 
@@ -66,21 +66,21 @@ void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
             
-            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
             
-            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
            
-            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
             
-            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
+            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
@@ -114,21 +114,21 @@ void GravitationalAssistForce:: force_application(std::vector<particle_pos> part
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
+            p.vx = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
             
-            vy[thx] = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
+            p.vy = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
             
-            vz[thx] = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
+            p.vz = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
+            p.vx = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
            
-            vy[thx] = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
+            p.vy = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
             
-            vz[thx] = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
+            p.vz = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
             }
         }
         return;
@@ -172,21 +172,21 @@ void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
+            p.vx = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
             
-            vy[thx] = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
+            p.vy = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
             
-            vz[thx] = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
+            p.vz = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
+            p.vx = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
            
-            vy[thx] = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
+            p.vy = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
             
-            vz[thx] = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
+            p.vz = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
             }
         }
         return;
@@ -220,21 +220,21 @@ void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std:
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
+            p.vx = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
             
-            vy[thx] = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
+            p.vy = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
             
-            vz[thx] = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
+            p.vz = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
             
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
+            p.vx = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
            
-            vy[thx] = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
+            p.vy = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
             
-            vz[thx] = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
+            p.vz = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
             }
         }
         return;
