@@ -1,6 +1,7 @@
 #include "Output.cuh"
 #include <iostream>
 #include <thrust/device_vector.h>
+#include <sstream>
 
 
 // =================
@@ -69,6 +70,7 @@ void Output::save_output(std::ofstream& fsave, const int savefreq, const std::un
         thrust::copy(buffery.begin(), buffery.end(), host_buffery.begin());
         thrust::copy(bufferz.begin(), bufferz.end(), host_bufferz.begin());
         std::cout << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+        std::ostringstream strstream;
         std::cout << "Saving: ";
         t = clock();
         for(size_t i = 0; i < parts->num_parts*nsteps; i++){
@@ -77,8 +79,9 @@ void Output::save_output(std::ofstream& fsave, const int savefreq, const std::un
             printf("\r");
             printf("Saving: [ %d ]\r", (int)(i*100/(parts->num_parts*nsteps)));
             }
-            fsave <<  host_bufferx[i] << " " << host_buffery[i] << " " << host_bufferz[i] << std::endl;
+            strstream <<  host_bufferx[i] << " " << host_buffery[i] << " " << host_bufferz[i] << "\n";
         }
+        fsave << strstream.str();
         std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
 
     }
