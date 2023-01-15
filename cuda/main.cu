@@ -223,9 +223,7 @@ int main(int argc, char** argv)
   // Open Output File
   std::string savename = finder.find_string_arg("-o", "out.txt");
   if (savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
-  std::ofstream fsave(savename);
-  if (savename != "") std::cout << "File created." << std::endl;
-
+  
   //Find force
   std::string forcename = finder.find_string_arg("-f", "repulsive");
   if (forcename != "") std::cout << "Choosing " <<  forcename << " force..." << std::endl;
@@ -263,8 +261,8 @@ int main(int argc, char** argv)
   // thrust::copy(x.begin(), x.end(), x_h.begin());
   // thrust::copy(y.begin(), y.end(), y_h.begin());
   // thrust::copy(z.begin(), z.end(), z_h.begin());
-  Output output= Output(num_parts);
-  output.save(fsave, s.parts, size, nsteps);
+  Output output= Output(num_parts, savename);
+  output.save( s.parts, size, nsteps);
   std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   std::cout << "Now entering the for loop." << std::endl;
   t = clock();
@@ -276,7 +274,7 @@ int main(int argc, char** argv)
     cudaDeviceSynchronize();
     if(step == nsteps/2) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     if(step == nsteps/2) t1 = clock();
-    output.save_output(fsave, savefreq, s.parts , step, nsteps, size);
+    output.save_output( savefreq, s.parts , step, nsteps, size);
     if(step == nsteps/2) std::cout << "Saving to device buffer: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     else if(step == nsteps - 1){
       savetime = ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC;

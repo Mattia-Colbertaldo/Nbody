@@ -129,9 +129,9 @@ int main(int argc, char** argv) {
         std::cout << seconds_1 << " seconds\n";
     }
 
-    Output output= Output();
+    Output output= Output(savename, rank);
   
-    if(!rank) output.save(fsave, simulation.parts_pos , size, nsteps);
+    if(!rank) output.save(simulation.parts_pos , size, nsteps);
 
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
         // Save state if necessary
         if(rank==0)
         {
-            output.save_output(fsave, savefreq, simulation.parts_pos , step, nsteps, size);
+            output.save_output(savefreq, simulation.parts_pos , step, nsteps, size);
         }
         
     }
@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
     // Finalize
 
     std::cout << "Closing file..." << std::endl;
-    fsave.close();
+    
 
     
     std::cout << "Simulation Time = " << seconds << " seconds for " << num_parts <<

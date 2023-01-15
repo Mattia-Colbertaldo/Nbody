@@ -15,7 +15,7 @@
     se a questo step va effettuato l’output e se la risposta è affermativa solo il rank 0 scrive su file. 
 */
 
-void Output::save(std::ofstream& fsave, const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps){
+void Output::save( const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps){
     
   static bool first = true;
 
@@ -44,7 +44,7 @@ void Output::save(std::ofstream& fsave, const std::unique_ptr<AllParticles> & pa
   cudaDeviceSynchronize();
 };
 
-void Output::save_output(std::ofstream& fsave, const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size){
+void Output::save_output( const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size){
     // TODO FIX
     // thrust::copy(x.begin(), x.end(), x_h.begin());
     // thrust::copy(y.begin(), y.end(), y_h.begin());

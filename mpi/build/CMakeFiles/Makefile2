@@ -54,10 +54,17 @@ RM = /u/sw/toolchains/gcc-glibc/11.2.0/base/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
+<<<<<<< HEAD
 CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/nbody/Nbody/mpi
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/nbody/Nbody/mpi/build
+=======
+CMAKE_SOURCE_DIR = /home/jellyfish/shared-folder/Nbody/mpi
+
+# The top-level build directory on which CMake was run.
+CMAKE_BINARY_DIR = /home/jellyfish/shared-folder/Nbody/mpi/build
+>>>>>>> 6ac64149a4a462727c9b681f80d85a1660c96261
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +88,24 @@ clean: CMakeFiles/mpi.dir/clean
 CMakeFiles/mpi.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mpi.dir/build.make CMakeFiles/mpi.dir/build
+<<<<<<< HEAD
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/nbody/Nbody/mpi/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target mpi"
+=======
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jellyfish/shared-folder/Nbody/mpi/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target mpi"
+>>>>>>> 6ac64149a4a462727c9b681f80d85a1660c96261
 .PHONY : CMakeFiles/mpi.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mpi.dir/rule: cmake_check_build_system
+<<<<<<< HEAD
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/Nbody/mpi/build/CMakeFiles 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mpi.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/nbody/Nbody/mpi/build/CMakeFiles 0
+=======
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/mpi/build/CMakeFiles 7
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mpi.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jellyfish/shared-folder/Nbody/mpi/build/CMakeFiles 0
+>>>>>>> 6ac64149a4a462727c9b681f80d85a1660c96261
 .PHONY : CMakeFiles/mpi.dir/rule
 
 # Convenience name for target.

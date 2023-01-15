@@ -44,8 +44,13 @@ int main(int argc, char** argv) {
 
     // Open Output File
     std::string savename = finder.find_string_arg("-o", "out.txt");
+<<<<<<< HEAD
     if (savename != "") std::cout << "Output file: " << savename << std::endl;
     std::ofstream fsave(savename);;
+=======
+    if (savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
+    
+>>>>>>> 6ac64149a4a462727c9b681f80d85a1660c96261
 
     //Find force
     std::string forcename = finder.find_string_arg("-f", "repulsive");
@@ -114,8 +119,8 @@ int main(int argc, char** argv) {
     double seconds_1 = diff_1.count();
     std::cout << seconds_1 << " seconds\n";
 
-Output output = Output();
-output.save(fsave, simulation.parts , size, nsteps);
+Output output = Output(savename);
+output.save( simulation.parts , size, nsteps);
 #ifdef _OPENMP
 std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\nRunning "
           << num_th << " thread(s)." <<std::endl;
@@ -132,7 +137,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
             #pragma omp master
             #endif
             {
-                output.save_output(fsave, savefreq, simulation.parts , step, nsteps, size);
+                output.save_output( savefreq, simulation.parts , step, nsteps, size);
             }
             
         }

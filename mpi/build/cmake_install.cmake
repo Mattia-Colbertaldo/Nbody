@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Install script for directory: /home/jellyfish/shared-folder/nbody/Nbody/mpi
+=======
+# Install script for directory: /home/jellyfish/shared-folder/Nbody/mpi
+>>>>>>> 6ac64149a4a462727c9b681f80d85a1660c96261
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +54,9 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
+<<<<<<< HEAD
 file(WRITE "/home/jellyfish/shared-folder/nbody/Nbody/mpi/build/${CMAKE_INSTALL_MANIFEST}"
+=======
+file(WRITE "/home/jellyfish/shared-folder/Nbody/mpi/build/${CMAKE_INSTALL_MANIFEST}"
+>>>>>>> 6ac64149a4a462727c9b681f80d85a1660c96261
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
