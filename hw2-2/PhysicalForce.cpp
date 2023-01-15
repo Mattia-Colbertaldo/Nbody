@@ -19,31 +19,26 @@ void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, st
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
-            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
-
-            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
-            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
-
-            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
-            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            
+            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            
+            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
-            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
-
-            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
-            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
-
-            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
-            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+           
+            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            
+            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
     }
-
+    
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
 
@@ -71,26 +66,21 @@ void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
-            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
-
-            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
-            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
-
-            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
-            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            vx[thx] = (mx*p.x + my*neighbor.x)/(mx+my);
+            
+            vy[thx] = (mx*p.y + my*neighbor.y)/(mx+my);
+            
+            vz[thx] = (mx*p.z + my*neighbor.z)/(mx+my);
+            
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
-            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
-
-            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
-            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
-
-            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
-            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            vx[thx] = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
+           
+            vy[thx] = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
+            
+            vz[thx] = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
             }
         }
         return;
@@ -124,26 +114,21 @@ void GravitationalAssistForce:: force_application(std::vector<particle_pos> part
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
-            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
-
-            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
-            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
-
-            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
-            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            vx[thx] = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
+            
+            vy[thx] = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
+            
+            vz[thx] = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
+            
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
-            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
-
-            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
-            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
-
-            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
-            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            vx[thx] = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
+           
+            vy[thx] = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
+            
+            vz[thx] = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
             }
         }
         return;
@@ -187,26 +172,21 @@ void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
-            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
-
-            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
-            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
-
-            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
-            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            vx[thx] = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
+            
+            vy[thx] = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
+            
+            vz[thx] = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
+            
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
-            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
-
-            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
-            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
-
-            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
-            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            vx[thx] = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
+           
+            vy[thx] = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
+            
+            vz[thx] = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
             }
         }
         return;
@@ -234,33 +214,27 @@ void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std:
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
-
     if(r2 < min_r*min_r){
         if(collision > 0){
             
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
-            vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
-            vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
-
-            vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
-            vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
-
-            vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
-            vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
+            vx[thx] = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
+            
+            vy[thx] = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
+            
+            vz[thx] = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
+            
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
-            vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
-            vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
-
-            vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
-            vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
-
-            vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
-            vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
+            vx[thx] = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
+           
+            vy[thx] = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
+            
+            vz[thx] = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
             }
         }
         return;
