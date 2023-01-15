@@ -7,7 +7,7 @@ void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, st
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
     double dz = parts_pos[j].z - parts_pos[i].z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
 
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)

@@ -7,7 +7,7 @@ void RepulsiveForce :: force_application(Particle& p,const Particle& neighbor, c
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
 
@@ -57,7 +57,7 @@ void GravitationalForce :: force_application(Particle& p,const Particle& neighbo
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
@@ -107,7 +107,7 @@ void GravitationalAssistForce:: force_application(Particle& p,const Particle& ne
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
 
@@ -168,7 +168,7 @@ void ProtonForce :: force_application(Particle& p,const Particle& neighbor, cons
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
@@ -219,7 +219,7 @@ void CoulombForce :: force_application(Particle& p,const Particle& neighbor, con
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
     // Check if the two Particles should interact

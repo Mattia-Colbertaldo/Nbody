@@ -79,7 +79,7 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
-      double r2 = dx * dx + dy * dy + dz * dz;
+      double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
       // *** EXPERIMENTAL *** //
       if(r2 < min_r*min_r){
@@ -208,7 +208,7 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
-      double r2 = dx * dx + dy * dy + dz * dz;
+      double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
       // *** EXPERIMENTAL *** //
       if(r2 < min_r*min_r){
@@ -335,7 +335,7 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
-      double r2 = dx * dx + dy * dy + dz * dz;
+      double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
       // *** EXPERIMENTAL *** //
       if(r2 < min_r*min_r){
@@ -471,7 +471,7 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
-      double r2 = dx * dx + dy * dy + dz * dz;
+      double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
       // *** EXPERIMENTAL *** //
       if(r2 < min_r*min_r){
@@ -605,7 +605,7 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
-      double r2 = dx * dx + dy * dy + dz * dz;
+      double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
       // *** EXPERIMENTAL *** //
       if(r2 < min_r*min_r){
@@ -714,7 +714,7 @@ void GravitationalForce :: force_application() const {
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -740,7 +740,7 @@ void GravitationalAssistForce:: force_application() const {
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -772,7 +772,7 @@ void ProtonForce :: force_application() const {
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -795,7 +795,7 @@ void CoulombForce :: force_application() const {
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
     double dz = neighbor.z - p.z;
-    double r2 = dx * dx + dy * dy + dz * dz;
+    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
