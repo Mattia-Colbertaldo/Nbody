@@ -20,8 +20,7 @@
 class Output
 {
 public:
-    Output(const std::string savename, const int rank){
-        std::ofstream fsave(savename);
+    Output(const std::string savename, const int rank):fsave(std::ofstream(savename)){
         if(rank != 0) fsave.close();
     };
     ~Output(){
