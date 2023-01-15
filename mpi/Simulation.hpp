@@ -17,7 +17,7 @@ struct Simulation {
                 this->charges.resize(num_parts);
         };
         
-        void simulate_one_step(int num_parts, int num_loc, int displ_loc, double size, int rank, const std::unique_ptr<AbstractForce>& force);
+        void simulate_one_step(int num_parts, int num_loc, int displ_loc, double size, const std::unique_ptr<AbstractForce>& force);
 
         MPI_Datatype init_particles(const int num_parts, const double size,const int part_seed,
                     const int num_loc, 

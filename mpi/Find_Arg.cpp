@@ -20,7 +20,6 @@ int find_arg_idx(int argc, char** argv, const std::string option) {
 
 std::string find_string_option(int argc, char** argv, const std::string option, std::string default_value) {
     int iplace = find_arg_idx(argc, argv, option);
-    std::cout << option << " " << iplace  << std::endl;
 
     if (iplace >= 0 && iplace < argc - 1) {
         return argv[iplace + 1];
@@ -48,6 +47,8 @@ std::string Find_Arg :: find_string_arg(const std::string type_of_find, const st
     {
         return find_force_option(this->argc, this->argv, type_of_find, option);                
     }
+
+    return option;
 };
 
 int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_value) const{
@@ -63,32 +64,18 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
 
 std::unique_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename) const
 {
-    std::unique_ptr<AbstractForce> force;   
-    if(forcename.compare("gravitational")==0){
-        std::cout << "Gravitational force chosen." << std::endl;
-        force = make_unique<GravitationalForce>();
-    }
-    
-    else if(forcename.compare("assist")==0){
-        std::cout << "Gravitational Assist force chosen." << std::endl;
-        force = make_unique<GravitationalAssistForce>();
-    }
-    
-    else if(forcename.compare("proton")==0){
-        
-        std::cout << "Proton force chosen." << std::endl;
-        force = make_unique<ProtonForce>();
-    }
-    
-    else if(forcename.compare("coulomb")==0){
-        std::cout << "Coulomb force chosen." << std::endl;
-        force = make_unique<CoulombForce>();
-    }
+    std::unique_ptr<AbstractForce> force;
 
-    else {
-        std::cout << "Repulsive force chosen." << std::endl;
-        force = make_unique<RepulsiveForce>();
-    }
+    if(forcename.compare("gravitational")==0) force = make_unique<GravitationalForce>();
+    
+    else if(forcename.compare("assist")==0) force = make_unique<GravitationalAssistForce>();
+    
+    else if(forcename.compare("proton")==0) force = make_unique<ProtonForce>();
+    
+    else if(forcename.compare("coulomb")==0) force = make_unique<CoulombForce>();
+
+    else force = make_unique<RepulsiveForce>();
+
     return force;
     
 };

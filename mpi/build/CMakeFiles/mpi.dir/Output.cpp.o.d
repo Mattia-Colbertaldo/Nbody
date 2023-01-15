@@ -1,7 +1,7 @@
 CMakeFiles/mpi.dir/Output.cpp.o: \
- /home/jellyfish/shared-folder/Nbody/hw2-2/Output.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Output.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/Nbody/hw2-2/Output.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Output.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \
@@ -183,9 +183,9 @@ CMakeFiles/mpi.dir/Output.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_vector.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_bvector.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
- /home/jellyfish/shared-folder/Nbody/hw2-2/Simulation.hpp \
- /home/jellyfish/shared-folder/Nbody/hw2-2/PhysicalForce.hpp \
- /home/jellyfish/shared-folder/Nbody/hw2-2/Particle.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Simulation.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Particle.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/memory \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_tempbuf.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_raw_storage_iter.h \

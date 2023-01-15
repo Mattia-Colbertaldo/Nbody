@@ -44,24 +44,23 @@ int main(int argc, char** argv) {
 
     // Open Output File
     std::string savename = finder.find_string_arg("-o", "out.txt");
-    if (savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
-    std::ofstream fsave(savename);
-    if (savename != "") std::cout << "File created." << std::endl;
+    if (savename != "") std::cout << "Output file: " << savename << std::endl;
+    std::ofstream fsave(savename);;
 
     //Find force
     std::string forcename = finder.find_string_arg("-f", "repulsive");
-    if (forcename != "") std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
+    if (forcename != "") std::cout << "Force: " <<  forcename << std::endl;
     else{
         std::string def="default";
         forcename= &def[0];
-        std::cout << "Choosing default force..." << std::endl;;
+        std::cout << "Force: Default" << std::endl;;
     }
 
     std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
 
     //find collision type
     int collision = finder.find_int_arg("-c", 0);
-    std::cout << "Choosing " <<  collision << " collision type..." << std::endl;
+    std::cout << "Collision type: " <<  collision << std::endl;
 
 
     
@@ -104,19 +103,16 @@ int main(int argc, char** argv) {
 
     
     Simulation simulation = Simulation(num_parts, collision);
-    std::cout << "Trying to init particles..." << std::endl;
+    std::cout << "Initialization: ";
     simulation.init_particles(size, part_seed);
     
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
-    std::cout << "Trying to init simulation..." << std::endl;
-    std::cout << "Init simulation ended." << std::endl;
-
     auto init_time = std::chrono::steady_clock::now();
     std::chrono::duration<double> diff_1 = init_time - start_time;
     double seconds_1 = diff_1.count();
-    std::cout << "initialization Time = " << seconds_1 << " seconds\n";
+    std::cout << seconds_1 << " seconds\n";
 
 Output output = Output();
 output.save(fsave, simulation.parts , size, nsteps);

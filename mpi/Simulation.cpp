@@ -9,6 +9,8 @@
 #include <iostream>
 #include <mpi.h>
 
+#define OK std::cout << "At main:" << __LINE__ << " from process " << rank << std::endl
+
 
 /******         PARTICLE INITIALIZATION       *******/
 MPI_Datatype mpi_part_vel_acc_type;
@@ -22,6 +24,7 @@ MPI_Datatype Simulation :: init_particles(
                         
     std::random_device rd;
     std::mt19937 gen(part_seed ? part_seed : rd());
+
     std::mt19937 gen2(part_seed ? part_seed : rd());
     
     int sx = (int)ceil(std::sqrt((double)num_parts));
@@ -101,7 +104,7 @@ MPI_Datatype Simulation :: init_particles(
             parts_vel_acc_temp[i].vy = rand_real(gen);
             parts_vel_acc_temp[i].vz = rand_real(gen);
             
-            std::uniform_real_distribution<double> rand_mass(0.001, 0.1);
+            std::uniform_real_distribution<double> rand_mass(0.01, 1);
             
             double m = rand_mass(gen);
            
@@ -125,12 +128,14 @@ MPI_Datatype Simulation :: init_particles(
         }
          
     }
-
+    
     MPI_Scatterv( &parts_vel_acc_temp[0] , &sizes[0] , &displs[0], mpi_part_vel_acc_type ,
-                  &(this->parts_vel_acc_loc[0]) , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
-    MPI_Bcast( &this->masses[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
-    MPI_Bcast( &this->charges[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
-    MPI_Bcast(&this->parts_pos[0] , num_parts, mpi_parts_pos_type , 0 , MPI_COMM_WORLD);
+                  &(parts_vel_acc_loc[0]) , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
+    MPI_Bcast( &masses[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
+    MPI_Bcast( &charges[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
+    MPI_Bcast(&parts_pos[0] , num_parts, mpi_parts_pos_type , 0 , MPI_COMM_WORLD);
+
+    return mpi_parts_pos_type;
 };
 
 
@@ -141,7 +146,7 @@ MPI_Datatype Simulation :: init_particles(
 /******         ONE STEP SIMULATION       *******/
 
 
-void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc,  double size, int rank, 
+void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc,  double size,
                                         const std::unique_ptr<AbstractForce>& force ){
 
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `mpi_rank`
@@ -153,15 +158,14 @@ void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc, 
     for (int i = 0; i < num_loc; ++i) {
         this->parts_vel_acc_loc[i].ax = this->parts_vel_acc_loc[i].ay = this->parts_vel_acc_loc[i].az= 0.;
         for (int j = 0; j < num_parts; ++j) {
-            if(i+displ_loc != j) force->force_application(this->parts_pos, this->parts_vel_acc_loc, this->masses[j], 
-            this->charges[i], this->charges[j], i, j);
+            if(i+displ_loc != j) force->force_application(this->parts_pos[i], this->parts_pos[j], this->parts_vel_acc_loc[i], this->masses[j], 
+            this->charges[i], this->charges[j]);
         }
     }
 
     // Move Particles
     for (int i = 0; i < num_loc; ++i) {
         this->parts_pos[i+displ_loc].move(size, this->parts_vel_acc_loc[i]);
-        
     }
      
 };

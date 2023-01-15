@@ -62,6 +62,8 @@ std::string Find_Arg :: find_string_arg(const std::string type_of_find, const st
     {
         return find_force_option(this->argc, this->argv, type_of_find, option);                
     }
+
+    return option;
 };
 
 int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_value){
