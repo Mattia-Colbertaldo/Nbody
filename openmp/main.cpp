@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
     std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
 Output output = Output(savename);
-output.save(fsave, simulation.parts , size, nsteps);
+output.save( simulation.parts , size, nsteps);
 #ifdef _OPENMP
 std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\nRunning "
           << num_th << " thread(s)." <<std::endl;
@@ -135,7 +135,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
             #pragma omp master
             #endif
             {
-                output.save_output(fsave, savefreq, simulation.parts , step, nsteps, size);
+                output.save_output( savefreq, simulation.parts , step, nsteps, size);
             }
             
         }

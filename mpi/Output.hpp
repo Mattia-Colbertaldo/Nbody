@@ -23,14 +23,18 @@ public:
     Output(const std::string savename, const int rank){
         std::ofstream fsave(savename);
         if(rank != 0) fsave.close();
-        
     };
+    ~Output(){
+        fsave.close();
+    };
+    
+
     // I/O routines
     void save( const std::vector<particle_pos>& parts, const double size, const int& nsteps);
 
     void save_output( const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size);
 
     private:
-     std::ofstream& fsave
+     std::ofstream& fsave;
 };
 #endif
