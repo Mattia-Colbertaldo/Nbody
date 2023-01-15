@@ -2,7 +2,7 @@
 #include "PhysicalForce.hpp"
 #include <memory>
     
-void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
+void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -12,32 +12,6 @@ void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, st
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
-
-    if(r2 < min_r*min_r){
-        if(collision > 0){
-            
-            // TODO ARGUMENT
-            if(collision== 1){
-            // URTO ANELASTICO:
-            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
-            
-            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
-            
-            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
-            
-            }
-            // "unelastic" collision
-            else if(collision== 2){
-            // URTO ELASTICO
-            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
-           
-            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
-            
-            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
-            }
-        }
-        return;
-    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -50,7 +24,7 @@ void RepulsiveForce :: force_application(std::vector<particle_pos> parts_pos, st
   
 };
   
-void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
+void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -59,32 +33,6 @@ void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
-
-    if(r2 < min_r*min_r){
-        if(collision > 0){
-            
-            // TODO ARGUMENT
-            if(collision== 1){
-            // URTO ANELASTICO:
-            p.vx = (mx*p.x + my*neighbor.x)/(mx+my);
-            
-            p.vy = (mx*p.y + my*neighbor.y)/(mx+my);
-            
-            p.vz = (mx*p.z + my*neighbor.z)/(mx+my);
-            
-            }
-            // "unelastic" collision
-            else if(collision== 2){
-            // URTO ELASTICO
-            p.vx = p.x*(mx-my)/(mx + my) + 2*neighbor.x*my/(mx+my);
-           
-            p.vy = p.y*(mx-my)/(mx + my) + 2*neighbor.y*my/(mx+my);
-            
-            p.vz = p.z*(mx-my)/(mx + my) + 2*neighbor.z*my/(mx+my);
-            }
-        }
-        return;
-    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -98,7 +46,7 @@ void GravitationalForce :: force_application(std::vector<particle_pos> parts_pos
 };
 
 
-void GravitationalAssistForce:: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
+void GravitationalAssistForce:: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -107,32 +55,6 @@ void GravitationalAssistForce:: force_application(std::vector<particle_pos> part
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
-    
-    if(r2 < min_r*min_r){
-        if(collision > 0){
-            
-            // TODO ARGUMENT
-            if(collision== 1){
-            // URTO ANELASTICO:
-            p.vx = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
-            
-            p.vy = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
-            
-            p.vz = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
-            
-            }
-            // "unelastic" collision
-            else if(collision== 2){
-            // URTO ELASTICO
-            p.vx = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
-           
-            p.vy = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
-            
-            p.vz = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
-            }
-        }
-        return;
-    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -156,7 +78,7 @@ void GravitationalAssistForce:: force_application(std::vector<particle_pos> part
 
 
      
-void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
+void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
     double dy = parts_pos[j].y - parts_pos[i].y;
@@ -165,32 +87,6 @@ void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
-    
-    if(r2 < min_r*min_r){
-        if(collision > 0){
-            
-            // TODO ARGUMENT
-            if(collision== 1){
-            // URTO ANELASTICO:
-            p.vx = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
-            
-            p.vy = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
-            
-            p.vz = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
-            
-            }
-            // "unelastic" collision
-            else if(collision== 2){
-            // URTO ELASTICO
-            p.vx = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
-           
-            p.vy = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
-            
-            p.vz = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
-            }
-        }
-        return;
-    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);
@@ -204,7 +100,7 @@ void ProtonForce :: force_application(std::vector<particle_pos> parts_pos, std::
 
 
    
-void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j, const int collision ) const {
+void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std::vector<particle_vel_acc> parts_vel_acc_loc, const double mass_n, const double charge_me, const double charge_n, const int i, const int j) const {
     
     // Calculate Distance
     double dx = parts_pos[j].x - parts_pos[i].x;
@@ -214,31 +110,6 @@ void CoulombForce :: force_application(std::vector<particle_pos> parts_pos, std:
     // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
-    if(r2 < min_r*min_r){
-        if(collision > 0){
-            
-            // TODO ARGUMENT
-            if(collision== 1){
-            // URTO ANELASTICO:
-            p.vx = (mx*parts_vel_acc_loc[i].x + my*parts_vel_acc_loc[j].x)/(mx+my);
-            
-            p.vy = (mx*parts_vel_acc_loc[i].y + my*parts_vel_acc_loc[j].y)/(mx+my);
-            
-            p.vz = (mx*parts_vel_acc_loc[i].z + my*parts_vel_acc_loc[j].z)/(mx+my);
-            
-            }
-            // "unelastic" collision
-            else if(collision== 2){
-            // URTO ELASTICO
-            p.vx = parts_vel_acc_loc[i].x*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].x*my/(mx+my);
-           
-            p.vy = parts_vel_acc_loc[i].y*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].y*my/(mx+my);
-            
-            p.vz = parts_vel_acc_loc[i].z*(mx-my)/(mx + my) + 2*parts_vel_acc_loc[j].z*my/(mx+my);
-            }
-        }
-        return;
-    }
 
     r2 = fmax(r2, min_r * min_r);
     double r = std:: sqrt(r2);

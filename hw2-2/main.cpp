@@ -86,12 +86,6 @@ int main(int argc, char** argv) {
             std::cout << "Choosing default force..." << std::endl;
         }
 
-        
-        //find collision type
-        int collision = finder.find_int_arg("-c", 0);
-        std::cout << "Choosing " <<  collision << " collision type..." << std::endl;
-
-
         // Initialize Particles
         num_parts = finder.find_int_arg("-n", 1000);
     
@@ -125,7 +119,7 @@ int main(int argc, char** argv) {
     num_loc=sizes[rank];
     displ_loc=displs[rank];
    
-    Simulation simulation = Simulation(num_parts, num_loc, collision);
+    Simulation simulation = Simulation(num_parts, num_loc);
     
     if (!rank) std::cout << "Trying to init particles..." << std::endl;
     MPI_Datatype mpi_parts_pos_type=simulation.init_particles(num_parts, size, part_seed, num_loc, displs, sizes, rank); 

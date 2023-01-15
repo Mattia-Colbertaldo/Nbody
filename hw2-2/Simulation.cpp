@@ -154,7 +154,7 @@ void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc, 
         this->parts_vel_acc_loc[i].ax = this->parts_vel_acc_loc[i].ay = this->parts_vel_acc_loc[i].az= 0.;
         for (int j = 0; j < num_parts; ++j) {
             if(i+displ_loc != j) force->force_application(this->parts_pos, this->parts_vel_acc_loc, this->masses[j], 
-            this->charges[i], this->charges[j], i, j, collision);
+            this->charges[i], this->charges[j], i, j);
         }
     }
 
