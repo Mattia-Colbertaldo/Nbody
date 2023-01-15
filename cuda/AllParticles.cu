@@ -31,7 +31,7 @@ __global__ void move_kernel(double* dx, double* dy, double* dz,
     dvy[i] += day[i] * dt;
     dvz[i] += daz[i] * dt;
 
-    double temp = fmin( dvx[i]>0? dvx[i]: -dvx[i] , max_velocity);
+    double temp = fmin( std::abs(dvx[i]) , max_velocity);
     dvx[i] =  dvx[i]>0? temp : -temp;
     temp = fmin( dvy[i]>0? dvy[i]: -dvy[i] , max_velocity);
     dvy[i] =  dvy[i]>0? temp : -temp;
