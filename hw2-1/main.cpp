@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
         std::cout << "Choosing default force..." << std::endl;;
     }
 
-    std::shared_ptr<AbstractForce> force= finder.find_force(forcename);
+    std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
 
     
 

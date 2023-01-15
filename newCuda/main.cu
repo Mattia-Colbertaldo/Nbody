@@ -234,7 +234,8 @@ int main(int argc, char** argv)
       forcename= &def[0];
       std::cout << "Choosing default force..." << std::endl;;
   }
-  std::shared_ptr<AbstractForce> force= finder.find_force(forcename);
+
+  std::shared_ptr<AbstractForce> force =finder.find_force(forcename) ;
 
   //find collision type
   int collision = finder.find_int_arg("-c", 0);
@@ -245,39 +246,38 @@ int main(int argc, char** argv)
   std::cout << "Starting simulation with " << num_parts << " particles." <<std::endl;
   const int part_seed = finder.find_int_arg("-s", 0);
   
-  std::shared_ptr<AllParticles> all_particles = std::make_shared<AllParticles>(num_parts, force);
+  std::unique_ptr<AllParticles> all_particles = std::make_unique<AllParticles>(num_parts, force);
   
   const double size = std::sqrt(density * num_parts);
   const int num_th = finder.find_int_arg("-t", 8);
   long t = clock();
   Simulation s = Simulation(all_particles, collision );
-  std::cout << "Initialization started." << std::endl;
+  std::cout << "Initialization: ";
   s.init_particles(size, part_seed);
   cudaDeviceSynchronize();
-  std::cout << "Initialization completed." << std::endl;
   
 
-  std::cout << "Initialization: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+  std::cout << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   // std::cout << "Moving data from GPU to CPU: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   t = clock();
   // thrust::copy(x.begin(), x.end(), x_h.begin());
   // thrust::copy(y.begin(), y.end(), y_h.begin());
   // thrust::copy(z.begin(), z.end(), z_h.begin());
-  Output output= Output();
+  Output output= Output(num_parts);
   output.save(fsave, s.parts, size, nsteps);
   std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   std::cout << "Now entering the for loop." << std::endl;
   t = clock();
   long t1;
   for(int step=0; step<nsteps; step++){
-    if(step == 0) t1 = clock();
+    if(step == nsteps/2) t1 = clock();
     s.simulate_one_step(force, num_parts, size, collision);
-    if(step == 0) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+    if(step == nsteps/2) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
     cudaDeviceSynchronize();
-    if(step == 0) t1 = clock();
+    if(step == nsteps/2) t1 = clock();
     output.save_output(fsave, savefreq, s.parts , step, nsteps, size);
-    if(step == 0) std::cout << "Saving: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-    if(step == 0) std::cout << "One loop iteration: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+    if(step == nsteps/2) std::cout << "Saving: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+    if(step == nsteps/2) std::cout << "One loop iteration: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   }
   std::cout << "Simulating all the steps: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   

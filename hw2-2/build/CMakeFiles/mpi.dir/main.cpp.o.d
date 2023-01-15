@@ -1,7 +1,7 @@
 CMakeFiles/mpi.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-2/main.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/hw2-2/common.h \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -225,16 +225,16 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
- /home/jellyfish/shared-folder/nbody/hw2-2/Find_Arg.hpp \
- /home/jellyfish/shared-folder/nbody/hw2-2/PhysicalForce.hpp \
- /home/jellyfish/shared-folder/nbody/hw2-2/Particle.hpp \
- /home/jellyfish/shared-folder/nbody/hw2-2/Output.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/Find_Arg.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/Particle.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/Output.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/codecvt.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/basic_file.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++io.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/fstream.tcc \
- /home/jellyfish/shared-folder/nbody/hw2-2/Simulation.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-2/Simulation.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \

@@ -27,7 +27,9 @@ struct AllParticles {
     
         public:
 
-        AllParticles(const int num_parts, std::shared_ptr<AbstractForce>  force) : num_parts(num_parts), force(force){
+        AllParticles(const int num_parts, std::shared_ptr<AbstractForce>  force) : num_parts(num_parts){
+
+            this->force = std :: move(force); 
             this->size = std::sqrt(density * num_parts);
             
             thrust::default_random_engine rng;

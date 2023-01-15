@@ -69,7 +69,7 @@ void Simulation::init_particles( const double size, const int part_seed) {
 
 
 
-void Simulation::simulate_one_step( const std::shared_ptr<AbstractForce>& force,const int num_parts,const double size) {
+void Simulation::simulate_one_step( const std::unique_ptr<AbstractForce>& force,const int num_parts,const double size) {
     // Compute Forces
     //int num_parts = parts.size();
     #ifdef _OPENMP

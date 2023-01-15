@@ -1,7 +1,7 @@
 CMakeFiles/openmp.dir/Output.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-1/Output.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Output.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/hw2-1/Output.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Output.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \
@@ -183,5 +183,5 @@ CMakeFiles/openmp.dir/Output.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_vector.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_bvector.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
- /home/jellyfish/shared-folder/nbody/hw2-1/Particle.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Particle.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream

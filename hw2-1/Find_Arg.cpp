@@ -3,6 +3,11 @@
 #include <memory>
 
 
+template<typename T>
+std::unique_ptr<T> make_unique() {
+    return std::unique_ptr<T>(new T());
+}
+
 // Command Line Option Processing
 int find_arg_idx(int argc, char** argv, const std::string option) {
     for (int i = 1; i < argc; ++i) {
@@ -57,33 +62,33 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
 };
 
 
-std::shared_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename)
+std::unique_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename)
 {
-    std::shared_ptr<AbstractForce> force;   
+    std::unique_ptr<AbstractForce> force;   
     if(forcename.compare("gravitational")==0){
         std::cout << "Gravitational force chosen." << std::endl;
-        force = std::make_shared<GravitationalForce>();
+        force = make_unique<GravitationalForce>();
     }
     
     else if(forcename.compare("assist")==0){
         std::cout << "Gravitational Assist force chosen." << std::endl;
-        force = std::make_shared<GravitationalAssistForce>();
+        force = make_unique<GravitationalAssistForce>();
     }
     
     else if(forcename.compare("proton")==0){
         
         std::cout << "Proton force chosen." << std::endl;
-        force = std::make_shared<ProtonForce>();
+        force = make_unique<ProtonForce>();
     }
     
     else if(forcename.compare("coulomb")==0){
         std::cout << "Coulomb force chosen." << std::endl;
-        force = std::make_shared<CoulombForce>();
+        force = make_unique<CoulombForce>();
     }
 
     else {
         std::cout << "Repulsive force chosen." << std::endl;
-        force = std::make_shared<RepulsiveForce>();
+        force = make_unique<RepulsiveForce>();
     }
     return force;
     

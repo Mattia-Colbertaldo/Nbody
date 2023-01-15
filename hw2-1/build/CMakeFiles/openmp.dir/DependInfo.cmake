@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/jellyfish/shared-folder/nbody/hw2-1/Find_Arg.cpp" "CMakeFiles/openmp.dir/Find_Arg.cpp.o" "gcc" "CMakeFiles/openmp.dir/Find_Arg.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/hw2-1/Output.cpp" "CMakeFiles/openmp.dir/Output.cpp.o" "gcc" "CMakeFiles/openmp.dir/Output.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/hw2-1/Particle.cpp" "CMakeFiles/openmp.dir/Particle.cpp.o" "gcc" "CMakeFiles/openmp.dir/Particle.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/hw2-1/PhysicalForce.cpp" "CMakeFiles/openmp.dir/PhysicalForce.cpp.o" "gcc" "CMakeFiles/openmp.dir/PhysicalForce.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/hw2-1/Simulation.cpp" "CMakeFiles/openmp.dir/Simulation.cpp.o" "gcc" "CMakeFiles/openmp.dir/Simulation.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/hw2-1/main.cpp" "CMakeFiles/openmp.dir/main.cpp.o" "gcc" "CMakeFiles/openmp.dir/main.cpp.o.d"
+  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Find_Arg.cpp" "CMakeFiles/openmp.dir/Find_Arg.cpp.o" "gcc" "CMakeFiles/openmp.dir/Find_Arg.cpp.o.d"
+  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Output.cpp" "CMakeFiles/openmp.dir/Output.cpp.o" "gcc" "CMakeFiles/openmp.dir/Output.cpp.o.d"
+  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Particle.cpp" "CMakeFiles/openmp.dir/Particle.cpp.o" "gcc" "CMakeFiles/openmp.dir/Particle.cpp.o.d"
+  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/PhysicalForce.cpp" "CMakeFiles/openmp.dir/PhysicalForce.cpp.o" "gcc" "CMakeFiles/openmp.dir/PhysicalForce.cpp.o.d"
+  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Simulation.cpp" "CMakeFiles/openmp.dir/Simulation.cpp.o" "gcc" "CMakeFiles/openmp.dir/Simulation.cpp.o.d"
+  "/home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp" "CMakeFiles/openmp.dir/main.cpp.o" "gcc" "CMakeFiles/openmp.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.

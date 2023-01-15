@@ -9,7 +9,7 @@ public:
   AbstractForce(){};
   virtual void force_application(Particle& p,const Particle& neighbor) const = 0;
   
-  virtual ~AbstractForce(){};
+  ~AbstractForce(){};
 };
 
 

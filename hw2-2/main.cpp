@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
    }
 
    
-    std::shared_ptr<AbstractForce> force= finder.find_force(forcename);
+    std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
     
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
     // in this way we split the load in the most equilibrate way

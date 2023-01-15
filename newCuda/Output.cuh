@@ -2,6 +2,8 @@
 #define HH__OUTPUT__HH
 #include <fstream>
 #include <vector>
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
 #include "AllParticles.cuh"
 // =================
 // Helper Functions
@@ -18,10 +20,38 @@
 class Output
 {
 public:
-    Output(){};
-    // I/O routines
-    void save(std::ofstream& fsave, const std::shared_ptr<AllParticles> & parts, const double size, const int& nsteps);
+    Output(const int num_parts) : num_parts(num_parts){
+        bufferx.resize(num_parts*nsteps);
+        buffery.resize(num_parts*nsteps);
+        bufferz.resize(num_parts*nsteps);
+        
+        host_bufferx.resize(num_parts*nsteps);
+        host_buffery.resize(num_parts*nsteps);
+        host_bufferz.resize(num_parts*nsteps);
 
-    void save_output(std::ofstream& fsave, const int savefreq, const std::shared_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size);
+        // xbuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
+        // ybuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
+        // zbuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
+
+
+    };
+    // I/O routines
+    void save(std::ofstream& fsave, const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps);
+
+    void save_output(std::ofstream& fsave, const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size);
+
+    // thrust::device_ptr<double> xbuf;
+    // thrust::device_ptr<double> ybuf;
+    // thrust::device_ptr<double> zbuf;
+
+    thrust::device_vector<double> bufferx;
+    thrust::device_vector<double> buffery;
+    thrust::device_vector<double> bufferz;
+
+    thrust::host_vector<double> host_bufferx;
+    thrust::host_vector<double> host_buffery;
+    thrust::host_vector<double> host_bufferz;
+
+    int num_parts;
 };
 #endif

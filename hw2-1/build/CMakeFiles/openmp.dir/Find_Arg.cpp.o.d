@@ -1,7 +1,7 @@
 CMakeFiles/openmp.dir/Find_Arg.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-1/Find_Arg.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Find_Arg.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/hw2-1/Find_Arg.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Find_Arg.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/os_defines.h \
@@ -152,8 +152,8 @@ CMakeFiles/openmp.dir/Find_Arg.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/atomic_base.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/atomic_lockfree_defines.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/backward/auto_ptr.h \
- /home/jellyfish/shared-folder/nbody/hw2-1/PhysicalForce.hpp \
- /home/jellyfish/shared-folder/nbody/hw2-1/Particle.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Particle.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/iostream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ostream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \

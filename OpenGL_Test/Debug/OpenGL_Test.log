@@ -1,7 +1,0 @@
-﻿  Source.cpp
-  LINK : C:\Users\matti\shared-folder\nbody\Nbody\OpenGL_Test\Debug\OpenGL_Test.exe not found or not built by the last incremental link; performing full link
-MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol _main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\lib\x64\cudart_static.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\lib\x64\cudart.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\lib\x64\cudadevrt.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
-C:\Users\matti\shared-folder\nbody\Nbody\OpenGL_Test\Debug\OpenGL_Test.exe : fatal error LNK1120: 1 unresolved externals

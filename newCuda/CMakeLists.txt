@@ -6,7 +6,7 @@ set(
         CMAKE_CUDA_STANDARD 14
         )
 
-set(DCUDA_NVCC_FLAGS "-arch=sm_60" CACHE STRING "nvcc flags" FORCE)
+set(DCUDA_NVCC_FLAGS "-arch=sm_60" "-lineinfo" "-fno-elide-constructors" CACHE STRING "nvcc flags" FORCE)
 
 add_executable(cuda_test main.cu Find_Arg.cu PhysicalForce.cu common.cuh Simulation.cu AllParticles.cu Output.cu)
 

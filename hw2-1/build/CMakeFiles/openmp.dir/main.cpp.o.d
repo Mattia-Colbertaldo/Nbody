@@ -1,7 +1,7 @@
 CMakeFiles/openmp.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/nbody/hw2-1/main.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/hw2-1/common.h \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -225,16 +225,16 @@ CMakeFiles/openmp.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
- /home/jellyfish/shared-folder/nbody/hw2-1/Find_Arg.hpp \
- /home/jellyfish/shared-folder/nbody/hw2-1/PhysicalForce.hpp \
- /home/jellyfish/shared-folder/nbody/hw2-1/Particle.hpp \
- /home/jellyfish/shared-folder/nbody/hw2-1/Output.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Find_Arg.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Particle.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Output.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/codecvt.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/basic_file.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++io.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/fstream.tcc \
- /home/jellyfish/shared-folder/nbody/hw2-1/Simulation.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/hw2-1/Simulation.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ratio \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ctime \
