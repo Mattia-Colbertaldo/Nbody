@@ -1,8 +1,9 @@
 #include "common.h"
 #include "PhysicalForce.hpp"
 
-    
-void RepulsiveForce :: force_application(Particle& p,const Particle& neighbor, const int collision) const {
+using namespace common_h;
+
+void RepulsiveForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -22,21 +23,26 @@ void RepulsiveForce :: force_application(Particle& p,const Particle& neighbor, c
             if(collision== 1){
             // URTO ANELASTICO:
             p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
-            
             p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
-            
             p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
+            neighbor.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
+            neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
+            neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
-           
             p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
-            
             p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+
+            neighbor.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
+            neighbor.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
+            neighbor.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+            
             }
+            
         }
         return;
     }
@@ -49,10 +55,13 @@ void RepulsiveForce :: force_application(Particle& p,const Particle& neighbor, c
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
+    neighbor.ax -= coef * dx;
+    neighbor.ay -= coef * dy;
+    neighbor.az -= coef * dz;
   
 };
   
-void GravitationalForce :: force_application(Particle& p,const Particle& neighbor, const int collision) const {
+void GravitationalForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -71,21 +80,26 @@ void GravitationalForce :: force_application(Particle& p,const Particle& neighbo
             if(collision== 1){
             // URTO ANELASTICO:
             p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
-            
             p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
-            
             p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
+            neighbor.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
+            neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
+            neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
-           
             p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
-            
             p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+
+            neighbor.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
+            neighbor.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
+            neighbor.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+            
             }
+        
         }
         return;
     }
@@ -99,10 +113,13 @@ void GravitationalForce :: force_application(Particle& p,const Particle& neighbo
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
+    neighbor.ax -= coef * dx;
+    neighbor.ay -= coef * dy;
+    neighbor.az -= coef * dz;
 };
 
 
-void GravitationalAssistForce:: force_application(Particle& p,const Particle& neighbor, const int collision) const {
+void GravitationalAssistForce:: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -122,20 +139,24 @@ void GravitationalAssistForce:: force_application(Particle& p,const Particle& ne
             if(collision== 1){
             // URTO ANELASTICO:
             p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
-            
             p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
-            
             p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
+            neighbor.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
+            neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
+            neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
-           
             p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
-            
             p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+
+            neighbor.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
+            neighbor.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
+            neighbor.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+            
             }
         }
         return;
@@ -158,12 +179,15 @@ void GravitationalAssistForce:: force_application(Particle& p,const Particle& ne
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
+    neighbor.ax -= coef * dx;
+    neighbor.ay -= coef * dy;
+    neighbor.az -= coef * dz;
 };
 
 
 
      
-void ProtonForce :: force_application(Particle& p,const Particle& neighbor, const int collision) const {
+void ProtonForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
     double dx = neighbor.x - p.x;
     double dy = neighbor.y - p.y;
@@ -182,20 +206,24 @@ void ProtonForce :: force_application(Particle& p,const Particle& neighbor, cons
             if(collision== 1){
             // URTO ANELASTICO:
             p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
-            
             p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
-            
             p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
+            neighbor.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
+            neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
+            neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
-           
             p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
-            
             p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+
+            neighbor.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
+            neighbor.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
+            neighbor.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+            
             }
         }
         return;
@@ -209,11 +237,14 @@ void ProtonForce :: force_application(Particle& p,const Particle& neighbor, cons
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
+    neighbor.ax -= coef * dx;
+    neighbor.ay -= coef * dy;
+    neighbor.az -= coef * dz;
 };
 
 
    
-void CoulombForce :: force_application(Particle& p,const Particle& neighbor, const int collision) const {
+void CoulombForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     
     // Calculate Distance
     double dx = neighbor.x - p.x;
@@ -233,20 +264,24 @@ void CoulombForce :: force_application(Particle& p,const Particle& neighbor, con
             if(collision== 1){
             // URTO ANELASTICO:
             p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
-            
             p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
-            
             p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
+            neighbor.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
+            neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
+            neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
             // "unelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
-           
             p.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
-            
             p.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+
+            neighbor.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
+            neighbor.vy = p.y*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.y*m_neigh/(m_p+m_neigh);
+            neighbor.vz = p.z*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.z*m_neigh/(m_p+m_neigh);
+            
             }
         }
         return;
@@ -260,6 +295,9 @@ void CoulombForce :: force_application(Particle& p,const Particle& neighbor, con
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
+    neighbor.ax -= coef * dx;
+    neighbor.ay -= coef * dy;
+    neighbor.az -= coef * dz;
 };
 
 

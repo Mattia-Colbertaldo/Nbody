@@ -77,7 +77,7 @@ void Simulation::simulate_one_step( const std::unique_ptr<AbstractForce>& force,
     #endif
     for (int i = 0; i < num_parts; ++i) {
         parts[i].ax = parts[i].ay = parts[i].az = 0.;
-        for (int j = 0; j < num_parts; ++j) {
+        for (int j = i+1; j < num_parts; ++j) {
             force->force_application(parts[i], parts[j], collision);
         }
     }

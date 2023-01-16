@@ -1,7 +1,10 @@
 #include "common.cuh"
 #include "PhysicalForce.cuh"
 #include <cuda.h>
-    
+  
+
+using namespace common_h;
+
 #if !defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600
 #else
 __device__ double atomicAdd(double* address, double val)

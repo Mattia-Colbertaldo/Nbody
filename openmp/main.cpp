@@ -22,6 +22,8 @@
 #include <stdexcept>
 
 
+using namespace common_h;
+
 // ==============
 // Main Function
 // ==============
@@ -44,28 +46,24 @@ int main(int argc, char** argv) {
 
     // Open Output File
     std::string savename = finder.find_string_arg("-o", "out.txt");
-<<<<<<< HEAD
-    if (savename != "") std::cout << "Output file: " << savename << std::endl;
-    std::ofstream fsave(savename);;
-=======
     if (savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
-    
->>>>>>> 6ac64149a4a462727c9b681f80d85a1660c96261
+    std::ofstream fsave(savename);
+    if (savename != "") std::cout << "File created." << std::endl;
 
     //Find force
     std::string forcename = finder.find_string_arg("-f", "repulsive");
-    if (forcename != "") std::cout << "Force: " <<  forcename << std::endl;
+    if (forcename != "") std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
     else{
         std::string def="default";
         forcename= &def[0];
-        std::cout << "Force: Default" << std::endl;;
+        std::cout << "Choosing default force..." << std::endl;;
     }
 
     std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
 
     //find collision type
     int collision = finder.find_int_arg("-c", 0);
-    std::cout << "Collision type: " <<  collision << std::endl;
+    std::cout << "Choosing " <<  collision << " collision type..." << std::endl;
 
 
     
@@ -108,19 +106,22 @@ int main(int argc, char** argv) {
 
     
     Simulation simulation = Simulation(num_parts, collision);
-    std::cout << "Initialization: ";
+    std::cout << "Trying to init particles..." << std::endl;
     simulation.init_particles(size, part_seed);
     
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
+    std::cout << "Trying to init simulation..." << std::endl;
+    std::cout << "Init simulation ended." << std::endl;
+
     auto init_time = std::chrono::steady_clock::now();
     std::chrono::duration<double> diff_1 = init_time - start_time;
     double seconds_1 = diff_1.count();
-    std::cout << seconds_1 << " seconds\n";
+    std::cout << "initialization Time = " << seconds_1 << " seconds\n";
 
-Output output = Output(savename);
-output.save( simulation.parts , size, nsteps);
+Output output = Output();
+output.save(fsave, simulation.parts , size, nsteps);
 #ifdef _OPENMP
 std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\nRunning "
           << num_th << " thread(s)." <<std::endl;
@@ -137,7 +138,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
             #pragma omp master
             #endif
             {
-                output.save_output( savefreq, simulation.parts , step, nsteps, size);
+                output.save_output(fsave, savefreq, simulation.parts , step, nsteps, size);
             }
             
         }

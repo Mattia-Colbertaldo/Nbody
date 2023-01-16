@@ -6,6 +6,8 @@
 #include <cmath>
 
 
+using namespace common_h;
+
     // Integrate the ODE
 
     void Particle:: move(const double size) {

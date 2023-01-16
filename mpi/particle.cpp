@@ -6,6 +6,9 @@
 #include <cmath>
 
 
+using namespace common_h;
+
+
     // Integrate the ODE
 
     void particle_pos:: move(const double size, particle_vel_acc& parts_vel_acc ) {

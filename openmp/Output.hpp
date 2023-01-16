@@ -18,15 +18,10 @@
 class Output
 {
 public:
-    Output(const std::string savename){   
-        std::ofstream fsave(savename);
-    };
+    Output(){};
     // I/O routines
-    void save( const std::vector<Particle>& parts, const double size, const int& nsteps);
+    void save(std::ofstream& fsave, const std::vector<Particle>& parts, const double size, const int& nsteps);
 
-    void save_output( const int savefreq, const std::vector<Particle>& parts , const int& step,  const int& nsteps, const double & size);
-
-    private:
-     std::ofstream& fsave;
+    void save_output(std::ofstream& fsave, const int savefreq, const std::vector<Particle>& parts , const int& step,  const int& nsteps, const double & size);
 };
 #endif

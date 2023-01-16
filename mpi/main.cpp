@@ -18,6 +18,8 @@
 #include <mpi.h>
 
 
+using namespace common_h;
+
 int rank, mpi_size;
 bool first = true;
 

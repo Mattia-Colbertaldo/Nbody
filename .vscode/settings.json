@@ -71,6 +71,7 @@
         "array": "cpp",
         "cstdarg": "cpp",
         "functional": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "getpot": "cpp"
     }
 }
