@@ -37,7 +37,6 @@ void GravitationalForce :: force_application(particle_pos i, particle_pos j, par
     if (r2 > cutoff * cutoff) return;
 
     r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
 
     // Very simple short-range repulsive force
     double coef =  (G * mass_n / r2) ;
@@ -58,7 +57,6 @@ void GravitationalAssistForce:: force_application(particle_pos i, particle_pos j
     if (r2 > cutoff * cutoff) return;
 
     r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
     double coef;
 
     // Very simple short-range repulsive force

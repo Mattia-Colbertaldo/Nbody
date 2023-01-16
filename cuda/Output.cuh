@@ -5,6 +5,7 @@
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
 #include "AllParticles.cuh"
+#include <sstream>
 // =================
 // Helper Functions
 // =================
@@ -16,11 +17,12 @@
     se a questo step va effettuato l’output e se la risposta è affermativa solo il rank 0 scrive su file. 
 */
 
+using namespace common_h;
 
 class Output
 {
 public:
-    Output(const int num_parts, const std::string filename) : num_parts(num_parts){
+    Output(const int num_parts, const std::string filename) : num_parts(num_parts), filename(filename){
         bufferx.resize(num_parts*nsteps);
         buffery.resize(num_parts*nsteps);
         bufferz.resize(num_parts*nsteps);
@@ -29,28 +31,18 @@ public:
         host_buffery.resize(num_parts*nsteps);
         host_bufferz.resize(num_parts*nsteps);
 
-        std::ofstream fsave(savename);
-
-        // xbuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
-        // ybuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
-        // zbuf = thrust::device_malloc(sizeof(double)*num_parts*nsteps);
-
 
     };
     // I/O routines
     void save( const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps);
 
     void save_output( const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size);
-
-    // thrust::device_ptr<double> xbuf;
-    // thrust::device_ptr<double> ybuf;
-    // thrust::device_ptr<double> zbuf;
-
-   
+ 
 
     private:
         int num_parts;
-        std::ofstream& fsave;
+        std::string filename;
+        std::ostringstream strstream;
         //CAMBIAMENTO: SONO PRIVATI
         thrust::device_vector<double> bufferx;
         thrust::device_vector<double> buffery;

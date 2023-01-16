@@ -20,37 +20,23 @@ void Output::save( const std::unique_ptr<AllParticles> & parts, const double siz
   static bool first = true;
 
   if (first) {
-      fsave << parts->num_parts << " " << size << " " << nsteps << "\n";
+      std::cout << "first!" << std::endl;
+      strstream << num_parts << " " << size << " " << nsteps << "\n";
       first = false;
   }
 
-  // Opzione 1:
   thrust::copy(parts->x.begin(), parts->x.end(), parts->x_h.begin());
   thrust::copy(parts->y.begin(), parts->y.end(), parts->y_h.begin());
   thrust::copy(parts->z.begin(), parts->z.end(), parts->z_h.begin());
-  // Opzione 2:
-  // x_h = x;
-  // y_h = y;
-  // z_h = z;
-
-
-
 
   cudaDeviceSynchronize();
-  for(size_t i = 0; i < parts->num_parts; i++){
-    // TODO X_H
-        fsave <<  parts->x_h[i] << " " << parts->y_h[i] << " " << parts->z_h[i] << std::endl;
+  for(size_t i = 0; i < num_parts; i++){
+    strstream <<  parts->x_h[i] << " " << parts->y_h[i] << " " << parts->z_h[i] << "\n";
   }
   cudaDeviceSynchronize();
 };
 
 void Output::save_output( const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size){
-    // TODO FIX
-    // thrust::copy(x.begin(), x.end(), x_h.begin());
-    // thrust::copy(y.begin(), y.end(), y_h.begin());
-    // thrust::copy(z.begin(), z.end(), z_h.begin());
-
-    // save(fsave, parts, size, nsteps);
     
     thrust::copy(parts->x.begin(), parts->x.end(), &bufferx[num_parts*step]);
     thrust::copy(parts->y.begin(), parts->y.end(), &buffery[num_parts*step]);
@@ -70,18 +56,17 @@ void Output::save_output( const int savefreq, const std::unique_ptr<AllParticles
         thrust::copy(buffery.begin(), buffery.end(), host_buffery.begin());
         thrust::copy(bufferz.begin(), bufferz.end(), host_bufferz.begin());
         std::cout << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
-        std::ostringstream strstream;
         std::cout << "Saving: ";
         t = clock();
-        for(size_t i = 0; i < parts->num_parts*nsteps; i++){
+        for(size_t i = 0; i < num_parts*nsteps; i++){
             if (i%10 == 0){
             fflush(stdout);
             printf("\r");
-            printf("Saving: [ %d ]\r", (int)(i*100/(parts->num_parts*nsteps)));
+            printf("Saving: [ %d ]\r", (int)(i*100/(num_parts*nsteps)));
             }
             strstream <<  host_bufferx[i] << " " << host_buffery[i] << " " << host_bufferz[i] << "\n";
         }
-        fsave << strstream.str();
+        std::ofstream(filename) << strstream.str();
         std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
 
     }

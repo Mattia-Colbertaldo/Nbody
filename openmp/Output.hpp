@@ -2,6 +2,7 @@
 #define HH__OUTPUT__HH
 #include <fstream>
 #include <vector>
+#include <sstream>
 #include "Particle.hpp"
 // =================
 // Helper Functions
@@ -23,5 +24,7 @@ public:
     void save(std::ofstream& fsave, const std::vector<Particle>& parts, const double size, const int& nsteps);
 
     void save_output(std::ofstream& fsave, const int savefreq, const std::vector<Particle>& parts , const int& step,  const int& nsteps, const double & size);
+private:
+    std::ostringstream strstream;
 };
 #endif
