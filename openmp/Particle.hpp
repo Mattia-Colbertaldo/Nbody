@@ -6,7 +6,7 @@ struct Particle {
         
         Particle(const double x, const double y, const double z,
                 const double vx, const double vy, const double vz,
-                const float m, const float c) : x(x), y(y), z(z), vx(vx), vy(vy), vz(vz),
+                const double m, const double c) : x(x), y(y), z(z), vx(vx), vy(vy), vz(vz),
                 ax(0.), ay(0.), az(0.), mass(m), charge(c){};
         
         void move(double size);
@@ -21,8 +21,8 @@ struct Particle {
         double ax; // Acceleration X
         double ay; // Acceleration Y
         double az; // Acceleration Z
-        float mass;
-        float charge;
+        double mass;
+        double charge;
 
         
 

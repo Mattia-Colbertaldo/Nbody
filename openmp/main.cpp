@@ -33,31 +33,16 @@ using namespace common_h;
 int main(int argc, char** argv) {
     // Parse Args
     Find_Arg finder= Find_Arg(argc, argv);
-    if (finder.find_int_arg("-h", 0) >= 0) {
-        std::cout << "Options:" << std::endl;
-        std::cout << "-h: see this help" << std::endl;
-        std::cout << "-n <int>: set number of particles" << std::endl;
-        std::cout << "-o <filename>: set the output file name" << std::endl;
-        std::cout << "-s <int>: set particle initialization seed" << std::endl;
-        std::cout << "-t <int>: set number of threads (working only in parallel mode) [default = 8]" << std::endl;
-        std::cout << "-f <int>: set force: default, repulsive, gravitational, assist, proton, coulomb" << std::endl;
-        return 0;
-    }
+    finder.find_int_arg("-h", 0);
 
     // Open Output File
-    std::string savename = finder.find_string_arg("-o", "out.txt");
+    std::string savename = finder.find_string_option("-o", "out.txt");
     if (savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
     std::ofstream fsave(savename);
     if (savename != "") std::cout << "File created." << std::endl;
 
     //Find force
-    std::string forcename = finder.find_string_arg("-f", "repulsive");
-    if (forcename != "") std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
-    else{
-        std::string def="default";
-        forcename= &def[0];
-        std::cout << "Choosing default force..." << std::endl;;
-    }
+    std::string forcename = finder.find_string_option("-f", "repulsive");
 
     std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
 
