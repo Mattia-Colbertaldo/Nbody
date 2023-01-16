@@ -2,11 +2,12 @@
 #include <iostream>
 #include <memory>
 
-
+/*/
 template<typename T>
 std::unique_ptr<T> make_unique() {
     return std::unique_ptr<T>(new T());
 }
+*/
 
 void printHelp()
 {

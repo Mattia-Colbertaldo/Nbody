@@ -2,10 +2,12 @@
 #include <iostream>
 #include <memory>
 
+/*
 template<typename T>
 std::unique_ptr<T> make_unique() {
     return std::unique_ptr<T>(new T());
 }
+*/
 
 // Command Line Option Processing
 int find_arg_idx(int argc, char** argv, const std::string option) {
