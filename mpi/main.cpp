@@ -63,19 +63,7 @@ int main(int argc, char** argv) {
     if(rank==0){       
     
     // Open Output File
-        
-
-        Find_Arg finder= Find_Arg(argc, argv);
-        if (finder.find_int_arg("-h", 0) >= 0) {
-            std::cout << "Options:" << std::endl;
-            std::cout << "-h: see this help" << std::endl;
-            std::cout << "-n <int>: set number of particles" << std::endl;
-            std::cout << "-o <filename>: set the output file name" << std::endl;
-            std::cout << "-s <int>: set particle initialization seed" << std::endl;
-            std::cout << "-t <int>: set number of threads (working only in parallel mode) [default = 8]" << std::endl;
-            std::cout << "-f <int>: set force: default, repulsive, gravitational, assist, proton, coulomb" << std::endl;
-            return 0;
-        }
+        finder.find_int_arg("-h", 0);
 
         // Initialize Particles
         num_parts = finder.find_int_arg("-n", 1000);

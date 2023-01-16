@@ -40,10 +40,8 @@ graph = ax.scatter(data.x, data.y, data.z)
 
 anim = matplotlib.animation.FuncAnimation(fig, update_graph, nsaves+1, 
                             interval=10, blit=False)
-
-writervideo = matplotlib.animation.FFMpegWriter(fps=60)
-anim.save('prova.mp4', writer=writervideo)
-plt.close()
+anim.save('myanimation.gif') 
+plt.show()
 
 # Save as mp4. This requires mplayer or ffmpeg to be installed (NOT WORKING)
 # ani.save('lorentz_attractor.mp4', fps=60, extra_args=['-vcodec', 'libx264'])
