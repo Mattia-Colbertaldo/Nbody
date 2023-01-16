@@ -78,39 +78,30 @@ int main(int argc, char** argv)
   DisplayHeader();
 
   Find_Arg finder= Find_Arg(argc, argv);
-  if (finder.find_int_arg("-h", 0) >= 0) {
-      std::cout << "Options:" << std::endl;
-      std::cout << "-h: see this help" << std::endl;
-      std::cout << "-n <int>: set number of particles" << std::endl;
-      std::cout << "-o <filename>: set the output file name" << std::endl;
-      std::cout << "-s <int>: set particle initialization seed" << std::endl;
-      std::cout << "-t <int>: set number of threads (working only in parallel mode) [default = 8]" << std::endl;
-      std::cout << "-f <int>: set force: default, repulsive, gravitational, assist, proton, coulomb" << std::endl;
-      return 0;
-  }
+  finder.find_string_option("-h", 0);
 
   // Open Output File
-  std::string savename = finder.find_string_arg("-o", "out.txt");
+  std::string savename = finder.find_string_option("-o", "out.txt");
   if (savename != "") std::cout << "Output: " << savename << std::endl;
   
   //Find force
-  std::string forcename = finder.find_string_arg("-f", "repulsive");
+  std::string forcename = finder.find_string_option("-f", "repulsive");
 
   std::shared_ptr<AbstractForce> force =finder.find_force(forcename) ;
 
   //find collision type
-  int collision = finder.find_int_arg("-c", 0);
+  int collision = finder.find_string_option("-c", 0);
   std::cout << "Collision: " <<  collision << std::endl;
 
 
-  const int num_parts = finder.find_int_arg("-n", 1000);
+  const int num_parts = finder.find_string_option("-n", 1000);
   std::cout << "Starting simulation with " << num_parts << " particles." <<std::endl;
-  const int part_seed = finder.find_int_arg("-s", 0);
+  const int part_seed = finder.find_string_option("-s", 0);
   
   std::unique_ptr<AllParticles> all_particles = std::make_unique<AllParticles>(num_parts, force);
   
   const double size = std::sqrt(density * num_parts);
-  const int num_th = finder.find_int_arg("-t", 8);
+  const int num_th = finder.find_string_option("-t", 8);
   long t = clock();
   Simulation s = Simulation(all_particles, collision );
   std::cout << "Initialization: ";

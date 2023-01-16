@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/jellyfish/shared-folder/nbody/Nbody/openmp/Find_Arg.cpp" "CMakeFiles/serial.dir/Find_Arg.cpp.o" "gcc" "CMakeFiles/serial.dir/Find_Arg.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/Nbody/openmp/Output.cpp" "CMakeFiles/serial.dir/Output.cpp.o" "gcc" "CMakeFiles/serial.dir/Output.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/Nbody/openmp/Particle.cpp" "CMakeFiles/serial.dir/Particle.cpp.o" "gcc" "CMakeFiles/serial.dir/Particle.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/Nbody/openmp/PhysicalForce.cpp" "CMakeFiles/serial.dir/PhysicalForce.cpp.o" "gcc" "CMakeFiles/serial.dir/PhysicalForce.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/Nbody/openmp/Simulation.cpp" "CMakeFiles/serial.dir/Simulation.cpp.o" "gcc" "CMakeFiles/serial.dir/Simulation.cpp.o.d"
-  "/home/jellyfish/shared-folder/nbody/Nbody/openmp/main.cpp" "CMakeFiles/serial.dir/main.cpp.o" "gcc" "CMakeFiles/serial.dir/main.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/openmp/Find_Arg.cpp" "CMakeFiles/serial.dir/Find_Arg.cpp.o" "gcc" "CMakeFiles/serial.dir/Find_Arg.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/openmp/Output.cpp" "CMakeFiles/serial.dir/Output.cpp.o" "gcc" "CMakeFiles/serial.dir/Output.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/openmp/Particle.cpp" "CMakeFiles/serial.dir/Particle.cpp.o" "gcc" "CMakeFiles/serial.dir/Particle.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/openmp/PhysicalForce.cpp" "CMakeFiles/serial.dir/PhysicalForce.cpp.o" "gcc" "CMakeFiles/serial.dir/PhysicalForce.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/openmp/Simulation.cpp" "CMakeFiles/serial.dir/Simulation.cpp.o" "gcc" "CMakeFiles/serial.dir/Simulation.cpp.o.d"
+  "/home/jellyfish/shared-folder/Nbody/openmp/main.cpp" "CMakeFiles/serial.dir/main.cpp.o" "gcc" "CMakeFiles/serial.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.
