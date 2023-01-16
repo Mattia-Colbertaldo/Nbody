@@ -14,29 +14,29 @@
 */
 
 // I/O routines
-void Output :: save(std::ofstream& fsave, const std::vector<Particle>& parts, const double size, const int& nsteps) {
+void Output :: save( const std::vector<Particle>& parts, const double size, const int& nsteps) {
     int num_parts = parts.size();
     
     static bool first = true;
 
     if (first) {
-        fsave << num_parts << " " << size << " " << nsteps << "\n";
+        this->strstream << num_parts << " " << size << " " << nsteps << "\n";
         first = false;
     }
 
     for (int i = 0; i < num_parts; ++i) {
-        fsave << parts[i].x << " " << parts[i].y << " " << parts[i].z << "\n";
+        this->strstream << parts[i].x << " " << parts[i].y << " " << parts[i].z << "\n";
     }
 
     // fsave << std::endl;
 };
 
 
-void Output :: save_output(std::ofstream& fsave, const int savefreq, const std::vector<Particle>& parts , const int& step, const int& nsteps, const double & size)
+void Output :: save_output( const int savefreq, const std::vector<Particle>& parts , const int& step, const int& nsteps, const double & size)
 {
-    if (fsave.good() && (step % savefreq) == 0)
+    if (strstream.good() && (step % savefreq) == 0)
     {
-        save(fsave, parts, size, nsteps);
+        save(parts, size, nsteps);
     }
     if(step > 0){
         if (step%10 == 0){
