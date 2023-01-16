@@ -40,23 +40,23 @@ void Simulation::init_particles( const double size, const int part_seed) {
         shuffle[j] = shuffle[num_parts - i - 1];
 
         //
-        const T1 x = size * (1. + (k % sx)) / (1 + sx);
-        const T1 y = size * (1. + (k / sx)) / (1 + sy);
-        const T1 z = x*y;
+        const double x = size * (1. + (k % sx)) / (1 + sx);
+        const double y = size * (1. + (k / sx)) / (1 + sy);
+        const double z = x*y;
 
         //
-        std::uniform_real_distribution<T1> rand_real(-1.0, 1.0);
-        const T1 vx = rand_real(gen);
-        const T1 vy = rand_real(gen);
-        const T1 vz = rand_real(gen);
+        std::uniform_real_distribution<double> rand_real(-1.0, 1.0);
+        const double vx = rand_real(gen);
+        const double vy = rand_real(gen);
+        const double vz = rand_real(gen);
 
 
         //
-        std::uniform_real_distribution<T2> rand_mass(0.001, 0.1);
-        const T2 m = rand_mass(gen);
+        std::uniform_real_distribution<double> rand_mass(0.001, 0.1);
+        const double m = rand_mass(gen);
 
-        std::uniform_real_distribution<T2> rand_charge(-1.0, 1.0);
-        const T2 charge=rand_charge(gen2) * 1e-19;
+        std::uniform_real_distribution<double> rand_charge(-1.0, 1.0);
+        const double charge=rand_charge(gen2) * 1e-19;
 
 
         this->parts[i]=Particle(x, y, z, vx, vy, vz, m, charge);
