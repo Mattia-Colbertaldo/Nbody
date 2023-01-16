@@ -1,6 +1,7 @@
 #include "Find_Arg.hpp"
 #include <iostream>
 #include <memory>
+#include <string>
 
 /*/
 template<typename T>
@@ -21,50 +22,10 @@ void printHelp()
     return ;
 };
 
-// Command Line Option Processing
-// we use getpot insead
-/*
-int find_arg_idx(int argc, char** argv, const std::string option) {
-    for (int i = 1; i < argc; ++i) {
-        std::string str(argv[i]) ;
-        if (option.compare(str) == 0) {
-            return i;
-        }
-    }
-    return -1;
-};
-
-
-std::string find_force_option(int argc, char** argv, const std::string option, std::string default_value) {
-    int iplace = find_arg_idx(argc, argv, option);
-
-    if (iplace >= 0 && iplace < argc - 1) {
-        return argv[iplace + 1];
-    }
-
-    return default_value;
-};
-
-std::string Find_Arg :: find_string_arg(const std::string type_of_find, const std::string option){
-    if("-o"==type_of_find)
-    {
-        return find_string_option(this->argc, this->argv, type_of_find, option);                
-    }
-    else if("-f"==type_of_find)
-    {
-        return find_force_option(this->argc, this->argv, type_of_find, option);                
-    }
-
-    return option;
-};
-
-
-*/
-
-std::string Find_Arg ::find_string_option( std::string type_of_find, std::string default_value) {
+std::string Find_Arg ::find_string_option( const std::string type_of_find, const std::string default_value) {
     
-    const char * option = type_of_find.data();
-    return cl.follow(option, default_value);
+    std::string result = cl.follow(default_value.c_str(), type_of_find.c_str());
+    return result;
 };
 
 
@@ -87,8 +48,8 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
     {
         return find_collision_option(cl("-c", "none"));
     }
-
-    return cl.follow(type_of_find, default_value);
+    const char* opt = type_of_find.c_str();
+    return cl.follow(default_value, opt);
 };
 
 
