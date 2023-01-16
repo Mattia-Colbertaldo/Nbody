@@ -60,8 +60,10 @@ std::string Find_Arg :: find_string_arg(const std::string type_of_find, const st
 
 */
 
-std::string Find_Arg ::find_string_option( const std::string type_of_find, std::string default_value) {
-    return cl.follow(type_of_find, default_value);
+std::string Find_Arg ::find_string_option( std::string type_of_find, std::string default_value) {
+    
+    const char * option = type_of_find.data();
+    return cl.follow(option, default_value);
 };
 
 

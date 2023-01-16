@@ -14,7 +14,7 @@ class Find_Arg
         };
         
         int find_int_arg( const std::string type_of_find, const int default_value);
-        std::string find_string_option(const std::string type_of_find, const std::string default_value);
+        std::string find_string_option( std::string type_of_find, const std::string default_value);
         std::unique_ptr<AbstractForce> find_force(const std::string forcename);
         
     private:
