@@ -15,9 +15,10 @@ class Simulation {
         void simulate_one_step(const std::unique_ptr<AbstractForce>& force,const int num_parts,const double size);
 
         void init_particles(const double size, const int part_seed);
-        
-        // private:
+
         std::vector<Particle> parts;
+
+        private:
         int collision;
 
 

@@ -23,7 +23,7 @@ struct Simulation {
                     const int num_loc, 
                     const std::vector<int>& displs, const std::vector<int>& sizes, const int rank);
         
-        // private:
+        //public: because needed by Output
         std::vector<particle_pos> parts_pos;
         std::vector<particle_vel_acc> parts_vel_acc_loc;
         std::vector<double> masses;

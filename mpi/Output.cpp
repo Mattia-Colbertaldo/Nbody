@@ -14,7 +14,7 @@
 */
 
 // I/O routines
-void Output :: save(const std::vector<particle_pos>& parts, const double size, const int& nsteps) {
+void Output :: save(std::ofstream& fsave, const std::vector<particle_pos>& parts, const double size, const int& nsteps) {
     int num_parts = parts.size();
     
     static bool first = true;
@@ -33,7 +33,7 @@ void Output :: save(const std::vector<particle_pos>& parts, const double size, c
 };
 
 
-void Output :: save_output( const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size)
+void Output :: save_output(std::ofstream& fsave, const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size)
 {
     if (fsave.good() && (step % savefreq) == 0)
     {

@@ -46,19 +46,18 @@ public:
     // thrust::device_ptr<double> ybuf;
     // thrust::device_ptr<double> zbuf;
 
-    thrust::device_vector<double> bufferx;
-    thrust::device_vector<double> buffery;
-    thrust::device_vector<double> bufferz;
-
-    thrust::host_vector<double> host_bufferx;
-    thrust::host_vector<double> host_buffery;
-    thrust::host_vector<double> host_bufferz;
-
    
 
     private:
-     int num_parts;
-     std::ofstream& fsave
+        int num_parts;
+        std::ofstream& fsave;
+        //CAMBIAMENTO: SONO PRIVATI
+        thrust::device_vector<double> bufferx;
+        thrust::device_vector<double> buffery;
+        thrust::device_vector<double> bufferz;
+        thrust::host_vector<double> host_bufferx;
+        thrust::host_vector<double> host_buffery;
+        thrust::host_vector<double> host_bufferz;
 
 };
 #endif

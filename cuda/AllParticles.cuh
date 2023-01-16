@@ -115,20 +115,23 @@ struct AllParticles {
         double* daz;
         double* dmasses;
         double* dcharges;
-        const int num_parts;
-        double size;
-        std::shared_ptr<AbstractForce> force;
 
-        int th_per_block = 10;
-        dim3 block_sizes;
-        // block_sizes.x;
-        // block_sizes.y;
-        // block_sizes.z;
-        // dim3 grid_sizes;
-        dim3 grid_sizes;
-        // grid_sizes.x;
-        // grid_sizes.y;
-        // grid_sizes.z;
+        private:
+        //CAMBIAMENTO 2: private
+            const int num_parts;
+            double size;
+            std::shared_ptr<AbstractForce> force;
+
+            int th_per_block = 10;
+            dim3 block_sizes;
+            // block_sizes.x;
+            // block_sizes.y;
+            // block_sizes.z;
+            // dim3 grid_sizes;
+            dim3 grid_sizes;
+            // grid_sizes.x;
+            // grid_sizes.y;
+            // grid_sizes.z;
 
         
 

@@ -20,6 +20,7 @@ class Simulation {
         
         // private:
         std::unique_ptr<AllParticles> parts;
+        private:
         int collision;
 
 

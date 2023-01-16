@@ -20,7 +20,21 @@
 class Output
 {
 public:
-    Output(const std::string savename, const int rank):fsave(std::ofstream(savename)){
+    Output(){};
+    // I/O routines
+    void save(std::ofstream& fsave, const std::vector<particle_pos>& parts, const double size, const int& nsteps);
+
+    void save_output(std::ofstream& fsave, const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size);
+};
+#endif
+
+
+
+/*
+class Output
+{
+public:
+    Output(const std::string &savename, const int rank):fsave(savename){
         if(rank != 0) fsave.close();
     };
     ~Output(){
@@ -34,6 +48,9 @@ public:
     void save_output( const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size);
 
     private:
-     std::ofstream& fsave;
+        std::ofstream &fsave;
+        Output(const Output&);
+        Output& operator=(const Output&);
 };
 #endif
+*/

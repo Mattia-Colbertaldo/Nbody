@@ -27,6 +27,6 @@ public:
     void save_output( const int savefreq, const std::vector<Particle>& parts , const int& step,  const int& nsteps, const double & size);
 
     private:
-     std::ofstream& fsave
+     std::ofstream& fsave;
 };
 #endif
