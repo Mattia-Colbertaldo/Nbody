@@ -3,6 +3,8 @@
 
 #include "Particle.hpp"
 
+template <typename T1, typename T2>
+
 class AbstractForce
 {
 public:

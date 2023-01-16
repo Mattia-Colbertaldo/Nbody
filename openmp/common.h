@@ -9,8 +9,8 @@
 #include <iostream>
 
 
-namespace common_h{
 
+namespace common_h{
     // Program Constants
     constexpr unsigned int nsteps = 1000;
     constexpr unsigned int savefreq = 1;

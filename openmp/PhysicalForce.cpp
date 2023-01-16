@@ -5,10 +5,10 @@ using namespace common_h;
 
 void RepulsiveForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
+    T1 dx = neighbor.x - p.x;
+    T1 dy = neighbor.y - p.y;
+    T1 dz = neighbor.z - p.z;
+    T1 r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
 
@@ -48,10 +48,10 @@ void RepulsiveForce :: force_application(Particle& p, Particle& neighbor, const 
     }
 
     r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
+    T1 r = std:: sqrt(r2);
 
     // Very simple short-range repulsive force
-    double coef = neighbor.mass*(1 - cutoff / r) / r2 ;
+    T1 coef = neighbor.mass*(1 - cutoff / r) / r2 ;
     p.ax += coef * dx;
     p.ay += coef * dy;
     p.az += coef * dz;
@@ -63,10 +63,10 @@ void RepulsiveForce :: force_application(Particle& p, Particle& neighbor, const 
   
 void GravitationalForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
+    T1 dx = neighbor.x - p.x;
+    T1 dy = neighbor.y - p.y;
+    T1 dz = neighbor.z - p.z;
+    T1 r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
@@ -105,10 +105,10 @@ void GravitationalForce :: force_application(Particle& p, Particle& neighbor, co
     }
 
     r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
+    T1 r = std:: sqrt(r2);
 
     // Very simple short-range repulsive force
-    double coef =  (G * neighbor.mass / r2) ;
+    T1 coef =  (G * neighbor.mass / r2) ;
 
     p.ax += coef * dx;
     p.ay += coef * dy;
@@ -121,10 +121,10 @@ void GravitationalForce :: force_application(Particle& p, Particle& neighbor, co
 
 void GravitationalAssistForce:: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
+    T1 dx = neighbor.x - p.x;
+    T1 dy = neighbor.y - p.y;
+    T1 dz = neighbor.z - p.z;
+    T1 r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
 
@@ -163,8 +163,8 @@ void GravitationalAssistForce:: force_application(Particle& p, Particle& neighbo
     }
 
     r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
-    double coef;
+    T1 r = std:: sqrt(r2);
+    T1 coef;
 
     // Very simple short-range repulsive force
     if(r2>0.0001){
@@ -189,10 +189,10 @@ void GravitationalAssistForce:: force_application(Particle& p, Particle& neighbo
      
 void ProtonForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
+    T1 dx = neighbor.x - p.x;
+    T1 dy = neighbor.y - p.y;
+    T1 dz = neighbor.z - p.z;
+    T1 r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
@@ -230,8 +230,8 @@ void ProtonForce :: force_application(Particle& p, Particle& neighbor, const int
     }
 
     r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
-    double coef =  K * proton_charge * proton_charge / r2  ;
+    T1 r = std:: sqrt(r2);
+    T1 coef =  K * proton_charge * proton_charge / r2  ;
     
 
     p.ax += coef * dx;
@@ -247,10 +247,10 @@ void ProtonForce :: force_application(Particle& p, Particle& neighbor, const int
 void CoulombForce :: force_application(Particle& p, Particle& neighbor, const int collision) const {
     
     // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
+    T1 dx = neighbor.x - p.x;
+    T1 dy = neighbor.y - p.y;
+    T1 dz = neighbor.z - p.z;
+    T1 r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
     float m_p = p.mass;
     float m_neigh = neighbor.mass;
     // Check if the two Particles should interact
@@ -288,8 +288,8 @@ void CoulombForce :: force_application(Particle& p, Particle& neighbor, const in
     }
 
     r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
-    double coef = std::pow(scale, 2) * K * p.charge * neighbor.charge / r2  ;
+    T1 r = std:: sqrt(r2);
+    T1 coef = std::pow(scale, 2) * K * p.charge * neighbor.charge / r2  ;
     
 
     p.ax += coef * dx;
