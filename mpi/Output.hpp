@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include "common.h"
 
 
 #include "Simulation.hpp"
@@ -23,9 +24,9 @@ class Output
 public:
     Output(std::string filename) : filename(filename){};
     // I/O routines
-    void save(const std::vector<particle_pos>& parts, const double size, const int& nsteps);
+    void save(const std::vector<particle_pos>& parts, const double size);
 
-    void save_output(const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size);
+    void save_output(const std::vector<particle_pos>& parts , const int& step, const double & size);
 
 private:
     std::ostringstream strstream;
@@ -48,9 +49,9 @@ public:
     
 
     // I/O routines
-    void save( const std::vector<particle_pos>& parts, const double size, const int& nsteps);
+    void save( const std::vector<particle_pos>& parts, const double size;
 
-    void save_output( const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size);
+    void save_output( const int savefreq, const std::vector<particle_pos>& parts , const int& step, const double & size);
 
     private:
         std::ofstream &fsave;

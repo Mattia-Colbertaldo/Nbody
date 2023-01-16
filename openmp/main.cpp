@@ -37,9 +37,8 @@ int main(int argc, char** argv) {
 
     // Open Output File
     std::string savename = finder.find_string_option("-o", "out.txt");
-    if (savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
+    if (savename != "") std::cout << "Output: " << savename << "..." << std::endl;
     std::ofstream fsave(savename);
-    if (savename != "") std::cout << "File created." << std::endl;
 
     //Find force
     std::string forcename = finder.find_string_option("-f", "repulsive");
@@ -48,7 +47,7 @@ int main(int argc, char** argv) {
 
     //find collision type
     int collision = finder.find_int_arg("-c", 0);
-    std::cout << "Choosing " <<  collision << " collision type..." << std::endl;
+    std::cout << "Collision: " <<  collision << std::endl;
 
 
     
@@ -91,22 +90,19 @@ int main(int argc, char** argv) {
 
     
     Simulation simulation = Simulation(num_parts, collision);
-    std::cout << "Trying to init particles..." << std::endl;
+    std::cout << "Trying to init particles...";
     simulation.init_particles(size, part_seed);
     
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
 
-    std::cout << "Trying to init simulation..." << std::endl;
-    std::cout << "Init simulation ended." << std::endl;
-
     auto init_time = std::chrono::steady_clock::now();
     std::chrono::duration<double> diff_1 = init_time - start_time;
     double seconds_1 = diff_1.count();
-    std::cout << "initialization Time = " << seconds_1 << " seconds\n";
+    std::cout << seconds_1 << " seconds\n";
 
-Output output = Output();
-output.save(fsave, simulation.parts , size, nsteps);
+Output output = Output(savename);
+output.save(simulation.parts , size);
 #ifdef _OPENMP
 std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\nRunning "
           << num_th << " thread(s)." <<std::endl;
@@ -123,7 +119,7 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
             #pragma omp master
             #endif
             {
-                output.save_output(fsave, savefreq, simulation.parts , step, nsteps, size);
+                output.save_output(simulation.parts , step, size);
             }
             
         }

@@ -1,7 +1,7 @@
 CMakeFiles/mpi.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/Nbody/mpi/main.cpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/Nbody/mpi/common.h \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -225,6 +225,7 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
+<<<<<<< HEAD
  /home/jellyfish/shared-folder/Nbody/mpi/Find_Arg.hpp \
  /home/jellyfish/shared-folder/Nbody/mpi/PhysicalForce.hpp \
  /home/jellyfish/shared-folder/Nbody/mpi/Particle.hpp \
@@ -238,13 +239,25 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_heap.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/sstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/sstream.tcc \
+=======
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Find_Arg.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Particle.hpp \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Output.hpp \
+>>>>>>> c74578bbf5c2e26a78626c3c60cbace7f93db44a
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/codecvt.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/basic_file.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++io.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/fstream.tcc \
+<<<<<<< HEAD
  /home/jellyfish/shared-folder/Nbody/mpi/Output.hpp \
  /home/jellyfish/shared-folder/Nbody/mpi/Simulation.hpp \
+=======
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/sstream \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/sstream.tcc \
+ /home/jellyfish/shared-folder/nbody/Nbody/mpi/Simulation.hpp \
+>>>>>>> c74578bbf5c2e26a78626c3c60cbace7f93db44a
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \
