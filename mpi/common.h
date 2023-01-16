@@ -15,10 +15,10 @@ namespace common_h{
     constexpr unsigned int savefreq = 1;
     constexpr double density = 0.0005;
     constexpr double cutoff  = 0.01 * 100;
-    constexpr double min_r   = 0.01;
+    constexpr double min_r   = 0.01 / 1000;
     constexpr double dt      = 0.0005;
 
-    constexpr double scale = 1e9;
+    constexpr double scale = 1e11;
 
     constexpr double G            = 6.67e-11 * scale;
     constexpr double K            = 8.98e9 * scale;

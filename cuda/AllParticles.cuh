@@ -23,6 +23,8 @@
 #include <thrust/zip_function.h>
 #include <thrust/iterator/zip_iterator.h>
 
+using namespace common_h;
+
 struct AllParticles {
     
         public:
@@ -116,22 +118,17 @@ struct AllParticles {
         double* dmasses;
         double* dcharges;
 
+        dim3 block_sizes;
+        dim3 grid_sizes;
+        int th_per_block = 10;
+
         private:
         //CAMBIAMENTO 2: private
             const int num_parts;
             double size;
             std::shared_ptr<AbstractForce> force;
 
-            int th_per_block = 10;
-            dim3 block_sizes;
-            // block_sizes.x;
-            // block_sizes.y;
-            // block_sizes.z;
-            // dim3 grid_sizes;
-            dim3 grid_sizes;
-            // grid_sizes.x;
-            // grid_sizes.y;
-            // grid_sizes.z;
+            
 
         
 

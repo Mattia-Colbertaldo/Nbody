@@ -66,15 +66,25 @@ std::unique_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename)
 {
     std::unique_ptr<AbstractForce> force;
 
-    if(forcename.compare("gravitational")==0) force = make_unique<GravitationalForce>();
+    if(forcename.compare("gravitational")==0){
+        force = make_unique<GravitationalForce>();
+    }
     
-    else if(forcename.compare("assist")==0) force = make_unique<GravitationalAssistForce>();
+    else if(forcename.compare("assist")==0){
+        force = make_unique<GravitationalAssistForce>();
+    }
     
-    else if(forcename.compare("proton")==0) force = make_unique<ProtonForce>();
+    else if(forcename.compare("proton")==0){
+        force = make_unique<ProtonForce>();
+    }
     
-    else if(forcename.compare("coulomb")==0) force = make_unique<CoulombForce>();
+    else if(forcename.compare("coulomb")==0){
+        force = make_unique<CoulombForce>();
+    }
 
-    else force = make_unique<RepulsiveForce>();
+    else{
+        force = make_unique<RepulsiveForce>();
+    }
 
     return force;
     

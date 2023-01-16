@@ -2,6 +2,7 @@
 #define HH__OUTPUT__HH
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 
 #include "Simulation.hpp"
@@ -20,11 +21,15 @@
 class Output
 {
 public:
-    Output(){};
+    Output(std::string filename) : filename(filename){};
     // I/O routines
-    void save(std::ofstream& fsave, const std::vector<particle_pos>& parts, const double size, const int& nsteps);
+    void save(const std::vector<particle_pos>& parts, const double size, const int& nsteps);
 
-    void save_output(std::ofstream& fsave, const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size);
+    void save_output(const int savefreq, const std::vector<particle_pos>& parts , const int& step,  const int& nsteps, const double & size);
+
+private:
+    std::ostringstream strstream;
+    std::string filename;
 };
 #endif
 

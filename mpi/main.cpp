@@ -77,17 +77,6 @@ int main(int argc, char** argv) {
             return 0;
         }
 
-
-
-        //Find force
-        forcename = finder.find_string_arg("-f", "repulsive");
-        if (forcename != "") std::cout << "Choosing non default force " <<  forcename << "..." << std::endl;
-        else{
-            std::string def="default";
-            forcename= &def[0];
-            std::cout << "Choosing default force..." << std::endl;
-        }
-
         // Initialize Particles
         num_parts = finder.find_int_arg("-n", 1000);
     
@@ -106,6 +95,10 @@ int main(int argc, char** argv) {
    }
 
    
+
+    //Find force
+    forcename = finder.find_string_arg("-f", "repulsive");
+
     std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
     
     // the local size is `n / size` plus 1 if the reminder `n % size` is greater than `rank`
@@ -123,8 +116,8 @@ int main(int argc, char** argv) {
    
     Simulation simulation = Simulation(num_parts, num_loc);
     
-    if (!rank) std::cout << "Trying to init particles..." << std::endl;
-    MPI_Datatype mpi_parts_pos_type=simulation.init_particles(num_parts, size, part_seed, num_loc, displs, sizes, rank); 
+    if (!rank) std::cout << "Initialization: ";
+    MPI_Datatype mpi_parts_pos_type=simulation.init_particles(num_parts, size, part_seed, num_loc, displs, sizes, rank);
 
     // Algorithm
     auto start_time = std::chrono::steady_clock::now();
@@ -133,12 +126,12 @@ int main(int argc, char** argv) {
         auto init_time = std::chrono::steady_clock::now();
         std::chrono::duration<double> diff_1 = init_time - start_time;
         double seconds_1 = diff_1.count();
-        std::cout << "initialization Time = " << seconds_1 << " seconds\n";
+        std::cout << seconds_1 << " seconds\n";
     }
 
-    Output output= Output();
+    Output output= Output(savename);
   
-    if(!rank) output.save(fsave, simulation.parts_pos , size, nsteps);
+    if(rank == 0) output.save(simulation.parts_pos , size, nsteps);
 
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
@@ -154,7 +147,7 @@ int main(int argc, char** argv) {
         // Save state if necessary
         if(rank==0)
         {
-            output.save_output(fsave, savefreq, simulation.parts_pos , step, nsteps, size);
+            output.save_output(savefreq, simulation.parts_pos , step, nsteps, size);
         }
         
     }

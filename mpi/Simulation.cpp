@@ -104,7 +104,7 @@ MPI_Datatype Simulation :: init_particles(
             parts_vel_acc_temp[i].vy = rand_real(gen);
             parts_vel_acc_temp[i].vz = rand_real(gen);
             
-            std::uniform_real_distribution<double> rand_mass(0.01, 1);
+            std::uniform_real_distribution<double> rand_mass(1, 2);
             
             double m = rand_mass(gen);
            
@@ -118,19 +118,13 @@ MPI_Datatype Simulation :: init_particles(
             
 
         }
-        
-        
-        //Saving my data (i'm rank 0)
-        for(int i=0; i<num_loc; i++){
-            parts_vel_acc_loc[i].vx = parts_vel_acc_temp[i].vx;
-            parts_vel_acc_loc[i].vy = parts_vel_acc_temp[i].vy;
-            parts_vel_acc_loc[i].vz = parts_vel_acc_temp[i].vz;
-        }
-         
+
     }
+
     
     MPI_Scatterv( &parts_vel_acc_temp[0] , &sizes[0] , &displs[0], mpi_part_vel_acc_type ,
                   &(parts_vel_acc_loc[0]) , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
+    // if(rank==2) std::cout << "Rank 2: v: " << parts_vel_acc_loc[0].vx << " a: " << parts_vel_acc_loc[0].ax << std::endl;
     MPI_Bcast( &masses[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &charges[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
     MPI_Bcast(&parts_pos[0] , num_parts, mpi_parts_pos_type , 0 , MPI_COMM_WORLD);
@@ -154,15 +148,14 @@ void Simulation :: simulate_one_step(int num_parts, int num_loc, int displ_loc, 
     // Ogni processore aggiorna le particelle nel range [mpi_rank*N, (mpi_rank+1)*N).
     // Notate che per utilizzare apply_force e move vi servono posizione, velocità e massa
     // delle particelle in [mpi_rank*N, (mpi_rank+1)*N) e solo posizione e massa delle particelle in [0, N)
-
+    // std::cout << displ_loc << " v: " << parts_vel_acc_loc[10].vx << " a: " << parts_vel_acc_loc[10].ax << std::endl;
     for (int i = 0; i < num_loc; ++i) {
         this->parts_vel_acc_loc[i].ax = this->parts_vel_acc_loc[i].ay = this->parts_vel_acc_loc[i].az= 0.;
-        for (int j = 0; j < num_parts; ++j) {
-            if(i+displ_loc != j) force->force_application(this->parts_pos[i], this->parts_pos[j], this->parts_vel_acc_loc[i], this->masses[j], 
-            this->charges[i], this->charges[j]);
+        for (int j = 0; j < num_parts && j != (i+displ_loc); ++j) {
+            force->force_application(this->parts_pos[i+displ_loc], this->parts_pos[j], this->parts_vel_acc_loc[i], this->masses[j], 
+            this->charges[i+displ_loc], this->charges[j]);
         }
     }
-
     // Move Particles
     for (int i = 0; i < num_loc; ++i) {
         this->parts_pos[i+displ_loc].move(size, this->parts_vel_acc_loc[i]);
