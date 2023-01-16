@@ -21,7 +21,7 @@ void printHelp()
     return ;
 };
 
-std::string Find_Arg ::find_string_option( const std::string type_of_find, const std::string default_value) {
+std::string Find_Arg::find_string_option ( const std::string type_of_find, const std::string default_value) const{
     
     std::string result = cl.follow(default_value.c_str(), type_of_find.c_str());
     return result;
@@ -35,7 +35,7 @@ int find_collision_option(const std::string input) {
     return 0;
 };
 
-int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_value){
+int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_value) const{
     if(type_of_find== "-h"){
         if(cl.search("-h")) {
             printHelp();
@@ -52,7 +52,7 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
 };
 
 
-std::unique_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename)
+std::unique_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename) const
 {
     std::cout << forcename << std::endl;
     std::unique_ptr<AbstractForce> force;   

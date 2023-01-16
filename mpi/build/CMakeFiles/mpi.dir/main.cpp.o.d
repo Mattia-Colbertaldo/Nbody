@@ -228,14 +228,22 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /home/jellyfish/shared-folder/Nbody/mpi/Find_Arg.hpp \
  /home/jellyfish/shared-folder/Nbody/mpi/PhysicalForce.hpp \
  /home/jellyfish/shared-folder/Nbody/mpi/Particle.hpp \
- /home/jellyfish/shared-folder/Nbody/mpi/Output.hpp \
+ /home/jellyfish/shared-folder/Nbody/mpi/GetPot \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/assert.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/string.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/strings.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/algorithm \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algo.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/algorithmfwd.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_heap.h \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/sstream \
+ /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/sstream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/codecvt.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/basic_file.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++io.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/fstream.tcc \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/sstream \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/sstream.tcc \
+ /home/jellyfish/shared-folder/Nbody/mpi/Output.hpp \
  /home/jellyfish/shared-folder/Nbody/mpi/Simulation.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/base/include/mpi_portable_platform.h \
@@ -244,6 +252,4 @@ CMakeFiles/mpi.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ctime \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/parse_numbers.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cstring \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/string.h \
- /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/strings.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/math.h

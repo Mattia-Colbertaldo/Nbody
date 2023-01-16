@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     int num_th;
 
     Find_Arg finder= Find_Arg(argc, argv);
-    std::string savename = finder.find_string_arg("-o", "out.txt");
+    std::string savename = finder.find_string_option("-o", "out.txt");
     if(rank==0 && savename != "") std::cout << "Creating file " << savename << "..." << std::endl;
     std::ofstream fsave(savename);
     if (rank == 0 && savename != "") std::cout << "File created." << std::endl;
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
    
 
     //Find force
-    forcename = finder.find_string_arg("-f", "repulsive");
+    forcename = finder.find_string_option("-f", "repulsive");
 
     std::unique_ptr<AbstractForce> force= finder.find_force(forcename);
     
