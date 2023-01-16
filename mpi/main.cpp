@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
 
     Output output= Output(savename);
   
-    if(rank == 0) output.save(simulation.parts_pos , size, nsteps);
+    if(rank == 0) output.save(simulation.parts_pos , size);
 
     //for nel tempo: non parallelizzare
     for (int step = 0; step < nsteps; ++step) {
@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
         // Save state if necessary
         if(rank==0)
         {
-            output.save_output(savefreq, simulation.parts_pos , step, nsteps, size);
+            output.save_output(simulation.parts_pos, step, size);
         }
         
     }

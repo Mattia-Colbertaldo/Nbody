@@ -12,9 +12,9 @@
     La classe gestisce dietro le quinte l’output, in particolare avrà un metodo save che controlla implicitamente a quale step siamo,
     se a questo step va effettuato l’output e se la risposta è affermativa solo il rank 0 scrive su file. 
 */
-
+using namespace common_h;
 // I/O routines
-void Output :: save( const std::vector<Particle>& parts, const double size, const int& nsteps) {
+void Output :: save( const std::vector<Particle>& parts, const double size) {
     int num_parts = parts.size();
     
     static bool first = true;
@@ -32,11 +32,12 @@ void Output :: save( const std::vector<Particle>& parts, const double size, cons
 };
 
 
-void Output :: save_output( const int savefreq, const std::vector<Particle>& parts , const int& step, const int& nsteps, const double & size)
+void Output :: save_output( const std::vector<Particle>& parts , const int& step, const double & size)
 {
     if (strstream.good() && (step % savefreq) == 0)
     {
-        save(parts, size, nsteps);
+        save(parts, size);
+        if(step == nsteps-1) std::ofstream(filename) << this->strstream.str();
     }
     if(step > 0){
         if (step%10 == 0){

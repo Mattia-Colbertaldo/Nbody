@@ -14,8 +14,8 @@
     La classe gestisce dietro le quinte l’output, in particolare avrà un metodo save che controlla implicitamente a quale step siamo,
     se a questo step va effettuato l’output e se la risposta è affermativa solo il rank 0 scrive su file. 
 */
-
-void Output::save( const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps){
+using namespace common_h;
+void Output::save( const std::unique_ptr<AllParticles> & parts, const double size){
     
   static bool first = true;
 
@@ -36,7 +36,7 @@ void Output::save( const std::unique_ptr<AllParticles> & parts, const double siz
   cudaDeviceSynchronize();
 };
 
-void Output::save_output( const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size){
+void Output::save_output(const std::unique_ptr<AllParticles> & parts , const int& step, const double & size){
     
     thrust::copy(parts->x.begin(), parts->x.end(), &bufferx[num_parts*step]);
     thrust::copy(parts->y.begin(), parts->y.end(), &buffery[num_parts*step]);
@@ -55,7 +55,7 @@ void Output::save_output( const int savefreq, const std::unique_ptr<AllParticles
         thrust::copy(bufferx.begin(), bufferx.end(), host_bufferx.begin());
         thrust::copy(buffery.begin(), buffery.end(), host_buffery.begin());
         thrust::copy(bufferz.begin(), bufferz.end(), host_bufferz.begin());
-        std::cout << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+        std::cout << ((clock() - t)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
         std::cout << "Saving: ";
         t = clock();
         for(size_t i = 0; i < num_parts*nsteps; i++){
@@ -67,7 +67,7 @@ void Output::save_output( const int savefreq, const std::unique_ptr<AllParticles
             strstream <<  host_bufferx[i] << " " << host_buffery[i] << " " << host_bufferz[i] << "\n";
         }
         std::ofstream(filename) << strstream.str();
-        std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+        std::cout << "Saving: " << ((clock() - t)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
 
     }
 };

@@ -4,6 +4,7 @@
 #include <vector>
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
+#include "common.cuh"
 #include "AllParticles.cuh"
 #include <sstream>
 // =================
@@ -34,9 +35,9 @@ public:
 
     };
     // I/O routines
-    void save( const std::unique_ptr<AllParticles> & parts, const double size, const int& nsteps);
+    void save( const std::unique_ptr<AllParticles> & parts, const double size);
 
-    void save_output( const int savefreq, const std::unique_ptr<AllParticles> & parts , const int& step,  const int& nsteps, const double & size);
+    void save_output( const std::unique_ptr<AllParticles> & parts , const int& step, const double & size);
  
 
     private:

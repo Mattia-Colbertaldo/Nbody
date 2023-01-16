@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include "Particle.hpp"
+#include "common.h"
 // =================
 // Helper Functions
 // =================
@@ -21,9 +22,9 @@ class Output
 public:
     Output(std::string filename) : filename(filename){};
     // I/O routines
-    void save(const std::vector<Particle>& parts, const double size, const int& nsteps);
+    void save(const std::vector<Particle>& parts, const double size);
 
-    void save_output(const int savefreq, const int savefreq, const std::vector<Particle>& parts , const int& step,  const int& nsteps, const double & size);
+    void save_output(const std::vector<Particle>& parts , const int& step, const double & size);
 
 private:
     std::ostringstream strstream;

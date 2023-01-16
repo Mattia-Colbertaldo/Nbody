@@ -118,11 +118,11 @@ int main(int argc, char** argv)
   cudaDeviceSynchronize();
   
 
-  std::cout << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+  std::cout << ((clock() - t)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
   t = clock();
   Output output= Output(num_parts, savename);
-  output.save( s.parts, size, nsteps);
-  std::cout << "Saving: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+  output.save( s.parts, size);
+  std::cout << "Saving: " << ((clock() - t)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
   std::cout << "Now entering the for loop." << std::endl;
   t = clock();
   long t1;
@@ -131,17 +131,17 @@ int main(int argc, char** argv)
     if(step == nsteps/2) t1 = clock();
     s.simulate_one_step(force, num_parts, size);
     cudaDeviceSynchronize();
-    if(step == nsteps/2) std::cout << "Simulating one step: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+    if(step == nsteps/2) std::cout << "Simulating one step: " << ((clock() - t1)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
     if(step == nsteps/2) t1 = clock();
-    output.save_output( savefreq, s.parts , step, nsteps, size);
-    if(step == nsteps/2) std::cout << "Saving to device buffer: " << ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
+    output.save_output( s.parts , step, size);
+    if(step == nsteps/2) std::cout << "Saving to device buffer: " << ((clock() - t1)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
     else if(step == nsteps - 1){
-      savetime = ((clock() - t1)*MS_PER_SEC)/CLOCKS_PER_SEC;
+      savetime = ((clock() - t1)*1000)/CLOCKS_PER_SEC;
       std::cout << "Final Saving: " << savetime << std::endl;
     }
     if(step == nsteps/2) std::cout << "One loop iteration: " << savetime << " ms" << std::endl;
   }
-  long all_steps = ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC;
+  long all_steps = ((clock() - t)*1000)/CLOCKS_PER_SEC;
   std::cout << std::endl << "***************************************" << std::endl;
   std::cout << " + Calculations: " << all_steps-savetime << " ms [ " << ((all_steps-savetime)*100/all_steps) << " % ]" << std::endl;
   std::cout << " + Saving: " << savetime << " ms [ " << (savetime*100/all_steps) << " % ]" << std::endl;
