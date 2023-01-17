@@ -50,7 +50,7 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
     __shared__ double tile2_vz[tile_size];
 
     for(int i=0; i<tile_size; i++){
-      if(threadIdx.x < tile_size && threadIdx.y < tile_size && thy < num_parts && thx < thy ){
+      if(threadIdx.x < tile_size && threadIdx.y < tile_size && thy < num_parts && thx < num_parts && thx != thy ){
         tile1x[threadIdx.x] = x[thx];
         tile1y[threadIdx.x] = y[thx];
         tile1z[threadIdx.x] = z[thx];
@@ -68,7 +68,7 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
         tile2_vz[threadIdx.y] = vz[threadIdx.y];
       }
     }
-    __syncthreads();
+    
 
     
     double mx = tile1_masses[threadIdx.x];
@@ -79,7 +79,7 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
     // lo faccio solo per i thread la cui x < y
 
     // tiling: se sono il thread (53, 62)
-    if(thx < num_parts && thy < num_parts){
+    if(thx < num_parts && thy < num_parts && thx!=thy){
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
@@ -106,25 +106,19 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
         if(collision== 1){
           // URTO ANELASTICO:
           vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
-          vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
           vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
-          vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
           vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
-          vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
         // "unelastic" collision
         else if(collision== 2){
           // URTO ELASTICO
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
-          vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
 
           vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
-          vy[thy] = tile2_vy[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vy[threadIdx.x]*mx/(mx+my);
 
           vz[thx] = tile1_vz[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vz[threadIdx.y]*my/(mx+my);
-          vz[thy] = tile2_vz[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vz[threadIdx.x]*mx/(mx+my);
         }
         }
         return;
@@ -141,7 +135,6 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
       // az[index] += coef*dz;
 
     }
-    __syncthreads();
   
 }
 
@@ -190,7 +183,7 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
         tile2_vz[threadIdx.y] = vz[threadIdx.y];
       }
     }
-    __syncthreads();
+    
 
     
     double mx = tile1_masses[threadIdx.x];
@@ -267,7 +260,7 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
       // az[index] += coef*dz;
 
     }
-    __syncthreads();
+    
   
 }
 
@@ -319,7 +312,7 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
         tile2_vz[threadIdx.y] = vz[threadIdx.y];
       }
     }
-    __syncthreads();
+    
 
     
     double mx = tile1_masses[threadIdx.x];
@@ -395,7 +388,7 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
       // az[index] += coef*dz;
 
     }
-    __syncthreads();
+    
   
 }
 
@@ -446,7 +439,7 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
         tile2_vz[threadIdx.y] = vz[threadIdx.y];
       }
     }
-    __syncthreads();
+    
 
     
     double mx = tile1_masses[threadIdx.x];
@@ -532,7 +525,7 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
       // az[index] += coef*dz;
 
     }
-    __syncthreads();
+    
   
 }
 
@@ -582,7 +575,7 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
         tile2_vz[threadIdx.y] = vz[threadIdx.y];
       }
     }
-    __syncthreads();
+    
 
     
     double mx = tile1_masses[threadIdx.x];
@@ -665,7 +658,7 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
       // az[index] += coef*dz;
 
     }
-    __syncthreads();
+    
   
 }
 
@@ -716,7 +709,7 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
         tile2_vz[threadIdx.y] = vz[threadIdx.y];
       }
     }
-    __syncthreads();
+    
 
     
     double mx = tile1_masses[threadIdx.x];
@@ -792,7 +785,7 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
       // az[index] += coef*dz;
 
     }
-    __syncthreads();
+    
   
 }
 

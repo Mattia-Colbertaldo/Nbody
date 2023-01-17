@@ -1,4 +1,4 @@
-#include "Find_Arg.hpp"
+#include "Find_Arg.cuh"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -56,7 +56,7 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
 std::shared_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename)
 {
     std::cout << forcename << std::endl;
-    std::unique_ptr<AbstractForce> force;   
+    std::shared_ptr<AbstractForce> force;   
     if(forcename.compare("gravitational")==0){
         std::cout << "Gravitational force chosen." << std::endl;
         force = std::make_shared<GravitationalForce>();

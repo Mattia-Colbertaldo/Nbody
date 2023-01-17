@@ -74,6 +74,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.3
 C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\include\random
 C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\include\sal.h
 C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\include\sstream
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\include\stdarg.h
 C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\include\stdexcept
 C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\include\stdint.h
 C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.34.31933\include\streambuf
@@ -733,6 +734,7 @@ C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\include\vector_types.h
 C:\Users\matti\shared-folder\nbody\Nbody\cuda\AllParticles.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\cuda\common.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\cuda\Find_Arg.cuh
+C:\Users\matti\shared-folder\nbody\Nbody\cuda\GetPot
 C:\Users\matti\shared-folder\nbody\Nbody\cuda\Output.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\cuda\PhysicalForce.cuh
 C:\Users\matti\shared-folder\nbody\Nbody\cuda\Simulation.cuh
