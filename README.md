@@ -45,7 +45,11 @@ This will create a serial.parts.out file with the particle positions after each 
 
             Nbody> mkdir build
             Nbody> cd build
-            Nbody/build> cmake ..\src\cuda
+            Nbody\build> cmake ..\src\cuda
+        
+        This will produce a solution file (cuda.sln). Build that solution in Visual Studio, then run with:
+
+            Nbody\build> .\Debug\cuda.exe [args]
 
 * MPI:
     
@@ -71,7 +75,7 @@ This will create a serial.parts.out file with the particle positions after each 
 
     * Example:
         
-            python .\3drender.py save.txt
+            python .\3drender.py ..\build\out.txt
             
  Quoting of the sources:
  the part of the code in the "omp" directory was written on the guidance of https://sites.google.com/lbl.gov/cs267-spr2022/hw-2-1?authuser=0!!br0ken
