@@ -1,0 +1,3 @@
+C:/Users/matti/shared-folder/nbody/Nbody/build/CMakeFiles/cuda_test.dir
+C:/Users/matti/shared-folder/nbody/Nbody/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/matti/shared-folder/nbody/Nbody/build/CMakeFiles/ZERO_CHECK.dir

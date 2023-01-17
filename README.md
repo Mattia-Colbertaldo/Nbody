@@ -2,17 +2,17 @@
 
 By default, the program runs with 1000 particles. The number of particles can be changed with the "-n" command line parameter:
 
-    student@nid02346:~/hw2-1/build> ./serial -n 10000
+    Nbody/build> ./serial -n 10000
     Simulation Time = 195.029 seconds for 10000 particles.
 
 If we rerun the program, the initial positions and velocities of the particles will be randomized because the particle seed is unspecified. By default, the particle seed will be unspecified; this can be changed with the "-s" command line parameter:
 
-    student@nid02346:~/hw2-1/build> ./serial -s 150
+    Nbody/build> ./serial -s 150
     Simulation Time = 1.45459 seconds for 1000 particles.
 
 This will set the particle seed to 150 which initializes the particles in a reproducible way. You can print the particle positions to a file specified with the "-o" parameter:
 
-    student@nid02346:~/hw2-1/build> ./serial -o serial.parts.out
+    Nbody/build> ./serial -o serial.parts.out
     Simulation Time = 1.78357 seconds for 1000 particles.
 
 This will create a serial.parts.out file with the particle positions after each step listed. You can use the hw2-rendering tool to convert this into a .gif file of your particles.
@@ -21,24 +21,35 @@ This will create a serial.parts.out file with the particle positions after each 
 
     You can use the "-h" command line parameter to print the help menu summarizing the parameter options:
 
-        student@nid02346:~/hw2-1/build> ./serial -h
+        Nbody/build> ./serial -h
         Options:
         -h: see this help
         -n <int>: set number of particles
         -o <filename>: set the output file name
         -s <int>: set particle initialization seed
+        -c [0-1-2]: set collision type (not available in mpi):
+            0: no collisions (default)
+            1: elastic collision
+            2: unelastic collision
         -t <int>: set number of threads (working only in parallel mode) [default = 8]
 
 * Compiling:
+    * Serial, OpenMP and MPI:
 
-        ../hw2-x> mkdir build
-        ../hw2-x> cd build
-        ../hw2-x> cmake ..
-        ../hw2-x> make
+            Nbody> mkdir build
+            Nbody> cd build
+            Nbody/build> cmake ..
+    * CUDA:
+
+        Compiling CUDA requires the NVIDIA GPU Computing Toolkit installed, so in the correct machine run:
+
+            Nbody> mkdir build
+            Nbody> cd build
+            Nbody/build> cmake ..\src\cuda
 
 * MPI:
     
-    * If you are using docker and the ptrace permissions can't be fixed, run the following command before launching the jobs:
+    * If you are using Docker and the ptrace permissions can't be fixed, run the following command before launching the jobs:
 
             export OMPI_MCA_btl_vader_single_copy_mechanism=none
 
@@ -56,11 +67,11 @@ This will create a serial.parts.out file with the particle positions after each 
 
     * Synopsis:
 
-            3drender.py <input_file.txt>
+            python 3drender.py <input_file.txt>
 
     * Example:
         
-            python3 .\3drender.py save.txt
+            python .\3drender.py save.txt
             
  Quoting of the sources:
  the part of the code in the "omp" directory was written on the guidance of https://sites.google.com/lbl.gov/cs267-spr2022/hw-2-1?authuser=0!!br0ken

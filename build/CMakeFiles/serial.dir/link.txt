@@ -1,0 +1,1 @@
+/u/sw/toolchains/gcc-glibc/11.2.0/prefix/bin/g++ CMakeFiles/serial.dir/src/openmp/main.cpp.o CMakeFiles/serial.dir/src/openmp/Particle.cpp.o CMakeFiles/serial.dir/src/openmp/PhysicalForce.cpp.o CMakeFiles/serial.dir/src/openmp/Find_Arg.cpp.o CMakeFiles/serial.dir/src/openmp/Output.cpp.o CMakeFiles/serial.dir/src/openmp/Simulation.cpp.o -o serial 
