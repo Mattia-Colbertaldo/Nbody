@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
         auto init_time = std::chrono::steady_clock::now();
         std::chrono::duration<double> diff_1 = init_time - start_time;
         double seconds_1 = diff_1.count();
-        std::cout << seconds_1 << " seconds\n";
+        std::cout << seconds_1 << " seconds" << std::endl;
     }
 
     Output output= Output(savename);
