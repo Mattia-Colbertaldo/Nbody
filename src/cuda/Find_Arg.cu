@@ -32,7 +32,7 @@ std::string Find_Arg ::find_string_option( const std::string type_of_find, const
 
 int find_collision_option(const std::string input) {
     if( input == "elastic" ) return 1;
-    if( input == "unelastic" ) return 2;
+    if( input == "inelastic" ) return 2;
     return 0;
 };
 

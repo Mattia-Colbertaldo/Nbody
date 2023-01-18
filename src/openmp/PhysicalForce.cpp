@@ -22,15 +22,35 @@ void RepulsiveForce :: force_application(Particle& p, Particle& neighbor, const 
             // TODO ARGUMENT
             if(collision== 1){
             // URTO ANELASTICO:
+            #ifdef _OPENMP
+            #ifdef _OPENMP
+            #pragma omp critical
+            #endif
+            #endif
             p.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
+            #ifdef _OPENMP
+            #pragma omp critical
+            #endif
             p.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
+            #ifdef _OPENMP
+            #pragma omp critical
+            #endif
             p.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             
+            #ifdef _OPENMP
+            #pragma omp critical
+            #endif
             neighbor.vx = (m_p*p.x + m_neigh*neighbor.x)/(m_p+m_neigh);
+            #ifdef _OPENMP
+            #pragma omp critical
+            #endif
             neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
+            #ifdef _OPENMP
+            #pragma omp critical
+            #endif
             neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
-            // "unelastic" collision
+            // "inelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
@@ -87,7 +107,7 @@ void GravitationalForce :: force_application(Particle& p, Particle& neighbor, co
             neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
-            // "unelastic" collision
+            // "inelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
@@ -146,7 +166,7 @@ void GravitationalAssistForce:: force_application(Particle& p, Particle& neighbo
             neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
-            // "unelastic" collision
+            // "inelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
@@ -213,7 +233,7 @@ void ProtonForce :: force_application(Particle& p, Particle& neighbor, const int
             neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
-            // "unelastic" collision
+            // "inelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);
@@ -271,7 +291,7 @@ void CoulombForce :: force_application(Particle& p, Particle& neighbor, const in
             neighbor.vy = (m_p*p.y + m_neigh*neighbor.y)/(m_p+m_neigh);
             neighbor.vz = (m_p*p.z + m_neigh*neighbor.z)/(m_p+m_neigh);
             }
-            // "unelastic" collision
+            // "inelastic" collision
             else if(collision== 2){
             // URTO ELASTICO
             p.vx = p.x*(m_p-m_neigh)/(m_p + m_neigh) + 2*neighbor.x*m_neigh/(m_p+m_neigh);

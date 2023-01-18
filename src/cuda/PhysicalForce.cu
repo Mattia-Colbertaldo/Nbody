@@ -85,33 +85,19 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
       double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
-      // *** EXPERIMENTAL *** //
+      
       if(r2 < min_r*min_r){
         if(collision > 0){
-        
-        // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-        // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-        // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-
-        
-        // TODO ARGUMENT
+            
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
 
-          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
 
-          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
         }
-        // "unelastic" collision
+        // "inelastic" collision
         else if(collision== 2){
           // URTO ELASTICO
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
@@ -200,36 +186,22 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
       double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
-      // *** EXPERIMENTAL *** //
+      
       if(r2 < min_r*min_r){
         if(collision > 0){
         
-        // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-        // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-        // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-
-        
-        // TODO ARGUMENT
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "unelastic" collision
+        // "inelastic" collision
         else if(collision== 2){
           // URTO ELASTICO
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
@@ -329,36 +301,23 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
       double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
-      // *** EXPERIMENTAL *** //
+      
       if(r2 < min_r*min_r){
         if(collision > 0){
-        
-        // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-        // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-        // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-
         
         // TODO ARGUMENT
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "unelastic" collision
+        // "inelastic" collision
         else if(collision== 2){
           // URTO ELASTICO
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
@@ -456,36 +415,22 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
       double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
-      // *** EXPERIMENTAL *** //
+      
       if(r2 < min_r*min_r){
         if(collision > 0){
         
-        // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-        // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-        // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-
-        
-        // TODO ARGUMENT
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "unelastic" collision
+        // "inelastic" collision
         else if(collision== 2){
           // URTO ELASTICO
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
@@ -592,36 +537,23 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
       double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
-      // *** EXPERIMENTAL *** //
+      
       if(r2 < min_r*min_r){
         if(collision > 0){
         
-        // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-        // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-        // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-
         
-        // TODO ARGUMENT
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "unelastic" collision
+        // "inelastic" collision
         else if(collision== 2){
           // URTO ELASTICO
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
@@ -726,36 +658,23 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
       double dz = tile2z[threadIdx.y] - tile1z[threadIdx.x];
       double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
       if (r2 > cutoff * cutoff) return;
-      // *** EXPERIMENTAL *** //
+      
       if(r2 < min_r*min_r){
         if(collision > 0){
         
-        // spingo l'altra particella : applico alla mia vicina una forza uguale a F = m * a ,
-        // quindi applico a lei un'accelerazione di - a_mia * m_mia/m_sua
-        // atomicAdd((double*)(ax + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ax + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(ay + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(ay + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-        // atomicAdd((double*)(az + thy), (double)ax[thx]*masses[thx]/masses[thy]);
-        // atomicAdd((double*)(az + thx), (double)-ax[thy]*masses[thy]/masses[thx]);
-
-
         
-        // TODO ARGUMENT
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
+          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
+          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
+          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "unelastic" collision
+        // "inelastic" collision
         else if(collision== 2){
           // URTO ELASTICO
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
@@ -825,111 +744,3 @@ void CoulombForce :: force_application(double* x, double* y, double* z, double* 
     
     kernel_tiling_force_coulomb<<<grid_sizes, block_sizes>>>(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, collision);
 }
-
-
- /* 
-void GravitationalForce :: force_application() const {
-    Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
-    // Check if the two Particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
-
-    r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
-
-    // Very simple short-range repulsive force
-    double coef =  (G * neighbor.mass / r2) ;
-
-    p.ax += coef * dx;
-    p.ay += coef * dy;
-    p.az += coef * dz;
-
-    // neighbor.ax += coef * dx;
-    // neighbor.ay += coef * dy;
-    // neighbor.az += coef * dz;
-};
-
-
-void GravitationalAssistForce:: force_application() const {
-    Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
-    // Check if the two Particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
-
-    r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
-    double coef;
-
-    // Very simple short-range repulsive force
-    if(r2>0.0001){
-        coef =  G * neighbor.mass / r2 ;
-    }
-    else
-    //gravity-assist : repulsive force
-    {
-        coef = -( G * neighbor.mass / r2 ) * 3 ;
-    }
-
-    p.ax += coef * dx;
-    p.ay += coef * dy;
-    p.az += coef * dz;
-};
-
-
-
-     
-void ProtonForce :: force_application() const {
-    Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
-    // Check if the two Particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
-
-    r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
-    double coef =  K * proton_charge * proton_charge / r2  ;
-    
-
-    p.ax += coef * dx;
-    p.ay += coef * dy;
-    p.az += coef * dz;
-};
-
-
-   
-void CoulombForce :: force_application() const {
-    
-    // Calculate Distance
-    double dx = neighbor.x - p.x;
-    double dy = neighbor.y - p.y;
-    double dz = neighbor.z - p.z;
-    double r2 = std::pow(dx,2) + std::pow(dy,2) + std::pow(dz,2);
-    // Check if the two Particles should interact
-    if (r2 > cutoff * cutoff)
-        return;
-
-    r2 = fmax(r2, min_r * min_r);
-    double r = std:: sqrt(r2);
-    double coef = std::pow(scale, 2) * K * p.charge * neighbor.charge / r2  ;
-    
-
-    p.ax += coef * dx;
-    p.ay += coef * dy;
-    p.az += coef * dz;
-};
-
-
-
-
-*/
