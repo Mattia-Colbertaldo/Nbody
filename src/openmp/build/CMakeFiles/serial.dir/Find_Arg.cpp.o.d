@@ -1,7 +1,7 @@
 CMakeFiles/serial.dir/Find_Arg.cpp.o: \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Find_Arg.cpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Find_Arg.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Find_Arg.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Find_Arg.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/os_defines.h \
@@ -169,9 +169,9 @@ CMakeFiles/serial.dir/Find_Arg.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/backward/auto_ptr.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/pstl/glue_memory_defs.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/pstl/execution_defs.h \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/PhysicalForce.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Particle.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/GetPot \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Particle.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/GetPot \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/ctype.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdio.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/bits/types/__fpos_t.h \

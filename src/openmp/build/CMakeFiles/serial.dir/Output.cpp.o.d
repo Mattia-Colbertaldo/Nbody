@@ -1,7 +1,7 @@
 CMakeFiles/serial.dir/Output.cpp.o: \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Output.cpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Output.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Output.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Output.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/fstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ios \
@@ -188,8 +188,8 @@ CMakeFiles/serial.dir/Output.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/vector.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/sstream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/sstream.tcc \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Particle.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/common.h \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Particle.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/random \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/cmath \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/math.h \
