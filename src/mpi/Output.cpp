@@ -41,7 +41,8 @@ void Output :: save_output(const std::vector<particle_pos>& parts , const int& s
         if(step == nsteps-1){
             long t = clock();
             std::ofstream(filename) << this->strstream.str();
-            std::cout << ((clock() - t)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
+            std::cout << "Writing: " << ((clock() - t)*1000)/CLOCKS_PER_SEC << " ms" << std::endl;
+            return;
         }
     }
     if(step > 0 && step < nsteps - 1){

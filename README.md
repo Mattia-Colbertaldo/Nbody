@@ -63,11 +63,7 @@ This will create a serial.parts.out file with the particle positions after each 
         
             mpirun -n <number of processes> mpi [args]
 
-* Checking correctness:
-
-        path/to/correctness/check.py <file1.txt> <file2.txt>
-
-* Rendering ( Not working on Docker ) :
+* Rendering:
 
     * Synopsis:
 
