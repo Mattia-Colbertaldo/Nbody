@@ -29,11 +29,6 @@ std::string Find_Arg::find_string_option ( const std::string type_of_find, const
 
 
 
-int find_collision_option(const std::string input) {
-    if( input == "elastic" ) return 1;
-    if( input == "inelastic" ) return 2;
-    return 0;
-};
 
 int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_value) {
     if(type_of_find== "-h"){
@@ -41,11 +36,6 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
             printHelp();
             return 0;
         }
-    }
-    
-    if ("-c" == type_of_find)
-    {
-        return find_collision_option(cl("-c", "none"));
     }
     const char* opt = type_of_find.c_str();
     return cl.follow(default_value, opt);
