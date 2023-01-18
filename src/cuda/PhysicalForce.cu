@@ -91,11 +91,11 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
             
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
+          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
 
-          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
+          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
 
-          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
+          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
         }
         // "inelastic" collision
         else if(collision== 2){
@@ -192,13 +192,13 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
         
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
+          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
+          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
+          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
         // "inelastic" collision
@@ -308,13 +308,13 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
         // TODO ARGUMENT
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
+          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
+          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
+          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
         // "inelastic" collision
@@ -421,13 +421,13 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
         
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
+          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
+          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
+          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
         // "inelastic" collision
@@ -544,13 +544,13 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
         
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
+          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
+          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
+          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
         // "inelastic" collision
@@ -665,13 +665,13 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
         
         if(collision== 1){
           // URTO ANELASTICO:
-          vx[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my));
+          vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
-          vy[thx] = atomicAdd((double*)(vy +thx), (double)(mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my));
+          vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
           vy[thy] = (my*tile2_vy[threadIdx.y] + mx*tile1_vy[threadIdx.x])/(my+mx);
 
-          vz[thx] = atomicAdd((double*)(vx +thx), (double)(mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my));
+          vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
         // "inelastic" collision

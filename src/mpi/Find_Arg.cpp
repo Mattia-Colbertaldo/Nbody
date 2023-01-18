@@ -43,31 +43,25 @@ int Find_Arg :: find_int_arg( const std::string type_of_find, const int default_
 
 std::unique_ptr<AbstractForce> Find_Arg::find_force(const std::string forcename) 
 {
-    std::cout << forcename << std::endl;
     std::unique_ptr<AbstractForce> force;   
     if(forcename.compare("gravitational")==0){
-        std::cout << "Gravitational force chosen." << std::endl;
         force = std::make_unique<GravitationalForce>();
     }
     
     else if(forcename.compare("assist")==0){
-        std::cout << "Gravitational Assist force chosen." << std::endl;
         force = std::make_unique<GravitationalAssistForce>();
     }
     
     else if(forcename.compare("proton")==0){
         
-        std::cout << "Proton force chosen." << std::endl;
         force = std::make_unique<ProtonForce>();
     }
     
     else if(forcename.compare("coulomb")==0){
-        std::cout << "Coulomb force chosen." << std::endl;
         force = std::make_unique<CoulombForce>();
     }
 
     else {
-        std::cout << "Repulsive force chosen." << std::endl;
         force = std::make_unique<RepulsiveForce>();
     }
     return force;
