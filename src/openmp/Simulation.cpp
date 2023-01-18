@@ -73,7 +73,7 @@ void Simulation::simulate_one_step( const std::unique_ptr<AbstractForce>& force,
     // Compute Forces
     //int num_parts = parts.size();
     #ifdef _OPENMP
-	#pragma omp for schedule(dynamic)
+	#pragma omp for schedule(dynamic) 
     #endif
     for (int i = 0; i < num_parts; ++i) {
         parts[i].ax = parts[i].ay = parts[i].az = 0.;

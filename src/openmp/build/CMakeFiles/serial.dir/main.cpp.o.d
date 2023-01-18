@@ -1,7 +1,7 @@
 CMakeFiles/serial.dir/main.cpp.o: \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/main.cpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/main.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/common.h \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/common.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
@@ -245,10 +245,10 @@ CMakeFiles/serial.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/ostream.tcc \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/istream \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/istream.tcc \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Find_Arg.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/PhysicalForce.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Particle.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/GetPot \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Find_Arg.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Particle.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/GetPot \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/assert.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/string.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/strings.h \
@@ -266,8 +266,8 @@ CMakeFiles/serial.dir/main.cpp.o: \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/basic_file.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++io.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/fstream.tcc \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Output.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Simulation.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Output.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Simulation.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/chrono \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ratio \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/ctime \

@@ -40,7 +40,7 @@ graph = ax.scatter(data.x, data.y, data.z)
 
 anim = matplotlib.animation.FuncAnimation(fig, update_graph, nsaves+1, 
                             interval=10, blit=False)
-anim.save('myanimation.gif') 
+
 plt.show()
 
 # Save as mp4. This requires mplayer or ffmpeg to be installed (NOT WORKING)

@@ -1,9 +1,9 @@
 CMakeFiles/openmp.dir/Simulation.cpp.o: \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Simulation.cpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Simulation.cpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/stdc-predef.h \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Particle.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/Simulation.hpp \
- /home/jellyfish/shared-folder/nbody/Nbody/openmp/PhysicalForce.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Particle.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/Simulation.hpp \
+ /home/jellyfish/shared-folder/Nbody/src/openmp/PhysicalForce.hpp \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/vector \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/bits/stl_algobase.h \
  /u/sw/toolchains/gcc-glibc/11.2.0/prefix/include/c++/11.2.0/x86_64-mk-linux/bits/c++config.h \
