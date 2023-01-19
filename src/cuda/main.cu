@@ -38,9 +38,6 @@
 
 
 
-
-
-
 void DisplayHeader()
 {
     const int kb = 1024;

@@ -62,7 +62,7 @@ public:
 
 class CoulombForce : public AbstractForce
 {
-    //equal charged Particles& : all are protons
+  
 public:
    
   void force_application(double* x, double* y, double* z, double* vx, double* vy, double* vz,

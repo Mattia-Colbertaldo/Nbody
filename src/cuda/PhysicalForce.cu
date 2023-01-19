@@ -74,11 +74,6 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
     double mx = tile1_masses[threadIdx.x];
     double my = tile2_masses[threadIdx.y];
 
-    // printf("%d, %d\n", thx, thy);
-    // se io sono il thread (3,4) applico la forza a 3 e a 4
-    // lo faccio solo per i thread la cui x < y
-
-    // tiling: se sono il thread (53, 62)
     if(thx < num_parts && thy < num_parts && thx!=thy){
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
@@ -90,16 +85,16 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
         if(collision > 0){
             
         if(collision== 1){
-          // URTO ANELASTICO:
+          // inelastic collision
           vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
 
           vy[thx] = (mx*tile1_vy[threadIdx.x] + my*tile2_vy[threadIdx.y])/(mx+my);
 
           vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
         }
-        // "inelastic" collision
+        
         else if(collision== 2){
-          // URTO ELASTICO
+          // elastic collision
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
 
           vy[thx] = tile1_vy[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vy[threadIdx.y]*my/(mx+my);
@@ -109,16 +104,16 @@ kernel_super_tiling_force_gravitational(double* x, double* y, double* z, double*
         }
         return;
       }
-      // ******************** //
+      
       r2 = fmax(r2, min_r * min_r);
       double coef =  (G / r2) ;
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*my);
-      // ax[index] += coef*dx;
+      
       atomicAdd((double*)(ay + thx), (double)coef*dy*my);
-      // ay[index] += coef*dy;
+      
       atomicAdd((double*)(az + thx), (double)coef*dz*my);
-      // az[index] += coef*dz;
+      
 
     }
   
@@ -175,11 +170,7 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
     double mx = tile1_masses[threadIdx.x];
     double my = tile2_masses[threadIdx.y];
 
-    // printf("%d, %d\n", thx, thy);
-    // se io sono il thread (3,4) applico la forza a 3 e a 4
-    // lo faccio solo per i thread la cui x < y
-
-    // tiling: se sono il thread (53, 62)
+    
     if(thx < thy && thy < num_parts){
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
@@ -191,7 +182,7 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
         if(collision > 0){
         
         if(collision== 1){
-          // URTO ANELASTICO:
+          // inelastic collision
           vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
@@ -201,9 +192,9 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
           vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "inelastic" collision
+        
         else if(collision== 2){
-          // URTO ELASTICO
+          // elastic collision
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
           vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
 
@@ -216,20 +207,19 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
         }
         return;
       }
-      // ******************** //
       r2 = fmax(r2, min_r * min_r);
       double r = std::sqrt(r2);
       double coef = (1 - cutoff / r) / r2 ;
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);
-      // ax[index] += coef*dx;
+      
       atomicAdd((double*)(ay + thx), (double)coef*dy*masses[thy]);
       atomicAdd((double*)(ay + thy), (double)-coef*dy*masses[thx]);
-      // ay[index] += coef*dy;
+     
       atomicAdd((double*)(az + thx), (double)coef*dz*masses[thy]);
       atomicAdd((double*)(az + thy), (double)-coef*dz*masses[thx]);
-      // az[index] += coef*dz;
+      
 
     }
     
@@ -290,11 +280,7 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
     double mx = tile1_masses[threadIdx.x];
     double my = tile2_masses[threadIdx.y];
 
-    // printf("%d, %d\n", thx, thy);
-    // se io sono il thread (3,4) applico la forza a 3 e a 4
-    // lo faccio solo per i thread la cui x < y
-
-    // tiling: se sono il thread (53, 62)
+    
     if(thx < thy && thy < num_parts){
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
@@ -304,10 +290,9 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
       
       if(r2 < min_r*min_r){
         if(collision > 0){
-        
-        // TODO ARGUMENT
+      
         if(collision== 1){
-          // URTO ANELASTICO:
+          // inelastic collision
           vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
@@ -317,9 +302,9 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
           vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "inelastic" collision
+        
         else if(collision== 2){
-          // URTO ELASTICO
+          // elastic collision
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
           vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
 
@@ -332,19 +317,18 @@ kernel_tiling_force_gravitational(double* x, double* y, double* z, double* vx, d
         }
         return;
       }
-      // ******************** //
       r2 = fmax(r2, min_r * min_r);
       double coef =  (G / r2) ;
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*my);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*mx);
-      // ax[index] += coef*dx;
+    
       atomicAdd((double*)(ay + thx), (double)coef*dy*my);
       atomicAdd((double*)(ay + thy), (double)-coef*dy*mx);
-      // ay[index] += coef*dy;
+    
       atomicAdd((double*)(az + thx), (double)coef*dz*my);
       atomicAdd((double*)(az + thy), (double)-coef*dz*mx);
-      // az[index] += coef*dz;
+      
 
     }
     
@@ -404,11 +388,7 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
     double mx = tile1_masses[threadIdx.x];
     double my = tile2_masses[threadIdx.y];
 
-    // printf("%d, %d\n", thx, thy);
-    // se io sono il thread (3,4) applico la forza a 3 e a 4
-    // lo faccio solo per i thread la cui x < y
-
-    // tiling: se sono il thread (53, 62)
+    
     if(thx < thy && thy < num_parts){
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
@@ -420,7 +400,7 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
         if(collision > 0){
         
         if(collision== 1){
-          // URTO ANELASTICO:
+          // inelastic collision
           vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
@@ -430,9 +410,9 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
           vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "inelastic" collision
+        
         else if(collision== 2){
-          // URTO ELASTICO
+          // elastic collision
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
           vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
 
@@ -445,7 +425,6 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
         }
         return;
       }
-      // ******************** //
       r2 = fmax(r2, min_r * min_r);
       double coef;
 
@@ -461,13 +440,13 @@ kernel_tiling_force_gravitational_assist(double* x, double* y, double* z, double
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);
-      // ax[index] += coef*dx;
+      
       atomicAdd((double*)(ay + thx), (double)coef*dy*masses[thy]);
       atomicAdd((double*)(ay + thy), (double)-coef*dy*masses[thx]);
-      // ay[index] += coef*dy;
+      
       atomicAdd((double*)(az + thx), (double)coef*dz*masses[thy]);
       atomicAdd((double*)(az + thy), (double)-coef*dz*masses[thx]);
-      // az[index] += coef*dz;
+     
 
     }
     
@@ -526,11 +505,7 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
     double mx = tile1_masses[threadIdx.x];
     double my = tile2_masses[threadIdx.y];
 
-    // printf("%d, %d\n", thx, thy);
-    // se io sono il thread (3,4) applico la forza a 3 e a 4
-    // lo faccio solo per i thread la cui x < y
-
-    // tiling: se sono il thread (53, 62)
+    
     if(thx < thy && thy < num_parts){
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
@@ -543,7 +518,7 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
         
         
         if(collision== 1){
-          // URTO ANELASTICO:
+          // inelastic collision
           vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
@@ -553,9 +528,9 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
           vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "inelastic" collision
+        
         else if(collision== 2){
-          // URTO ELASTICO
+          // elastic collision
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
           vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
 
@@ -568,7 +543,6 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
         }
         return;
       }
-      // ******************** //
       // Check if the two Particles should interact
     if (r2 > cutoff * cutoff)
         return;
@@ -581,13 +555,13 @@ kernel_tiling_force_proton(double* x, double* y, double* z, double* vx, double* 
       double charge_product = charges[thy]*charges[thx] ;
       atomicAdd((double*)(ax + thx), (double)coef*dx*+charge_product);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*+charge_product);
-      // ax[index] += coef*dx;
+      
       atomicAdd((double*)(ay + thx), (double)coef*dy*+charge_product);
       atomicAdd((double*)(ay + thy), (double)-coef*dy*+charge_product);
-      // ay[index] += coef*dy;
+     
       atomicAdd((double*)(az + thx), (double)coef*dz*+charge_product);
       atomicAdd((double*)(az + thy), (double)-coef*dz*+charge_product);
-      // az[index] += coef*dz;
+      
 
     }
     
@@ -647,11 +621,9 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
     double mx = tile1_masses[threadIdx.x];
     double my = tile2_masses[threadIdx.y];
 
-    // printf("%d, %d\n", thx, thy);
-    // se io sono il thread (3,4) applico la forza a 3 e a 4
-    // lo faccio solo per i thread la cui x < y
+  
 
-    // tiling: se sono il thread (53, 62)
+    
     if(thx < thy && thy < num_parts){
       double dx = tile2x[threadIdx.y] - tile1x[threadIdx.x];
       double dy = tile2y[threadIdx.y] - tile1y[threadIdx.x];
@@ -664,7 +636,7 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
         
         
         if(collision== 1){
-          // URTO ANELASTICO:
+          // inelastic collision
           vx[thx] = (mx*tile1_vx[threadIdx.x] + my*tile2_vx[threadIdx.y])/(mx+my);
           vx[thy] = (my*tile2_vx[threadIdx.y] + mx*tile1_vx[threadIdx.x])/(my+mx);
 
@@ -674,9 +646,9 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
           vz[thx] = (mx*tile1_vz[threadIdx.x] + my*tile2_vz[threadIdx.y])/(mx+my);
           vz[thy] = (my*tile2_vz[threadIdx.y] + mx*tile1_vz[threadIdx.x])/(my+mx);
         }
-        // "inelastic" collision
+        
         else if(collision== 2){
-          // URTO ELASTICO
+          // elastic collision
           vx[thx] = tile1_vx[threadIdx.x]*(mx-my)/(mx + my) + 2*tile2_vx[threadIdx.y]*my/(mx+my);
           vx[thy] = tile2_vx[threadIdx.y]*(my-mx)/(mx + my) + 2*tile1_vx[threadIdx.x]*mx/(mx+my);
 
@@ -689,19 +661,19 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
         }
         return;
       }
-      // ******************** //
+      
       r2 = fmax(r2, min_r * min_r);
       double coef = std::pow(scale, 2) * K  / r2  ;
       double charge_product = charges[thy]*charges[thx] ;
       atomicAdd((double*)(ax + thx), (double)coef*dx*+charge_product);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*+charge_product);
-      // ax[index] += coef*dx;
+    
       atomicAdd((double*)(ay + thx), (double)coef*dy*+charge_product);
       atomicAdd((double*)(ay + thy), (double)-coef*dy*+charge_product);
-      // ay[index] += coef*dy;
+      
       atomicAdd((double*)(az + thx), (double)coef*dz*+charge_product);
       atomicAdd((double*)(az + thy), (double)-coef*dz*+charge_product);
-      // az[index] += coef*dz;
+    
 
     }
     

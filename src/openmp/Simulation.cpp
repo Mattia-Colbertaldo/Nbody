@@ -39,19 +39,19 @@ void Simulation::init_particles( const double size, const int part_seed) {
         int k = shuffle[j];
         shuffle[j] = shuffle[num_parts - i - 1];
 
-        //
+        
         const double x = size * (1. + (k % sx)) / (1 + sx);
         const double y = size * (1. + (k / sx)) / (1 + sy);
         const double z = x*y;
 
-        //
+        
         std::uniform_real_distribution<double> rand_real(-1.0, 1.0);
         const double vx = rand_real(gen);
         const double vy = rand_real(gen);
         const double vz = rand_real(gen);
 
 
-        //
+        
         std::uniform_real_distribution<double> rand_mass(0.001, 0.1);
         const double m = rand_mass(gen);
 

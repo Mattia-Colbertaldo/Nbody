@@ -3,18 +3,18 @@
 
 // Particle Data Structure
 struct particle_vel_acc {
-        double vx; // Velocity X
-        double vy; // Velocity Y
+        double vx; // Velocity 
+        double vy; 
         double vz;
-        double ax; // Acceleration X
-        double ay; // Acceleration Y
+        double ax; // Acceleration
+        double ay; 
         double az;
 };
 
 struct particle_pos {
         public:
-        double x;  // Position X
-        double y;  // Position Y
+        double x;  // Position 
+        double y;  
         double z;
 
         void move(double size, particle_vel_acc & parts_vel_acc );

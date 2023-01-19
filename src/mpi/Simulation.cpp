@@ -51,8 +51,6 @@ MPI_Datatype Simulation :: init_particles(
     MPI_Type_create_struct(nitems, blocklengths, offsets, types, &mpi_part_vel_acc_type);
     MPI_Type_commit(&mpi_part_vel_acc_type);
     
-    
-    ///////////////////////////////
 
     ////// MPI STRUCT /////////////
     
@@ -60,7 +58,7 @@ MPI_Datatype Simulation :: init_particles(
     const int nitems1=3;
     int          blocklengths1[3] = {1,1,1};
     MPI_Datatype types1[3] = {MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE};
-    //MPI_Datatype mpi_parts_pos_type;
+    
     MPI_Aint     offsets1[3];
     
     offsets1[0] = offsetof(particle_pos, x);
@@ -70,8 +68,6 @@ MPI_Datatype Simulation :: init_particles(
     MPI_Type_create_struct(nitems1, blocklengths1, offsets1, types1, &mpi_parts_pos_type);
     MPI_Type_commit(&mpi_parts_pos_type);
     
-    ///////////////////////////////
-
 
     std::vector<int> shuffle(num_parts);
     for (int i = 0; i < shuffle.size(); ++i) {
@@ -124,7 +120,7 @@ MPI_Datatype Simulation :: init_particles(
     
     MPI_Scatterv( &parts_vel_acc_temp[0] , &sizes[0] , &displs[0], mpi_part_vel_acc_type ,
                   &(parts_vel_acc_loc[0]) , sizes[rank] , mpi_part_vel_acc_type , 0, MPI_COMM_WORLD);
-    // if(rank==2) std::cout << "Rank 2: v: " << parts_vel_acc_loc[0].vx << " a: " << parts_vel_acc_loc[0].ax << std::endl;
+                  
     MPI_Bcast( &masses[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
     MPI_Bcast( &charges[0] , num_parts , MPI_DOUBLE , 0 , MPI_COMM_WORLD);
     MPI_Bcast(&parts_pos[0] , num_parts, mpi_parts_pos_type , 0 , MPI_COMM_WORLD);

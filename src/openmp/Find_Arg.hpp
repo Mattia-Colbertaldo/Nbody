@@ -9,8 +9,6 @@ class Find_Arg
 {
     public:
         Find_Arg(int argc, char** argv):argc(argc), argv(argv), cl(argc,argv){
-            //GetPot temp(argc, argv);
-            //cl=temp;
         };
         
         int find_int_arg( const std::string type_of_find, const int default_value);

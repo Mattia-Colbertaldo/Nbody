@@ -8,7 +8,6 @@
 
 using namespace common_h;
 
-    // Integrate the ODE
 
     void Particle:: move(const double size) {
         // Slightly simplified Velocity Verlet integration

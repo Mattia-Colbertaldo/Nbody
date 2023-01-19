@@ -1,17 +1,6 @@
 #include "Output.hpp"
 #include <iostream>
 
-
-// =================
-// Helper Functions
-// =================
-
-/*
-    classe che gestisce l’output su file. Ha attributi che identificano il nome del file di output 
-    e ogni quanti step fare output su file e const reference ai vettori con le particelle.
-    La classe gestisce dietro le quinte l’output, in particolare avrà un metodo save che controlla implicitamente a quale step siamo,
-    se a questo step va effettuato l’output e se la risposta è affermativa solo il rank 0 scrive su file. 
-*/
 using namespace common_h;
 // I/O routines
 void Output :: save(const std::vector<particle_pos>& parts, const double size) {
@@ -28,8 +17,6 @@ void Output :: save(const std::vector<particle_pos>& parts, const double size) {
     for (int i = 0; i < num_parts; ++i) {
         this->strstream << parts[i].x << " " << parts[i].y << " " << parts[i].z << "\n";
     }
-
-    // fsave << std::endl;
 };
 
 

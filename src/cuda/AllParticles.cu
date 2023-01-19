@@ -24,8 +24,7 @@ using namespace common_h;
 __global__ void move_kernel(double* dx, double* dy, double* dz,
                         double* dvx, double* dvy, double* dvz,
                         double* dax, double* day, double* daz, const double size, const int num_parts){
-    // double size = dsize[0];
-    // int num_parts = dnum_parts[0];
+    
     unsigned int i = blockDim.x * blockIdx.x + threadIdx.x;
     if (i>=num_parts) return;
     dvx[i] += dax[i] * dt;
@@ -94,9 +93,7 @@ void AllParticles::init(){
               vx[i] = dist1(rng);
               vy[i] = dist1(rng);
               vz[i] = dist1(rng);
-              //pos[i] = make_double3(dist(rng), dist(rng), dist(rng));
-              //vel[i] = make_double3(dist1(rng), dist1(rng), dist1(rng));
-              //masses[i] = (dist1(rng) + 1.0);
+              
               masses[i] = dist1(rng)+3.0;
               charges[i] = (i%2 == 0 ? 1 : -1)*1e-19;
             }
@@ -104,9 +101,6 @@ void AllParticles::init(){
             thrust::copy(x_h.begin(), x_h.end(), x.begin());
             thrust::copy(y_h.begin(), y_h.end(), y.begin());
             thrust::copy(z_h.begin(), z_h.end(), z.begin());
-
-            // TODO mettere inizializzazione di xh e poi copy al vettore trust
-            
 
             cudaDeviceSynchronize();
             ResetAccelerations();
@@ -120,11 +114,9 @@ void AllParticles::init(){
         }
 }
 
-    // Integrate the ODE
-
-    void AllParticles:: move() {
-      move_kernel<<<grid_sizes, block_sizes>>> ( dx, dy, dz,
-                                                 dvx, dvy, dvz,
-                                                 dax, day, daz, size, num_parts);
-                                                 
-    };
+void AllParticles:: move() {
+  move_kernel<<<grid_sizes, block_sizes>>> ( dx, dy, dz,
+                                              dvx, dvy, dvz,
+                                              dax, day, daz, size, num_parts);
+                                              
+};

@@ -28,20 +28,12 @@ bool first = true;
 #define OK std::cout << "At main:" << __LINE__ << " from process " << rank << std::endl
 
 
-
-
-// ==============
-// Main Function
-// ==============
-
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
-    //int rank;
+
     
     MPI_Comm_size(MPI_COMM_WORLD, &mpi_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    //std::cout << "mpi_size: " << mpi_size << std::endl;
 
     int part_seed;
     double size;
@@ -75,9 +67,8 @@ int main(int argc, char** argv) {
         displs[0]=0;
         for(int i=0; i<mpi_size; i++){
             sizes[i]= num_parts/mpi_size + (i < num_parts%mpi_size);
-            //std::cout << "Size of process " << i << " = " << sizes[i] << std::endl;
+            
             displs[i+1]= displs[i]+sizes[i];
-            //std::cout << "Displ of process " << i << " = " << displs[i] << std::endl;
             
         }
    }
@@ -121,14 +112,12 @@ int main(int argc, char** argv) {
   
     if(rank == 0) output.save(simulation.parts_pos , size);
 
-    //for nel tempo: non parallelizzare
+
     for (int step = 0; step < nsteps; ++step) {
         simulation.simulate_one_step(num_parts, num_loc, displ_loc, size, force);
         
         MPI_Barrier( MPI_COMM_WORLD);
 
-        // Allgather delle posizioni, in questo modo aggiorno la posizione di tutte le particelle per tutti i processori.
-        // Non serve comunicare velocità e accelerazione visto che sono necessarie solo localmente.
         MPI_Allgatherv( MPI_IN_PLACE , 0 , MPI_DATATYPE_NULL , &simulation.parts_pos[0] , &sizes[0] , &displs[0] , mpi_parts_pos_type ,
                         MPI_COMM_WORLD);
         
@@ -156,7 +145,7 @@ int main(int argc, char** argv) {
     
     std::cout << "Simulation Time = " << seconds << " seconds for " << num_parts <<
      " particles and " << nsteps << " steps.\n";
-    //delete[] parts;
+    
     }
     MPI_Finalize();
     

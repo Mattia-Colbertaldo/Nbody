@@ -54,7 +54,7 @@ public:
 
 class CoulombForce : public AbstractForce
 {
-    //equal charged Particles : all are protons
+  
 public:
    
   void force_application(particle_pos i, particle_pos j, particle_vel_acc& parts_vel_acc_loc_i,  const double mass_n, const double charge_me, const double charge_n) const override;

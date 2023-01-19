@@ -50,9 +50,6 @@ void Simulation::simulate_one_step( const std::shared_ptr<AbstractForce>& force,
   static bool first = 1;
   long t;
   if(first) t = clock();
-  
-  // long t = clock();
-  // apply_force(x, y, z, vx, vy, vz, ax, ay, az, masses, charges, num_parts, sum_ax, sum_ay, sum_az);
   long t1;
   if(first) t1 = clock();  
   if(first) std::cout << "GRID SIZE: " << parts->grid_sizes.x << " x " << parts->grid_sizes.y << std::endl;
@@ -60,7 +57,7 @@ void Simulation::simulate_one_step( const std::shared_ptr<AbstractForce>& force,
   
   force->force_application(parts->dx, parts->dy, parts->dz, parts->dvx, parts->dvy, parts->dvz, parts->dax, parts->day, 
                             parts->daz, parts->dmasses, parts->dcharges, num_parts, collision, parts->grid_sizes, parts->block_sizes);
-  // force_kernel<<<ceil((double)(num_parts)/(double)1024), 1024>>>(dx, dy, dz, dax, day, daz, dmasses, dcharges, num_parts);
+  
   cudaDeviceSynchronize();
   cudaError_t error = cudaGetLastError();
   if (error != cudaSuccess) {
@@ -70,7 +67,6 @@ void Simulation::simulate_one_step( const std::shared_ptr<AbstractForce>& force,
   
   if(first) std::cout << "Applying force: " << ((clock() - t)*MS_PER_SEC)/CLOCKS_PER_SEC << " ms" << std::endl;
   if(first) t = clock();
-  // <<<grid_dim, block_size>>>
   
   parts->move();
   cudaDeviceSynchronize();

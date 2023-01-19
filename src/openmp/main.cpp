@@ -24,11 +24,6 @@
 
 using namespace common_h;
 
-// ==============
-// Main Function
-// ==============
-
-
 
 int main(int argc, char** argv) {
     // Parse Args
@@ -50,35 +45,6 @@ int main(int argc, char** argv) {
     std::cout << "Collision: " <<  collision << std::endl;
 
 
-    
-
-    
-    /*
-    const std::unordered_map<std::string, std::shared_ptr<AbstractForce>> fmap =
-    {
-        {"default", std::make_shared<RepulsiveForce>() },
-        {"repulsive", std::make_shared<RepulsiveForce>() },
-        {"gravitational", std::make_shared<GravitationalForce>() },
-        {"assist", std::make_shared<GravitationalAssistForce>() },
-        {"proton", std::make_shared<ProtonForce>() },
-        {"coulomb", std::make_shared<CoulombForce>() },
-    };
-    std::shared_ptr<AbstractForce> force;
-
-    try {
-        force = fmap.at(forcename);      // vector::at throws an out-of-range
-    }
-    catch (const std::out_of_range& oor) {
-        std::cerr << "Wrong Force chosen "<< '\n';
-        force =  fmap.at("repulsive");
-    }
-
-    */
-
-
-
-    
-    
 
     // Initialize Particles
     const int num_parts = finder.find_int_arg("-n", 1000);
@@ -109,7 +75,6 @@ std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\n
 #pragma omp parallel default(shared) num_threads(num_th)
 #endif
     {
-        //for nel tempo: non parallelizzare
         for (int step = 0; step < nsteps; ++step) {
             
             simulation.simulate_one_step(force, num_parts,size);
