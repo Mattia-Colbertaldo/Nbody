@@ -1,3 +1,0 @@
-Simulation Time = 6.29075 seconds for 1000 particles and 1000 steps.
-Simulation Time = 23.3345 seconds for 2000 particles and 1000 steps.
-Simulation Time = 54.9522 seconds for 3000 particles and 1000 steps.
