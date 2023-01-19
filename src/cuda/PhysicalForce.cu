@@ -209,7 +209,7 @@ kernel_tiling_force_repulsive(double* x, double* y, double* z, double* vx, doubl
       }
       r2 = fmax(r2, min_r * min_r);
       double r = std::sqrt(r2);
-      double coef = (1 - cutoff / r) / r2 ;
+      double coef = 1e-2*(1 - cutoff / r) / r2 ;
 
       atomicAdd((double*)(ax + thx), (double)coef*dx*masses[thy]);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*masses[thx]);

@@ -19,10 +19,10 @@ namespace common_h{
     constexpr double min_r   = 0.01 / 100;
     constexpr double dt      = 0.0005;
 
-    constexpr double scale = 1e10;
+    constexpr double scale = 1e12;
 
     constexpr double G            = 6.67e-11 * scale;
-    constexpr double K            = 8.98e9 * scale;
+    constexpr double K            = 8.98e9 * std::sqrt(scale);
     constexpr double proton_charge= 1.6e-19 * scale;    
 }
 
