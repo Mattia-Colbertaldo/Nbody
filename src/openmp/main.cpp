@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 
     
     Simulation simulation = Simulation(num_parts, collision);
-    std::cout << "Trying to init particles...";
+    std::cout << "Initialization: ";
     simulation.init_particles(size, part_seed);
     
     // Algorithm
@@ -71,7 +71,7 @@ Output output = Output(savename);
 output.save(simulation.parts , size);
 #ifdef _OPENMP
 std::cout << "Available threads: " << std::thread::hardware_concurrency() << "\nRunning "
-          << num_th << " thread(s)." <<std::endl;
+          << num_th << " thread" << (num_th>1? "s." : ".") <<std::endl;
 #pragma omp parallel default(shared) num_threads(num_th)
 #endif
     {
