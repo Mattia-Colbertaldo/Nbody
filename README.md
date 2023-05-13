@@ -75,3 +75,42 @@ This will create a serial.parts.out file with the particle positions after each 
             
  Quoting of the sources:
  the part of the code in the "omp" directory was written on the guidance of https://sites.google.com/lbl.gov/cs267-spr2022/hw-2-1?authuser=0!!br0ken
+ 
+ * Results:
+
+    * Performance:
+    
+        ![image](https://github.com/Mattia-Colbertaldo/Nbody/assets/100996597/83f33026-6599-4c32-afb9-ecbf5d1e7f84)
+    
+    * OMP - MPI - CUDA:
+    
+        ![image](https://github.com/Mattia-Colbertaldo/Nbody/assets/100996597/69b71da5-edf2-45b6-8113-40dba77f45e5)
+
+
+     
+     * Gravitational Force:
+
+        https://github.com/Mattia-Colbertaldo/Nbody/assets/100996597/adb45f83-b236-424d-8c3b-c98b75670fb5
+     
+     * Anti - Coulomb (same charge attraction):
+    
+
+        https://github.com/Mattia-Colbertaldo/Nbody/assets/100996597/71168cb7-1034-4df1-8989-e36234ed1daf
+
+     * Repulsive - Inelastic collisions:
+    
+
+        https://github.com/Mattia-Colbertaldo/Nbody/assets/100996597/84af061a-badf-4bf0-8790-6b5b9eb407a6
+
+    * Proton force - Elastic collisions:
+    
+
+        https://github.com/Mattia-Colbertaldo/Nbody/assets/100996597/95ad8c6b-5fc3-4597-a3a6-5c2afca0adb4
+
+
+
+
+     
+
+
+
