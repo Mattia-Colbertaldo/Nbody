@@ -663,7 +663,7 @@ kernel_tiling_force_coulomb(double* x, double* y, double* z, double* vx, double*
       }
       
       r2 = fmax(r2, min_r * min_r);
-      double coef = std::pow(scale, 2) * K  / r2  ;
+      double coef = - std::pow(scale, 1) * K  / r2  ;
       double charge_product = charges[thy]*charges[thx] ;
       atomicAdd((double*)(ax + thx), (double)coef*dx*+charge_product);
       atomicAdd((double*)(ax + thy), (double)-coef*dx*+charge_product);
