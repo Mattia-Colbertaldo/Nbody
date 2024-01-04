@@ -2,6 +2,8 @@
 ## Overview
 This repository contains a versatile N-body simulation program for simulating gravitational interactions between particles.
 
+* ***Please look at the pdf for an insightful presentation***
+
 This project aims to analyze a wide range of different low level APIs to get the best results for each parallelization option, especially for **CUDA**.
 
 The simulation supports customization of the number of particles, particle seed for reproducibility, and output options. Additionally, it provides parallelization options using OpenMP, MPI, and CUDA for optimized performance. The README provides comprehensive instructions on compilation, execution, and rendering of simulation results.
