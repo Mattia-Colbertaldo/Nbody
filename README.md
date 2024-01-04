@@ -1,4 +1,14 @@
-# Nbody
+# N-body simulation
+## Overview
+This repository contains a versatile N-body simulation program for simulating gravitational interactions between particles. The simulation supports customization of the number of particles, particle seed for reproducibility, and output options. Additionally, it provides parallelization options using OpenMP, MPI, and CUDA for optimized performance. The README provides comprehensive instructions on compilation, execution, and rendering of simulation results.
+
+## Features
+* Particle Initialization: Customize the number of particles and set a seed for reproducible initialization.
+* Output Control: Specify output file names to record particle positions at each step.
+* **Force**: Choose from Gravitational, Anti-Coulomb, Proton and Repulsive forces
+* **Collision**: Choose from no collisions, elastic collisions, and inelastic collisions.
+* **Parallelization**: Utilize OpenMP, MPI, or CUDA for parallel execution, enhancing simulation performance.
+* Rendering: Visualize simulation results using the provided 3drender.py script.
 
 By default, the program runs with 1000 particles. The number of particles can be changed with the "-n" command line parameter:
 
