@@ -1,6 +1,6 @@
 # N-body simulation
 ## Overview
-This repository contains a versatile N-body simulation program for simulating gravitational interactions between particles.
+This repository contains a versatile N-body simulation program for simulating interactions between particles under different conditions.
 
 * ***Please look at the pdf for an insightful presentation***
 
